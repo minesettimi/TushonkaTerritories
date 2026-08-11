@@ -1,9 +1,41 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
         <TargetFramework>net10.0</TargetFramework>
+        <LangVersion>latest</LangVersion>
+
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <OutputType>Library</OutputType>
+
+        <Version>0.1.0</Version>
+        <RootNamespace>TerritoryServer</RootNamespace>
+        <AssemblyName>TTerritories</AssemblyName>
+
+        <!-- The two lines below will set the output path for the binaries -->
+        <OutputPath>bin\$(Configuration)\$(SolutionName)\$(AssemblyName)\</OutputPath>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     </PropertyGroup>
+
+    <PropertyGroup Condition="$(Configuration) == Release">
+        <DebugSymbols>False</DebugSymbols>
+        <DebugType>None</DebugType>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="SPTarkov.Common" Version="4.1.0" />
+        <PackageReference Include="SPTarkov.DI" Version="4.1.0" />
+        <PackageReference Include="SPTarkov.Reflection" Version="4.1.0" />
+        <PackageReference Include="SPTarkov.Server.Core" Version="4.1.0" />
+    </ItemGroup>
+
+    <Target  Name="PostBuild" AfterTargets="PostBuildEvent">
+        <ItemGroup>
+            <CompileFiles Include="$(TargetDir)*.deps.json;$(TargetDir)*.endpoints.json" />
+        </ItemGroup>
+        <Delete Files="@(CompileFiles)" />
+        <Exec Command="cp -a $(TargetDir) $(SolutionDir)../SPT_Runtime/user/mods/" />
+        <Exec Command="cp -a $(TargetDir) $(SolutionDir)release/SPT_Runtime/user/mods/" />
+    </Target>
 
 </Project>
