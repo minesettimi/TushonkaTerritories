@@ -1,0 +1,214 @@
+{
+  "factions":
+  {
+    "none":
+    {
+      "id": "none",
+      "color": "#000000",
+      "botNames": [],
+      "mobileBosses": [],
+      "strength": 0.0,
+      "defensiveness": 1.0,
+      "distanceReduction": 1.0,
+      "persistant": false,
+      "defaultRep": 0,
+      "gainRep": false,
+      "associatedTrader": null,
+      "factionAttitude":
+      {
+        "scav": -0.25,
+        "rogue": -1.0,
+        "raider": -1.0,
+        "cultist": -1.0
+      }
+    },
+    "scav":
+    {
+      "id": "scav",
+      "color": "#244023",
+      "botNames": ["assault"],
+      "mobileBosses": ["bossKolontay", "followerKolontay"],
+      "strength": 0.2,
+      "defensiveness": 0.4,
+      "distanceReduction": 0.0,
+      "persistent": true,
+      "defaultRep": 0.1,
+      "gainRep": true,
+      "associatedTrader": "579dc571d53a0658a154fbec",
+      "factionAttitude":
+      {
+        "rogue": -1.0,
+        "raider": -1.0,
+        "cultist": -1.0
+      }
+    },
+    "raider":
+    {
+      "id": "raider",
+      "color": "#FA8014",
+      "botNames": ["pmcBot"],
+      "mobileBosses": [],
+      "strength": 0.4,
+      "defensiveness": 0.8,
+      "distanceReduction": 0.8,
+      "persistant": false,
+      "defaultRep": 0,
+      "gainRep": false,
+      "associatedTrader": null,
+      "factionAttitude":
+      {
+        "rogue": -1.0,
+        "scav": -1.0,
+        "cultist": -1.0
+      }
+    },
+    "rogue":
+    {
+      "id": "rogue",
+      "color": "#4F7061",
+      "botNames": ["exUsec"],
+      "mobileBosses": [],
+      "strength": 0.8,
+      "defensiveness": 1.0,
+      "distanceReduction": 1.0,
+      "persistant": false,
+      "defaultRep": 0,
+      "gainRep": true,
+      "associatedTrader": null,
+      "factionAttitude":
+      {
+        "scav": -1.0,
+        "rogue": -1.0,
+        "raider": -1.0,
+        "cultist": -1.0
+      }
+    },
+    "cultist":
+    {
+      "id": "cultist",
+      "color": "#7D04D6",
+      "botNames": ["sectantWarrior"],
+      "mobileBosses": ["sectantOni", "sectantPredvestnik", "sectantPrizrak"],
+      "strength": 1.0,
+      "defensiveness": 1.0,
+      "distanceReduction": 1.0,
+      "persistant": true,
+      "defaultRep": 0,
+      "gainRep": false,
+      "associatedTrader": null,
+      "factionAttitude":
+      {
+        "scav": -0.25,
+        "rogue": -1.0,
+        "raider": -1.0,
+        "cultist": -1.0
+      }
+    }
+  },
+  "defaultBases":
+  {
+    "bigmap": "scav",
+    "factory4_day": "scav",
+    "interchange": "scav",
+    "laboratory": "raider",
+    "lighthouse": "rogue",
+    "reservbase": "raider",
+    "sandbox": "scav",
+    "shoreline": "scav",
+    "tarkovstreets": "scav",
+    "woods": "scav",
+    "labyrinth": "none"
+  },
+  "botFactionTable":
+  {
+    "assault": "scav",
+    "bear": "none",
+    "bossBoar": "scav",
+    "bossBoarSniper": "scav",
+    "bossBully": "scav",
+    "bossGluhar": "scav",
+    "bossKilla": "scav",
+    "bossKillaAgro": "scav",
+    "bossKnight": "rogue",
+    "bossKojaniy": "scav",
+    "bossKolontay": "scav",
+    "bossPartisan": "none",
+    "bossSanitar": "scav",
+    "bossTagilla": "scav",
+    "bossTagillaAgro": "scav",
+    "bossZryachiy": "cultist",
+    "crazyAssaultEvent": "scav",
+    "cursedAssult": "scav",
+    "exUsec": "rogue",
+    "followerBigPipe": "rogue",
+    "followerBirdEye": "rogue",
+    "followerBoar": "scav",
+    "followerBoarClose1": "scav",
+    "followerBoarClose2": "scav",
+    "followerBully": "scav",
+    "followerGluharAssault": "scav",
+    "followerGluharScout": "scav",
+    "followerGluharSecurity": "scav",
+    "followerKojaniy": "scav",
+    "followerSanitar": "scav",
+    "followerZryachiy": "cultist",
+    "gifter": "none",
+    "marksman": "scav",
+    "pmcBear": "none",
+    "pmcBot": "raider",
+    "pmcUsec": "none",
+    "ravangeZryachiyEvent": "cultist",
+    "sectantOni": "cultist",
+    "sectantPredvestnik": "cultist",
+    "sectantPriest": "cultist",
+    "sectantPrizrak": "cultist",
+    "sectantWarrior": "cultist",
+    "shooterBtr": "none",
+    "tagillaHelperAgro": "scav",
+    "usec": "none"
+  },
+  "locationNeighbors":
+  {
+    "bigmap":
+    [
+      
+    ],
+    "factory4_day":
+    [
+
+    ],
+    "interchange":
+    [
+
+    ],
+    "laboratory":
+    [
+
+    ],
+    "lighthouse":
+    [
+
+    ],
+    "reservbase":
+    [
+
+    ],
+    "sandbox":
+    [
+
+    ],
+    "shoreline":
+    [
+
+    ],
+    "tarkovstreets":
+    [
+
+    ],
+    "woods":
+    [
+
+    ],
+    "labyrinth":[]
+  }
+}

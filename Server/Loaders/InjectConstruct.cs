@@ -1,21 +1,21 @@
-using System.Reflection;
 using System.Text.Json;
 using SPTarkov.Server.Core.DI;
 using SPTarkov.Server.Core.Utils;
 using TerritoryServer.Models;
+using TerritoryServer.Servers;
 
 namespace TerritoryServer.Loaders;
 
 public class InjectConstruct : IOnDIConstruct
 {
-    private static readonly string ModPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
+    private static readonly string ConfigPath = Path.Join(StateServer.ModPath, "Config");
     
     public static async Task OnDIConstructAsync(IServiceCollection serviceCollection, CancellationToken cancellationToken)
     {
-        DataConfig dataConfig = await LoadConfig<DataConfig>(Path.Join(ModPath, "Config", "data.json"), cancellationToken) ??
+        DataConfig dataConfig = await LoadConfig<DataConfig>(Path.Join(ConfigPath, "data.json"), cancellationToken) ??
                                 throw new Exception("[TT] Failed to load mod data.");
 
-        string configPath = Path.Join(ModPath, "Config", "config.jsonc");
+        string configPath = Path.Join(ConfigPath, "config.jsonc");
         ModConfig? modConfig =
             await LoadConfig<ModConfig>(configPath, cancellationToken);
 

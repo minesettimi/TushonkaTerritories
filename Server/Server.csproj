@@ -29,6 +29,12 @@
         <PackageReference Include="SPTarkov.Server.Core" Version="4.1.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="Configs/**">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
     <Target  Name="PostBuild" AfterTargets="PostBuildEvent">
         <ItemGroup>
             <CompileFiles Include="$(TargetDir)*.deps.json;$(TargetDir)*.endpoints.json" />

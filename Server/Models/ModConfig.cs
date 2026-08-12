@@ -20,7 +20,7 @@ public record BattleConfig
 {
     [JsonPropertyName("enableBattles")] public bool BattlesEnabled { get; set; } = true;
     [JsonPropertyName("allowBaseTaking")] public bool BaseTakingEnabled { get; set; } = false;
-    [JsonPropertyName("strengthDecrease")] public float StrengthDecrease { get; set; } = 0.3f;
+    [JsonPropertyName("strengthDecreaseOverride")] public float StrengthDecrease { get; set; } = -1f;
     [JsonPropertyName("simulateAfterRaid")] public bool RaidBattle { get; set; } = true;
     [JsonPropertyName("raidsChangeOutcome")] public bool RaidChangesBattle { get; set; } = true;
     [JsonPropertyName("offlineSimulationTime")] public float SimulationInterval { get; set; } = -1f;
