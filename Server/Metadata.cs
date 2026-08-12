@@ -2,7 +2,7 @@ using SPTarkov.Server.Core.Models.Spt.Mod;
 using Range = SemanticVersioning.Range;
 using Version = SemanticVersioning.Version;
 
-namespace Server;
+namespace TerritoryServer;
 
 public static class Metadata
 {
