@@ -5,6 +5,7 @@
     {
       "id": "none",
       "color": "#000000",
+      "base": "none",
       "botNames": [],
       "mobileBosses": [],
       "strength": 0.0,
@@ -16,16 +17,17 @@
       "associatedTrader": null,
       "factionAttitude":
       {
-        "scav": -0.25,
-        "rogue": -1.0,
-        "raider": -1.0,
-        "cultist": -1.0
+        "scav": 0,
+        "rogue": -1,
+        "raider": -1,
+        "cultist": -1
       }
     },
     "scav":
     {
       "id": "scav",
       "color": "#244023",
+      "base": "interchange",
       "botNames": ["assault"],
       "mobileBosses": ["bossKolontay", "followerKolontay"],
       "strength": 0.2,
@@ -37,15 +39,16 @@
       "associatedTrader": "579dc571d53a0658a154fbec",
       "factionAttitude":
       {
-        "rogue": -1.0,
-        "raider": -1.0,
-        "cultist": -1.0
+        "rogue": -1,
+        "raider": -1,
+        "cultist": 0
       }
     },
     "raider":
     {
       "id": "raider",
       "color": "#FA8014",
+      "base": "laboratory",
       "botNames": ["pmcBot"],
       "mobileBosses": [],
       "strength": 0.4,
@@ -57,15 +60,16 @@
       "associatedTrader": null,
       "factionAttitude":
       {
-        "rogue": -1.0,
-        "scav": -1.0,
-        "cultist": -1.0
+        "rogue": -1,
+        "scav": -1,
+        "cultist": -1
       }
     },
     "rogue":
     {
       "id": "rogue",
       "color": "#4F7061",
+      "base": "lighthouse",
       "botNames": ["exUsec"],
       "mobileBosses": [],
       "strength": 0.8,
@@ -77,16 +81,16 @@
       "associatedTrader": null,
       "factionAttitude":
       {
-        "scav": -1.0,
-        "rogue": -1.0,
-        "raider": -1.0,
-        "cultist": -1.0
+        "scav": -1,
+        "raider": -1,
+        "cultist": -1
       }
     },
     "cultist":
     {
       "id": "cultist",
       "color": "#7D04D6",
+      "base": "none",
       "botNames": ["sectantWarrior"],
       "mobileBosses": ["sectantOni", "sectantPredvestnik", "sectantPrizrak"],
       "strength": 1.0,
@@ -98,28 +102,11 @@
       "associatedTrader": null,
       "factionAttitude":
       {
-        "scav": -0.25,
-        "rogue": -1.0,
-        "raider": -1.0,
-        "cultist": -1.0
+        "scav": 0,
+        "rogue": -1,
+        "raider": -1,
       }
     }
-  },
-  "defaultBases":
-  {
-    "bigmap": "none",
-    "factory4_day": "none",
-    "interchange": "scav",
-    "laboratory": "raider",
-    "lighthouse": "rogue",
-    "reservbase": "none",
-    "sandbox": "none",
-    "shoreline": "none",
-    "tarkovstreets": "none",
-    "woods": "none",
-    "labyrinth": "none",
-    "suburbs": "none",
-    "terminal": "none"
   },
   "defaultTerritory":
   {
@@ -241,6 +228,11 @@
       "reservbase",
       "factory4_day"
     ],
-    "labyrinth":[]
+    "labyrinth": [],
+    "suburbs": [],
+    "terminal":
+    [
+      "shoreline"
+    ]
   }
 }

@@ -1,6 +1,5 @@
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.Utils;
-using TerritoryServer.Helpers;
 using TerritoryServer.Models;
 using TerritoryServer.Servers;
 using TerritoryServer.Utils;
@@ -12,7 +11,6 @@ public class BattleService(
     ModConfig modConfig,
     DataConfig dataConfig,
     StateServer stateServer,
-    LocationMapHelper mapHelper,
     MathUtil mathUtil,
     RandomUtil randomUtil)
 {
@@ -34,14 +32,15 @@ public class BattleService(
     ];
     
     private int _currentLocId;
+    
     /*
      * Operate in stages:
-     * 1. Spread to one nearby "none" locations next to current positions
+     * 1. Spread to x nearby "none" locations next to current positions
      * 2. Run battle calculations if there's a battle
-     * 3. Start contesting one nearby enemy locations if currently uncontested
+     * 3. Start contesting x nearby enemy locations if currently uncontested
      * Run these 3 stages per location
      * Uncap these if configured to
-     * Run the configured number of locations per simulation
+     * Run the configured number of locations (x) per simulation
     */
     public void Simulate()
     {

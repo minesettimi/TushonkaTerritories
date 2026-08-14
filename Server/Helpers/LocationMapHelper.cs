@@ -42,8 +42,8 @@ public class LocationMapHelper(DataConfig gameData, StateServer stateServer)
         List<NavCell> openList = [new(start, 0)];
         HashSet<string> closedList = [];
 
-        SaveState currentState = stateServer.CurrentSave;
-        string faction = currentState.Locations[start].Holder;
+        LocationData<LocationState> currentLocations = stateServer.CurrentSave.Locations;
+        string faction = currentLocations[start].Holder;
         
         while (openList.Count > 0)
         {
@@ -59,7 +59,7 @@ public class LocationMapHelper(DataConfig gameData, StateServer stateServer)
                 }
                 
                 if (closedList.Contains(neighbor) || 
-                    (factionOnly && currentState.Locations[currentLoc].Holder != faction))
+                    (factionOnly && currentLocations[currentLoc].Holder != faction))
                     continue;
                 
                 openList.Add(new NavCell(neighbor, currentCell.Distance + 1));
