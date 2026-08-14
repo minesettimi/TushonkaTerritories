@@ -107,6 +107,22 @@
   },
   "defaultBases":
   {
+    "bigmap": "none",
+    "factory4_day": "none",
+    "interchange": "scav",
+    "laboratory": "raider",
+    "lighthouse": "rogue",
+    "reservbase": "none",
+    "sandbox": "none",
+    "shoreline": "none",
+    "tarkovstreets": "none",
+    "woods": "none",
+    "labyrinth": "none",
+    "suburbs": "none",
+    "terminal": "none"
+  },
+  "defaultTerritory":
+  {
     "bigmap": "scav",
     "factory4_day": "scav",
     "interchange": "scav",
@@ -117,7 +133,9 @@
     "shoreline": "scav",
     "tarkovstreets": "scav",
     "woods": "scav",
-    "labyrinth": "none"
+    "labyrinth": "none",
+    "suburbs": "none",
+    "terminal": "none"
   },
   "botFactionTable":
   {
@@ -171,43 +189,57 @@
   {
     "bigmap":
     [
-      
+      "factory4_day",
+      "reservbase",
+      "interchange"
     ],
     "factory4_day":
     [
-
+      "woods",
+      "laboratory",
+      "bigmap"
     ],
     "interchange":
     [
-
+      "bigmap",
+      "tarkovstreets"
     ],
     "laboratory":
     [
-
+      "tarkovstreets",
+      "factory4_day"
     ],
     "lighthouse":
     [
-
+      "woods",
+      "shoreline",
+      "reservbase"
     ],
     "reservbase":
     [
-
+      "lighthouse",
+      "bigmap",
+      "woods"
     ],
     "sandbox":
     [
-
+      "tarkovstreets"
     ],
     "shoreline":
     [
-
+      "lighthouse"
     ],
     "tarkovstreets":
     [
-
+      "sandbox",
+      "laboratory",
+      "interchange"
     ],
     "woods":
     [
-
+      "lighthouse",
+      "reservbase",
+      "factory4_day"
     ],
     "labyrinth":[]
   }
