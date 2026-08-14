@@ -8,12 +8,11 @@ namespace TerritoryServer.Helpers;
 [Injectable(InjectionType.Singleton)]
 public class LocationMapHelper(DataConfig gameData, StateServer stateServer)
 {
-    
     public bool CanReach(string start, string end, bool factionOnly)
     {
         return CalculateNav(start, end, factionOnly) != null;
     }
-    
+
     public int GetDistance(string start, string end, bool factionOnly)
     {
         NavCell? calculation = CalculateNav(start, end, factionOnly);
@@ -23,7 +22,7 @@ public class LocationMapHelper(DataConfig gameData, StateServer stateServer)
 
         return calculation.Distance;
     }
-    
+
     //navigate from start to end
     //basically djikstra's algorithm
     private NavCell? CalculateNav(string start, string end, bool factionOnly)
@@ -33,8 +32,8 @@ public class LocationMapHelper(DataConfig gameData, StateServer stateServer)
             return new NavCell(start, 0);
         }
         
-        if (gameData.LocationNeighbors[start].Count == 0 || 
-            gameData.LocationNeighbors[end].Count == 0)
+        if (gameData.LocationNeighbors[start]!.Count == 0 || 
+            gameData.LocationNeighbors[end]!.Count == 0)
         {
             return null;
         }
@@ -43,14 +42,14 @@ public class LocationMapHelper(DataConfig gameData, StateServer stateServer)
         HashSet<string> closedList = [];
 
         LocationData<LocationState> currentLocations = stateServer.CurrentSave.Locations;
-        string faction = currentLocations[start].Holder;
+        string faction = currentLocations[start]!.Holder;
         
         while (openList.Count > 0)
         {
             NavCell currentCell = openList.PopFirst();
             string currentLoc = currentCell.Location;
             
-            List<string> neighbors = gameData.LocationNeighbors[currentLoc];
+            List<string> neighbors = gameData.LocationNeighbors[currentLoc]!;
             foreach (string neighbor in neighbors)
             {
                 if (neighbor == end)
@@ -59,7 +58,7 @@ public class LocationMapHelper(DataConfig gameData, StateServer stateServer)
                 }
                 
                 if (closedList.Contains(neighbor) || 
-                    (factionOnly && currentLocations[currentLoc].Holder != faction))
+                    (factionOnly && currentLocations[currentLoc]!.Holder != faction))
                     continue;
                 
                 openList.Add(new NavCell(neighbor, currentCell.Distance + 1));

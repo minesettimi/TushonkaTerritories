@@ -9,11 +9,21 @@ namespace TerritoryServer.Loaders;
 public class InjectConstruct : IOnDIConstruct
 {
     private static readonly string ConfigPath = Path.Join(StateServer.ModPath, "Config");
-    
+
     public static async Task OnDIConstructAsync(IServiceCollection serviceCollection, CancellationToken cancellationToken)
     {
-        DataConfig dataConfig = await LoadConfig<DataConfig>(Path.Join(ConfigPath, "data.json"), cancellationToken) ??
-                                throw new Exception("[TT] Failed to load mod data.");
+        DataConfig dataConfig;
+
+        if (File.Exists(Path.Join(ConfigPath, "data_override.json")))
+        {
+            dataConfig = await LoadConfig<DataConfig>(Path.Join(ConfigPath, "data_override.json"), cancellationToken) ??
+                throw new Exception("[TT] Failed to load override mod data.");
+        }
+        else
+        {
+            dataConfig = await LoadConfig<DataConfig>(Path.Join(ConfigPath, "data.json"), cancellationToken) ??
+                         throw new Exception("[TT] Failed to load mod data.");
+        }
 
         string configPath = Path.Join(ConfigPath, "config.jsonc");
         ModConfig? modConfig =
@@ -29,7 +39,7 @@ public class InjectConstruct : IOnDIConstruct
         serviceCollection.AddSingleton(dataConfig);
         serviceCollection.AddSingleton(modConfig);
     }
-    
+
     //from jsonutil but it can be used in a static context
     public static async Task<T?> LoadConfig<T>(string filePath, CancellationToken cancellationToken)
     {

@@ -5,7 +5,6 @@
     {
       "id": "none",
       "color": "#000000",
-      "base": "none",
       "botNames": [],
       "mobileBosses": [],
       "strength": 0.0,
@@ -90,7 +89,6 @@
     {
       "id": "cultist",
       "color": "#7D04D6",
-      "base": "none",
       "botNames": ["sectantWarrior"],
       "mobileBosses": ["sectantOni", "sectantPredvestnik", "sectantPrizrak"],
       "strength": 1.0,

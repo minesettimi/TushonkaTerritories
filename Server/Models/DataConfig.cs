@@ -15,7 +15,7 @@ public record Faction
 {
     [JsonPropertyName("id")] public string Id { get; } = "invalid";
     [JsonPropertyName("color")] public string Color { get; } = "#000000";
-    [JsonPropertyName("base")] public string Base { get; } = "none";
+    [JsonPropertyName("base")] public string? Base { get; } = null;
     [JsonPropertyName("botNames")] public List<string> BotNames { get; } = [];
     [JsonPropertyName("mobileBosses")] public List<string> BossNames { get; } = [];
     [JsonPropertyName("strength")] public double Strength { get; }
@@ -46,8 +46,9 @@ public class LocationData<T>
     [JsonPropertyName("terminal")] public T Terminal { get; set; }
 
     [JsonIgnore]
-    public T this[string key] =>
-        key.ToLowerInvariant() switch
+    public T this[string key]
+    {
+        get => key.ToLowerInvariant() switch
         {
             "bigmap" => Customs,
             "factory4_day" => Factory,
@@ -66,5 +67,27 @@ public class LocationData<T>
             "terminal" => Terminal,
             _ => throw new KeyNotFoundException($"Location '{key}' not found.")
         };
+        set
+        {
+            switch (key.ToLowerInvariant())
+            {
+                case "bigmap": Customs = value; break;
+                case "factory4_day":
+                case "factory4_night": Factory = value; break;
+                case "interchange": Interchange = value; break;
+                case "lighthouse": Lighthouse = value; break;
+                case "reservbase": Reserve = value; break;
+                case "sandbox":
+                case "sandbox_high": GroundZero = value; break;
+                case "shoreline": Shoreline = value; break;
+                case "tarkovstreets": Streets = value; break;
+                case "woods": Woods = value; break;
+                case "labyrinth": Labyrinth = value; break;
+                case "suburbs": Icebreaker = value; break;
+                case "terminal": Terminal = value; break;
+                default: throw new KeyNotFoundException($"Location '{key}' not found.");
+            }
+        }
+    }
 }
 

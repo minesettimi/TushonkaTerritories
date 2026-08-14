@@ -4,6 +4,7 @@ namespace TerritoryServer.Models;
 
 public record ModConfig
 {
+    [JsonPropertyName("debug")] public bool Debug { get; } = false;
     [JsonPropertyName("factionConfig")] public FactionConfig Factions { get; set; } = new();
     [JsonPropertyName("battleConfig")] public BattleConfig BattleConfig { get; set; } = new();
 }
@@ -13,7 +14,6 @@ public record FactionConfig
     [JsonPropertyName("killRepDecrease")] public double KillReputationDecrease { get; set; } = 0.01f;
     [JsonPropertyName("killEnemyRep")] public double KillEnemyReputation { get; set; } = 0.005f;
     [JsonPropertyName("overrideTraderRep")] public bool OverrideTraderRep { get; set; } = false;
-    [JsonPropertyName("changeAttitude")] public bool ChangeAttitude { get; set; } = false;
 }
 
 public record BattleConfig

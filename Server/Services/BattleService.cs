@@ -1,3 +1,4 @@
+using SPTarkov.Common.Models.Logging;
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.Utils;
 using TerritoryServer.Models;
@@ -12,7 +13,8 @@ public class BattleService(
     DataConfig dataConfig,
     StateServer stateServer,
     MathUtil mathUtil,
-    RandomUtil randomUtil)
+    RandomUtil randomUtil,
+    ISptLogger<BattleService> logger)
 {
     public static readonly List<string> MapList = 
     [
@@ -30,9 +32,9 @@ public class BattleService(
         "suburbs",
         "terminal"
     ];
-    
+
     private int _currentLocId;
-    
+
     /*
      * Operate in stages:
      * 1. Spread to x nearby "none" locations next to current positions
@@ -41,15 +43,20 @@ public class BattleService(
      * Run these 3 stages per location
      * Uncap these if configured to
      * Run the configured number of locations (x) per simulation
-    */
+     */
     public void Simulate()
     {
+        if (modConfig.Debug)
+        {
+            logger.Info("[TT] Starting simulation.");
+        }
+        
         for (int i = 0; i < modConfig.BattleConfig.SimulationLocations; i++)
         {
             _currentLocId = TerritoryMath.Wrap(_currentLocId++, 0, MapList.Count);
             string currentLocation = MapList[_currentLocId];
 
-            LocationState locState = stateServer.CurrentSave.Locations[currentLocation];
+            LocationState locState = stateServer.CurrentSave.Locations[currentLocation]!;
             
             if (locState.Holder == "none")
             {
@@ -66,6 +73,8 @@ public class BattleService(
                 SpreadNearby(currentLocation, locState, false);
             }
         }
+        
+        stateServer.SaveToDisk();
     }
 
     private void SpreadNearby(string location, LocationState locState, bool noneOnly = true)
@@ -81,16 +90,21 @@ public class BattleService(
 
         if (!(moveStrength > 0)) return;
         
-        List<string> nearbyEmpty = FindNearby(location, noneOnly ? "none" : null);
+        List<string> nearby = FindNearby(location, noneOnly ? "none" : null);
 
-        while (nearbyEmpty.Count > modConfig.BattleConfig.SimulationActions)
+        while (nearby.Count > modConfig.BattleConfig.SimulationActions)
         {
-            nearbyEmpty.RemoveAt(randomUtil.GetInt(0, nearbyEmpty.Count - 1));
+            nearby.RemoveAt(randomUtil.GetInt(0, nearby.Count - 1));
         }
 
-        foreach (string neighbor in nearbyEmpty)
+        foreach (string neighbor in nearby)
         {
-            LocationState emptyState = stateServer.CurrentSave.Locations[neighbor];
+            if (modConfig.Debug)
+            {
+                logger.Info($"[TT] Faction {faction} is spreading from location: {location} to: {neighbor}.");
+            }
+            
+            LocationState emptyState = stateServer.CurrentSave.Locations[neighbor]!;
 
             emptyState.Holder = faction;
             emptyState.Contestants.Add(faction, moveStrength);
@@ -161,11 +175,22 @@ public class BattleService(
 
             location.Contestants[faction] -= finalDamage;
 
+            if (modConfig.Debug)
+            {
+                logger.Info($"[TT] Contestant {faction} at location: {location} has taken {finalDamage} and now has {location.Contestants[faction]} strength left.");
+            }
+            
             if (!(location.Contestants[faction] < 0)) continue;
             
+            if (modConfig.Debug)
+            {
+                logger.Info($"[TT] Contestant {faction} at location: {location} has been removed.");
+            }
+            
             location.Contestants.Remove(faction);
-
-            foreach (string neighbor in dataConfig.LocationNeighbors[locationName])
+            location.Base = false;
+            
+            foreach (string neighbor in dataConfig.LocationNeighbors[locationName]!)
             {
                 RemoveIsolatedContestant(neighbor, faction);
             }
@@ -201,12 +226,12 @@ public class BattleService(
     {
         List<string> results = [];
 
-        LocationState currentLoc = stateServer.CurrentSave.Locations[start];
+        LocationState currentLoc = stateServer.CurrentSave.Locations[start]!;
         
-        List<string> neighbors = dataConfig.LocationNeighbors[start];
+        List<string> neighbors = dataConfig.LocationNeighbors[start]!;
         foreach (string neighborLocation in neighbors)
         {
-            string otherHolder = stateServer.CurrentSave.Locations[neighborLocation].Holder;
+            string otherHolder = stateServer.CurrentSave.Locations[neighborLocation]!.Holder;
 
             if (targetFaction != null &&
                 otherHolder == targetFaction || currentLoc.Holder != otherHolder)
@@ -223,21 +248,20 @@ public class BattleService(
         if (dataConfig.Factions[faction].Persistant)
             return;
         
-        LocationState locState = stateServer.CurrentSave.Locations[location];
+        LocationState locState = stateServer.CurrentSave.Locations[location]!;
 
         if (locState.Holder == faction || !locState.Contestants.ContainsKey(faction))
             return;
 
-        bool isolated = true;
-        foreach (string neighbor in dataConfig.LocationNeighbors[location])
+        bool isolated = false;
+        foreach (string neighbor in dataConfig.LocationNeighbors[location]!)
         {
-            LocationState neighborState = stateServer.CurrentSave.Locations[neighbor];
+            LocationState neighborState = stateServer.CurrentSave.Locations[neighbor]!;
 
-            if (neighborState.Holder == faction)
-            {
-                isolated = false;
-                return;
-            }
+            if (neighborState.Holder != faction) continue;
+            
+            isolated = true;
+            break;
         }
 
         if (isolated)
