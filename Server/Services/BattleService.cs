@@ -28,7 +28,9 @@ public class BattleService(
         "shoreline",
         "tarkovstreets",
         "woods",
-        "labyrinth"
+        "labyrinth",
+        "suburbs",
+        "terminal"
     ];
     
     private int _currentLocId;
@@ -43,13 +45,12 @@ public class BattleService(
     */
     public void Simulate()
     {
-        LocationData<LocationState> locData = stateServer.CurrentSave.Locations;
         for (int i = 0; i < modConfig.BattleConfig.SimulationLocations; i++)
         {
             _currentLocId = TerritoryMath.Wrap(_currentLocId++, 0, MapList.Count);
             string currentLocation = MapList[_currentLocId];
 
-            LocationState locState = locData[currentLocation];
+            LocationState locState = stateServer.CurrentSave.Locations[currentLocation];
             
             if (locState.Holder == "none")
             {
@@ -59,7 +60,7 @@ public class BattleService(
             
             SpreadNearby(currentLocation, locState);
 
-            CalculateBattle(locState);
+            CalculateBattle(currentLocation, locState);
 
             if (locState.Contestants.Count == 1)
             {
@@ -103,7 +104,7 @@ public class BattleService(
     //holder gets a strength buff
     //reduce all incoming damage once by the defensiveness
     //use percentage of location strength and faction strength to reduce values
-    private void CalculateBattle(LocationState location)
+    private void CalculateBattle(string locationName, LocationState location)
     {
         if (location.Contestants.Count < 2)
             return;
@@ -140,6 +141,8 @@ public class BattleService(
                 mathUtil.MapToRange((updatedStrength / targets.Count) * modConfig.BattleConfig.DamageMultiplier, 0.0,
                     2.0, 0.0, 1.0);
 
+            damage += randomUtil.RandNum(modConfig.BattleConfig.DamageMinRng, modConfig.BattleConfig.DamageMaxRng);
+
             foreach (string target in targets)
             {
                 damageDealt[target] += damage;
@@ -159,9 +162,13 @@ public class BattleService(
 
             location.Contestants[faction] -= finalDamage;
 
-            if (location.Contestants[faction] < 0)
+            if (!(location.Contestants[faction] < 0)) continue;
+            
+            location.Contestants.Remove(faction);
+
+            foreach (string neighbor in dataConfig.LocationNeighbors[locationName])
             {
-                location.Contestants.Remove(faction);
+                RemoveIsolatedContestant(neighbor, faction);
             }
         }
 
@@ -210,5 +217,33 @@ public class BattleService(
         }
 
         return results;
+    }
+
+    private void RemoveIsolatedContestant(string location, string faction)
+    {
+        if (dataConfig.Factions[faction].Persistant)
+            return;
+        
+        LocationState locState = stateServer.CurrentSave.Locations[location];
+
+        if (locState.Holder == faction || !locState.Contestants.ContainsKey(faction))
+            return;
+
+        bool isolated = true;
+        foreach (string neighbor in dataConfig.LocationNeighbors[location])
+        {
+            LocationState neighborState = stateServer.CurrentSave.Locations[neighbor];
+
+            if (neighborState.Holder == faction)
+            {
+                isolated = false;
+                return;
+            }
+        }
+
+        if (isolated)
+        {
+            locState.Contestants.Remove(faction);
+        }
     }
 }

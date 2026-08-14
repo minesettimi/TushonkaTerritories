@@ -28,6 +28,8 @@ public record BattleConfig
     [JsonPropertyName("locationsPerSimulation")] public int SimulationLocations { get; set; } = 2;
     [JsonPropertyName("attackNeutralChance")] public double AttackNeutralChance { get; } = 25.0;
     [JsonPropertyName("damageMultiplier")] public double DamageMultiplier { get; } = 1.0;
+    [JsonPropertyName("damageMinDistribution")] public double DamageMinRng { get; } = -0.35;
+    [JsonPropertyName("damageMaxDistribution")] public double DamageMaxRng { get; } = 0.15;
 }
 
 public record RaidConfig

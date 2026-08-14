@@ -6,7 +6,6 @@ namespace TerritoryServer.Models;
 public record DataConfig
 {
     [JsonPropertyName("factions")] public Dictionary<string, Faction> Factions { get; } = [];
-    [JsonPropertyName("defaultBases")] public LocationData<string> LocationBases { get; } = new();
     [JsonPropertyName("defaultTerritory")] public LocationData<string> LocationTerritories { get; } = new();
     [JsonPropertyName("botFactionTable")] public Dictionary<string, string> BotFaction { get; } = [];
     [JsonPropertyName("locationNeighbors")] public LocationData<List<string>> LocationNeighbors { get; } = new();
@@ -16,6 +15,7 @@ public record Faction
 {
     [JsonPropertyName("id")] public string Id { get; } = "invalid";
     [JsonPropertyName("color")] public string Color { get; } = "#000000";
+    [JsonPropertyName("base")] public string Base { get; } = "none";
     [JsonPropertyName("botNames")] public List<string> BotNames { get; } = [];
     [JsonPropertyName("mobileBosses")] public List<string> BossNames { get; } = [];
     [JsonPropertyName("strength")] public double Strength { get; }
