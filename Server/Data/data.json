@@ -10,8 +10,10 @@
       "strength": 0.0,
       "defensiveness": 1.0,
       "distanceReduction": 1.0,
-      "persistant": false,
-      "defaultRep": 0,
+      "persistant": true,
+      "defaultRepUsec": 5,
+      "defaultRepBear": 5,
+      "defaultRepScav": 0,
       "gainRep": false,
       "associatedTrader": null,
       "factionAttitude":
@@ -33,7 +35,9 @@
       "defensiveness": 0.4,
       "distanceReduction": 0.0,
       "persistent": true,
-      "defaultRep": 0.1,
+      "defaultRepUsec": 0.1,
+      "defaultRepBear": 0.1,
+      "defaultRepScav": 5,
       "gainRep": true,
       "associatedTrader": "579dc571d53a0658a154fbec",
       "factionAttitude":
@@ -54,7 +58,9 @@
       "defensiveness": 0.8,
       "distanceReduction": 0.8,
       "persistant": false,
-      "defaultRep": 0,
+      "defaultRepUsec": 0.5,
+      "defaultRepBear": 0.5,
+      "defaultRepScav": 0,
       "gainRep": false,
       "associatedTrader": null,
       "factionAttitude":
@@ -75,7 +81,9 @@
       "defensiveness": 1.0,
       "distanceReduction": 1.0,
       "persistant": false,
-      "defaultRep": 0,
+      "defaultRepUsec": 5,
+      "defaultRepBear": 0,
+      "defaultRepScav": 0,
       "gainRep": true,
       "associatedTrader": null,
       "factionAttitude":
@@ -95,14 +103,16 @@
       "defensiveness": 1.0,
       "distanceReduction": 1.0,
       "persistant": true,
-      "defaultRep": 0,
+      "defaultRepUsec": 0,
+      "defaultRepBear": 0,
+      "defaultRepScav": 1,
       "gainRep": false,
       "associatedTrader": null,
       "factionAttitude":
       {
         "scav": 0,
         "rogue": -1,
-        "raider": -1,
+        "raider": -1
       }
     }
   },

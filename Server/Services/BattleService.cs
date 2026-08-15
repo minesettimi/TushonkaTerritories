@@ -16,23 +16,6 @@ public class BattleService(
     RandomUtil randomUtil,
     ISptLogger<BattleService> logger)
 {
-    public static readonly List<string> MapList = 
-    [
-        "bigmap",
-        "factory4_day",
-        "interchange",
-        "laboratory",
-        "lighthouse",
-        "reservbase",
-        "sandbox",
-        "shoreline",
-        "tarkovstreets",
-        "woods",
-        "labyrinth",
-        "suburbs",
-        "terminal"
-    ];
-
     private int _currentLocId;
 
     /*
@@ -53,8 +36,8 @@ public class BattleService(
         
         for (int i = 0; i < modConfig.BattleConfig.SimulationLocations; i++)
         {
-            _currentLocId = TerritoryMath.Wrap(_currentLocId++, 0, MapList.Count);
-            string currentLocation = MapList[_currentLocId];
+            _currentLocId = TerritoryMath.Wrap(_currentLocId++, 0, LocationService.MapList.Count);
+            string currentLocation = LocationService.MapList[_currentLocId];
 
             LocationState locState = stateServer.CurrentSave.Locations[currentLocation]!;
             

@@ -16,6 +16,7 @@ public class Preload(StateServer stateServer,
         if (stateServer.NewSave)
         {
             stateServer.CurrentSave = stateGenerator.GenerateState();
+            stateServer.SaveToDisk();
         }
     }
 }

@@ -9,12 +9,13 @@ namespace TerritoryServer.Loaders;
 public class InjectConstruct : IOnDIConstruct
 {
     private static readonly string ConfigPath = Path.Join(StateServer.ModPath, "Config");
+    private static readonly string DataPath = Path.Join(StateServer.ModPath, "Data");
 
     public static async Task OnDIConstructAsync(IServiceCollection serviceCollection, CancellationToken cancellationToken)
     {
         DataConfig dataConfig;
 
-        if (File.Exists(Path.Join(ConfigPath, "data_override.json")))
+        if (File.Exists(Path.Join(DataPath, "data_override.json")))
         {
             dataConfig = await LoadConfig<DataConfig>(Path.Join(ConfigPath, "data_override.json"), cancellationToken) ??
                 throw new Exception("[TT] Failed to load override mod data.");

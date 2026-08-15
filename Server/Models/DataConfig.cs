@@ -22,7 +22,9 @@ public record Faction
     [JsonPropertyName("defensiveness")] public double Defensiveness { get; }
     [JsonPropertyName("distanceReduction")] public double DistanceReduction { get; }
     [JsonPropertyName("persistant")] public bool Persistant { get; }
-    [JsonPropertyName("defaultRep")] public double DefaultRep { get; }
+    [JsonPropertyName("defaultRepUsec")] public double DefaultRepUsec { get; }
+    [JsonPropertyName("defaultRepBear")] public double DefaultRepBear { get; }
+    [JsonPropertyName("defaultRepScav")] public double DefaultRepScav { get; }
     [JsonPropertyName("gainRep")] public bool RepEnabled { get; }
     [JsonPropertyName("associatedTrader")] public MongoId? Trader { get; }
     [JsonPropertyName("factionAttitude")] public Dictionary<string, int> Attitudes { get; } = [];
