@@ -17,7 +17,7 @@ public class BattleService(
     ISptLogger<BattleService> logger)
 {
     private int _currentLocId;
-
+    
     /*
      * Operate in stages:
      * 1. Spread to x nearby "none" locations next to current positions
@@ -27,7 +27,7 @@ public class BattleService(
      * Uncap these if configured to
      * Run the configured number of locations (x) per simulation
      */
-    public void Simulate()
+    public void Simulate(string? raidLocation = null, Dictionary<string, int>? raidKills = null)
     {
         if (modConfig.Debug)
         {
@@ -49,7 +49,7 @@ public class BattleService(
             
             SpreadNearby(currentLocation, locState);
 
-            CalculateBattle(currentLocation, locState);
+            CalculateBattle(currentLocation, locState, raidLocation == currentLocation ? raidKills : null);
 
             if (locState.Contestants.Count == 1)
             {
@@ -100,20 +100,37 @@ public class BattleService(
     //holder gets a strength buff
     //reduce all incoming damage once by the defensiveness
     //use percentage of location strength and faction strength to reduce values
-    private void CalculateBattle(string locationName, LocationState location)
+    private void CalculateBattle(string locationName, LocationState locationState, Dictionary<string, int>? kills = null)
     {
-        if (location.Contestants.Count < 2)
+        if (locationState.Contestants.Count < 2)
             return;
 
         Dictionary<string, double> damageDealt = [];
+
+        //raid kills
+        if (kills != null)
+        {
+            foreach ((string botName, int deaths) in kills)
+            {
+                string factionName = dataConfig.BotFaction.GetValueOrDefault(botName, "none");
+                
+                if (!locationState.Contestants.ContainsKey(factionName))
+                    continue;
+
+                double damage = deaths * modConfig.BattleConfig.RaidStrengthLoss;
+
+                damageDealt[factionName] += damage;
+            }
+        }
         
-        foreach ((string contestant, double strength) in location.Contestants)
+        //simulation damage
+        foreach ((string contestant, double strength) in locationState.Contestants)
         {
             Faction factionData = dataConfig.Factions[contestant];
 
             List<string> targets = [];
 
-            foreach (string other in location.Contestants.Keys)
+            foreach (string other in locationState.Contestants.Keys)
             {
                 if (contestant == other)
                     continue;
@@ -127,7 +144,7 @@ public class BattleService(
             }
 
             double updatedStrength = strength;
-            if (contestant == location.Holder)
+            if (contestant == locationState.Holder)
             {
                 double powerScalar = strength / factionData.Strength;
                 updatedStrength += factionData.Defensiveness * powerScalar;
@@ -147,31 +164,31 @@ public class BattleService(
 
         foreach ((string faction, double damageTaken) in damageDealt)
         {
-            if (!modConfig.BattleConfig.BaseTakingEnabled && faction == location.Holder && location.Base)
+            if (!modConfig.BattleConfig.BaseTakingEnabled && faction == locationState.Holder && locationState.Base)
                 continue;
             
             Faction factionData = dataConfig.Factions[faction];
-            double powerScaling = location.Contestants[faction] / factionData.Strength;
+            double powerScaling = locationState.Contestants[faction] / factionData.Strength;
 
             double defenseDecrease = factionData.Defensiveness * powerScaling;
             double finalDamage = Math.Clamp(damageTaken - defenseDecrease, 0.0, 1.0);
 
-            location.Contestants[faction] -= finalDamage;
+            locationState.Contestants[faction] -= finalDamage;
 
             if (modConfig.Debug)
             {
-                logger.Info($"[TT] Contestant {faction} at location: {location} has taken {finalDamage} and now has {location.Contestants[faction]} strength left.");
+                logger.Info($"[TT] Contestant {faction} at location: {locationState} has taken {finalDamage} and now has {locationState.Contestants[faction]} strength left.");
             }
             
-            if (!(location.Contestants[faction] < 0)) continue;
+            if (!(locationState.Contestants[faction] < 0)) continue;
             
             if (modConfig.Debug)
             {
-                logger.Info($"[TT] Contestant {faction} at location: {location} has been removed.");
+                logger.Info($"[TT] Contestant {faction} at location: {locationState} has been removed.");
             }
             
-            location.Contestants.Remove(faction);
-            location.Base = false;
+            locationState.Contestants.Remove(faction);
+            locationState.Base = false;
             
             foreach (string neighbor in dataConfig.LocationNeighbors[locationName]!)
             {
@@ -181,19 +198,19 @@ public class BattleService(
 
         //figure out holder swapping
         
-        if (location.Contestants.Count == 0)
+        if (locationState.Contestants.Count == 0)
         {
-            location.Holder = "none";
+            locationState.Holder = "none";
             return;
         }
         
-        if (location.Contestants.ContainsKey(location.Holder))
+        if (locationState.Contestants.ContainsKey(locationState.Holder))
             return;
 
         double highestStrength = 0.0;
         string strongestFaction = "none";
 
-        foreach ((string contestant, double strength) in location.Contestants)
+        foreach ((string contestant, double strength) in locationState.Contestants)
         {
             if (!(strength > highestStrength)) continue;
             
@@ -201,7 +218,7 @@ public class BattleService(
             strongestFaction = contestant;
         }
 
-        location.Holder = strongestFaction;
+        locationState.Holder = strongestFaction;
     }
 
     //null target gets all nearby not of the same faction

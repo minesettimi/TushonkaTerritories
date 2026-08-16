@@ -15,9 +15,7 @@ public class LocalGameCreatePatch : ModulePatch
     [PatchPrefix]
     public static void Prefix(TarkovApplication __instance)
     {
-        Profile currentProfile = __instance._raidSettings.Side == ESideType.Pmc 
-            ? __instance.Session.Profile : __instance.Session.ProfileOfPet; //wtf BSG
-        
-        Plugin.KillCounter.StartRaid(currentProfile.Id, __instance._raidSettings.LocationId);
+        Plugin.KillCounter.StartRaid(__instance._raidSettings.Side != ESideType.Pmc,
+            __instance._raidSettings.LocationId);
     }
 }

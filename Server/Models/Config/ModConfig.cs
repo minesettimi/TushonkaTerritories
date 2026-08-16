@@ -12,6 +12,7 @@ public record ModConfig
 
 public record FactionConfig
 {
+    [JsonPropertyName("killChangesRep")] public bool RepChange { get; set; } = true;
     [JsonPropertyName("killRepDecrease")] public double KillReputationDecrease { get; set; } = 0.01;
     [JsonPropertyName("killEnemyRep")] public double KillEnemyReputation { get; set; } = 0.005;
     [JsonPropertyName("overrideTraderRep")] public bool OverrideTraderRep { get; set; } = false;
@@ -24,6 +25,7 @@ public record BattleConfig
     [JsonPropertyName("strengthDecreaseOverride")] public double StrengthDecrease { get; set; } = -1f;
     [JsonPropertyName("simulateAfterRaid")] public bool RaidBattle { get; set; } = true;
     [JsonPropertyName("raidsChangeOutcome")] public bool RaidChangesBattle { get; set; } = true;
+    [JsonPropertyName("strengthLossPerDeath")] public double RaidStrengthLoss { get; set; } = 0.01;
     [JsonPropertyName("offlineSimulationTime")] public double SimulationInterval { get; set; } = -1f;
     [JsonPropertyName("actionsPerSimulation")] public int SimulationActions { get; set; } = 1;
     [JsonPropertyName("locationsPerSimulation")] public int SimulationLocations { get; set; } = 2;
