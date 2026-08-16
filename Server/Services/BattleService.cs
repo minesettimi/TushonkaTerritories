@@ -29,6 +29,9 @@ public class BattleService(
      */
     public void Simulate(string? raidLocation = null, Dictionary<string, int>? raidKills = null)
     {
+        if (!modConfig.BattleConfig.BattlesEnabled)
+            return;
+        
         if (modConfig.Debug)
         {
             logger.Info("[TT] Starting simulation.");

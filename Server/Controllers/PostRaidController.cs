@@ -19,7 +19,7 @@ public class PostRaidController(ProfileHelper profileHelper,
 {
     public void PostRaidSimulate(string location, Dictionary<string, int> kills)
     {
-        if (!modConfig.BattleConfig.RaidBattle)
+        if (!modConfig.BattleConfig.BattlesEnabled || !modConfig.BattleConfig.RaidBattle)
             return;
         
         if (!modConfig.BattleConfig.RaidChangesBattle)
@@ -30,6 +30,9 @@ public class PostRaidController(ProfileHelper profileHelper,
     
     public void UpdateRaidReputation(Dictionary<string, Dictionary<string, int>> kills, bool isScav)
     {
+        if (!modConfig.FactionConfig.RepChange)
+            return;
+        
         FactionConfig factionConfig = modConfig.FactionConfig;
 
         foreach ((string player, Dictionary<string, int> playerKills) in kills)
