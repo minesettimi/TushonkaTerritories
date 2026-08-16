@@ -4,9 +4,11 @@ using SPTarkov.Server.Core.Models.Eft.Common;
 using SPTarkov.Server.Core.Models.Eft.Common.Tables;
 using SPTarkov.Server.Core.Models.Spt.Config;
 using SPTarkov.Server.Core.Models.Spt.Tables;
+using SPTarkov.Server.Core.Utils;
 using SPTarkov.Server.Core.Utils.Cloners;
 using TerritoryServer.Models;
 using TerritoryServer.Servers;
+using TerritoryServer.Utils;
 
 namespace TerritoryServer.Services;
 
@@ -17,7 +19,9 @@ public class LocationService(DataConfig dataConfig,
     StateServer stateServer,
     BotConfig botConfig,
     LocationConfig locationConfig,
-    BotTable botTable,
+    MathUtil mathUtil,
+    TerritoryMath territoryMath,
+    RandomUtil randomUtil,
     ICloner cloner)
 {
     public static readonly List<string> MapList = 
@@ -114,18 +118,6 @@ public class LocationService(DataConfig dataConfig,
         foreach (string locationName in MapList)
         {
             LocationBase location = locationTable.GetLocation(locationName)!.Base;
-
-            for(int i = 0; i < location.BossLocationSpawn.Count; i++)
-            {
-                BossLocationSpawn bossSpawn = location.BossLocationSpawn[i];
-
-                bool isPmc = bossSpawn.BossName == "pmcBear" || bossSpawn.BossName == "pmcUSEC";
-                
-                if (modConfig.RaidConfig.OverridePmcs && isPmc || modConfig.RaidConfig.OverrideBosses && !isPmc)
-                {
-                    location.BossLocationSpawn.RemoveAt(i);
-                }
-            }
             
             location.Waves = [];
             location.NewSpawn = false;
@@ -148,43 +140,156 @@ public class LocationService(DataConfig dataConfig,
     //null updates all valid locations
     public void UpdateLocations(List<string>? maps = null)
     {
+        RaidConfig raidConfig = modConfig.RaidConfig;
         foreach (string locationName in maps ?? MapList)
         {
             LocationBase location = locationTable.GetLocation(locationName)!.Base;
-            
             LocationState locationState = stateServer.CurrentSave.Locations[locationName]!;
 
             //re-uses previous configuration if there's no faction, change if not desired
             if (locationState.Holder == "none")
                 continue;
             
-            Faction faction = dataConfig.Factions[locationState.Holder];
-            
-            if (modConfig.RaidConfig.FactionBosses)
+            List<BossLocationSpawn> newSpawns = cloner.Clone(_bossBackup[locationName])!;
+            if (raidConfig.OverridePmcs || raidConfig.OverrideBosses)
             {
-                location.BossLocationSpawn = cloner.Clone(_bossBackup[locationName])!;
-                    
-                foreach ((string bossName, BossLocationSpawn bossSpawn) in _mobileBossData)
+                for (int i = 0; i < newSpawns.Count; i++)
                 {
-                    if (!faction.BossNames.Contains(bossName))
-                        continue;
-                    
-                    location.BossLocationSpawn.Add(cloner.Clone(bossSpawn)!);
+                    BossLocationSpawn bossSpawn = newSpawns[i];
+
+                    bool isPmc = bossSpawn.BossName == "pmcBear" || bossSpawn.BossName == "pmcUSEC";
+                
+                    if (raidConfig.OverridePmcs && isPmc || raidConfig.OverrideBosses && !isPmc)
+                    {
+                        newSpawns.RemoveAt(i);
+                    }
                 }
             }
             
-            if (modConfig.RaidConfig.AttitudeEffect)
+            newSpawns.AddRange(BuildCustomSpawns(locationState, (double)location.EscapeTimeLimit!));
+
+            location.BossLocationSpawn = newSpawns;
+            
+            if (raidConfig.AttitudeEffect)
             {
                 location.BotLocationModifier.AdditionalHostilitySettings = cloner.Clone(_hostilityCache)!;
             }
 
-            if (modConfig.RaidConfig.OverrideWaves)
+            if (raidConfig.OverrideWaves)
+            {
                 location.Waves.Clear();
+            }
             else
                 location.Waves = cloner.Clone(_waveBackup[locationName])!;
         }
         
         GC.Collect(GC.MaxGeneration, GCCollectionMode.Aggressive, true, true);
+    }
+
+    //first, setup base spawns
+    //second, setup wave
+    private List<BossLocationSpawn> BuildCustomSpawns(LocationState locationState, double timeLimit)
+    {
+        List<BossLocationSpawn> newSpawns = [];
+        RaidConfig raidConfig = modConfig.RaidConfig;
+
+        double trueTimeLimit = (timeLimit * 60) - raidConfig.SpawnEnd;
+        foreach ((string factionName, double strength) in locationState.Contestants)
+        {
+            Faction currentFaction = dataConfig.Factions[factionName];
+            if (raidConfig.FactionBosses && strength >= raidConfig.MinBossStrength)
+            {
+                foreach (string bossName in currentFaction.BossNames)
+                {
+                    newSpawns.Add(cloner.Clone(_mobileBossData[bossName])!);
+                }
+            }
+            
+            int spawnDelay = (int)Math.Round(territoryMath.MapToRangeInverted(strength, 0, 1,
+                raidConfig.MinWaveDelay, raidConfig.MaxWaveDelay));
+
+            int waves = (int)Math.Floor(trueTimeLimit / randomUtil.GetInt(spawnDelay - raidConfig.DelayVariance,
+                spawnDelay + raidConfig.DelayVariance));
+            int baseBotCount = (int)Math.Round(mathUtil.MapToRange(strength, 0, 1,
+                raidConfig.MinWaveBotCount, raidConfig.MaxWaveBotCount));
+            
+            for (int i = 0; i <= waves; i++)
+            {
+                int remainingBots = baseBotCount;
+
+                if (i == 0)
+                {
+                    remainingBots = (int)Math.Round(remainingBots * raidConfig.InitialBotMult);
+                }
+                
+                int currentDelay = i * spawnDelay;
+
+                while (remainingBots > 0)
+                {
+                    int groupSize = (int)Math.Round(mathUtil.MapToRange(strength, 0, 1,
+                        raidConfig.MinStrengthUnits, raidConfig.MaxStrengthUnits));
+
+                    if (!raidConfig.RoundedBotCounts)
+                    {
+                        groupSize = Math.Min(groupSize, remainingBots);
+                    }
+
+                    remainingBots -= groupSize;
+
+                    //TODO: Add map triggers for primarily labs
+                    BossLocationSpawn newBotSpawn = new()
+                    {
+                        BossChance = 100,
+                        BossDifficulty = GetDifficultyFromStrength(strength),
+                        BossEscortDifficulty = GetDifficultyFromStrength(strength),
+                        BossName = randomUtil.GetRandomElement(currentFaction.BotNames),
+                        BossEscortType = randomUtil.GetRandomElement(currentFaction.BotNames),
+                        IsBossPlayer = false,
+                        Time = currentDelay,
+                        BossEscortAmount = groupSize == 1 ? "1" : GenerateEscortAmount(groupSize),
+                        ForceSpawn = false
+                    };
+                    
+                    newSpawns.Add(newBotSpawn);
+
+                    if (i > 0)
+                        currentDelay += randomUtil.RandInt(0, 10);
+                }
+            }
+        }
+
+        return newSpawns;
+    }
+
+    private string GetDifficultyFromStrength(double strength)
+    {
+        foreach (string difficulty in Difficulties)
+        {
+            if (modConfig.RaidConfig.DifficultyThresholds[difficulty] <= strength && 
+                !randomUtil.GetChance100(modConfig.RaidConfig.DifficultyChance))
+            {
+                return difficulty;
+            }
+        }
+            
+        return "normal";
+    }
+
+    private string GenerateEscortAmount(int groupSize)
+    {
+        string result = "";
+        for (int size = 1; size <= groupSize; size++)
+        {
+            for (int count = modConfig.RaidConfig.VariedGroupSize + groupSize - size; count > 0; count--)
+            {
+                if (result.Length > 0)
+                    result += ",";
+
+                result += count.ToString();
+            }
+        }
+
+        return result;
     }
     
     private void BuildHostilityCache()
