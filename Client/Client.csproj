@@ -10,16 +10,14 @@
         <Version>0.1.0</Version>
         <RootNamespace>TerritoryClient</RootNamespace>
 
-        <AssemblyName>TTerritories</AssemblyName>
+        <AssemblyName>TushonkaTerritories</AssemblyName>
         <OutputPath>bin\$(Configuration)\$(SolutionName)\$(AssemblyName)\</OutputPath>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     </PropertyGroup>
 
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-        <Exec Command="cp -a $(TargetPath) $(SolutionDir)../BepInEx/plugins/$(SolutionName)/" />
-        <Exec Command="cp -a $(TargetDir)/Bundles $(SolutionDir)../BepInEx/plugins/$(SolutionName)/" />
+        <Exec Command="cp -a $(TargetPath) $(SolutionDir)../../BepInEx/plugins/$(SolutionName)/" />
         <Exec Command="cp -a $(TargetPath) $(SolutionDir)release/BepInEx/plugins/$(SolutionName)/" />
-        <Exec Command="cp -a $(TargetDir)/Bundles $(SolutionDir)release/BepInEx/plugins/$(SolutionName)/" />
     </Target>
 
     <ItemGroup>

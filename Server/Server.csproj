@@ -10,7 +10,7 @@
 
         <Version>0.1.0</Version>
         <RootNamespace>TerritoryServer</RootNamespace>
-        <AssemblyName>TTerritories</AssemblyName>
+        <AssemblyName>TushonkaTerritories</AssemblyName>
 
         <!-- The two lines below will set the output path for the binaries -->
         <OutputPath>bin\$(Configuration)\$(SolutionName)\$(AssemblyName)\</OutputPath>
@@ -40,7 +40,7 @@
             <CompileFiles Include="$(TargetDir)*.deps.json;$(TargetDir)*.endpoints.json" />
         </ItemGroup>
         <Delete Files="@(CompileFiles)" />
-        <Exec Command="cp -a $(TargetDir) $(SolutionDir)../SPT_Runtime/user/mods/" />
+        <Exec Command="cp -a $(TargetDir) $(SolutionDir)../../SPT_Runtime/user/mods/" />
         <Exec Command="cp -a $(TargetDir) $(SolutionDir)release/SPT_Runtime/user/mods/" />
     </Target>
 
