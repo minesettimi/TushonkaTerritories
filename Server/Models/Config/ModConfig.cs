@@ -39,6 +39,7 @@ public record RaidConfig
 {
     [JsonPropertyName("overridePmcs")] public bool OverridePmcs { get; set; } = false;
     [JsonPropertyName("overrideBosses")] public bool OverrideBosses { get; set; } = false;
+    [JsonPropertyName("overrideTriggeredSpawns")] public bool OverrideTriggeredSpawns { get; set; } = false;
     [JsonPropertyName("removeDefaultScavs")] public bool OverrideWaves { get; set; } = true;
     [JsonPropertyName("addFactionBosses")] public bool FactionBosses { get; set; } = true;
     [JsonPropertyName("factionBossMinStrength")] public double MinBossStrength { get; set; } = 0.5;

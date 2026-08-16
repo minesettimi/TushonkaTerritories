@@ -162,7 +162,11 @@ public class LocationService(DataConfig dataConfig,
                 {
                     BossLocationSpawn bossSpawn = newSpawns[i];
 
-                    bool isPmc = bossSpawn.BossName == "pmcBear" || bossSpawn.BossName == "pmcUSEC";
+                    if (!raidConfig.OverrideTriggeredSpawns &&
+                        (bossSpawn.TriggerId?.Length > 1 || bossSpawn.TriggerName?.Length > 1))
+                        continue;
+                        
+                    bool isPmc = bossSpawn.BossName == "pmcBear" || bossSpawn.BossName == "pmcUsec";
                 
                     if (raidConfig.OverridePmcs && isPmc || raidConfig.OverrideBosses && !isPmc)
                     {

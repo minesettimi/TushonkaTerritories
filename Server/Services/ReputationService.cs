@@ -1,3 +1,4 @@
+using SPTarkov.Common.Models.Logging;
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.Constants;
 using SPTarkov.Server.Core.DI;
@@ -5,35 +6,37 @@ using SPTarkov.Server.Core.Helpers.Profile;
 using SPTarkov.Server.Core.Models.Common;
 using SPTarkov.Server.Core.Models.Eft.Common;
 using SPTarkov.Server.Core.Models.Eft.Profile;
-using SPTarkov.Server.Core.Servers;
 using TerritoryServer.Models;
 using TerritoryServer.Servers;
 
 namespace TerritoryServer.Loaders;
 
-[Injectable(TypePriority = OnLoadOrder.SaveCallbacks + 50)]
+[Injectable(TypePriority = OnLoadOrder.TraderCallbacks - 1)]
 public class ReputationService(StateServer stateServer, 
     DataConfig dataConfig,
-    ProfileHelper profileHelper) : IOnLoad
+    ProfileHelper profileHelper,
+    ISptLogger<ReputationService> logger)
 {
-    public Task OnLoadAsync(CancellationToken cancellationToken)
+    public void CheckRep()
     {
+        logger.Info("[TT] Checking profiles for missing reputation data.");
+        
         Dictionary<MongoId, SptProfile> profiles = profileHelper.GetProfiles();
 
-        foreach ((MongoId id, SptProfile profile) in profiles)
+        foreach (SptProfile profile in profiles.Values)
         {
             CheckProfileRep(profile.CharacterData?.PmcData);
             CheckProfileRep(profile.CharacterData?.ScavData, true);
         }
         
-        return Task.CompletedTask;
+        stateServer.SaveToDisk();
     }
 
     private void CheckProfileRep(PmcData? pmcData, bool scav = false)
     {
         if (pmcData == null || pmcData.Id == null)
             return;
-
+        
         MongoId safeId = (MongoId)pmcData.Id;
         
         Dictionary<MongoId, Dictionary<string, double>> playerReps = stateServer.CurrentSave.PlayerRep;

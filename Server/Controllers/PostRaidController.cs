@@ -20,7 +20,10 @@ public class PostRaidController(ProfileHelper profileHelper,
     public void PostRaidSimulate(string location, Dictionary<string, int> kills)
     {
         if (!modConfig.BattleConfig.BattlesEnabled || !modConfig.BattleConfig.RaidBattle)
+        {
+            stateServer.SaveToDisk();
             return;
+        }
         
         if (!modConfig.BattleConfig.RaidChangesBattle)
             battleService.Simulate();
