@@ -37,7 +37,7 @@ public class StateManager
     {
         try
         {
-            string? data = await RequestHandler.GetJsonAsync("/tt/state/state");
+            string? data = await RequestHandler.GetJsonAsync("/tt/state/server");
 
             if (data != null)
             {
