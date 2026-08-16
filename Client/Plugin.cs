@@ -11,6 +11,7 @@ namespace TerritoryClient
     {
         public static ManualLogSource PluginLogger;
         public static KillCounter KillCounter;
+        public static StateManager StateManager;
         
         private PatchManager _patchManager;
 
@@ -22,6 +23,7 @@ namespace TerritoryClient
             _patchManager.EnablePatches();
 
             KillCounter = new KillCounter();
+            StateManager = new StateManager();
         }
     }
 }
