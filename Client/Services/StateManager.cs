@@ -8,9 +8,10 @@ namespace TerritoryClient.Services;
 
 public class StateManager
 {
-    public ServerStateData State { get; private set; }
+    public ServerData ServerData { get; private set; }
+    public ServerState State { get; private set; }
 
-    public async Task<bool> RequestState()
+    public async Task<bool> RequestData()
     {
         try
         {
@@ -18,7 +19,29 @@ public class StateManager
 
             if (data != null)
             {
-                State = JsonConvert.DeserializeObject<ServerStateData>(data)!;
+                ServerData = JsonConvert.DeserializeObject<ServerData>(data)!;
+
+                return true;
+            }
+        }
+        catch (Exception e)
+        {
+            Plugin.PluginLogger.LogError($"Failed to get data from server with error: {e.Message}");
+            throw;
+        }
+
+        return false;
+    }
+    
+    public async Task<bool> RequestState()
+    {
+        try
+        {
+            string? data = await RequestHandler.GetJsonAsync("/tt/state/state");
+
+            if (data != null)
+            {
+                State = JsonConvert.DeserializeObject<ServerState>(data)!;
 
                 return true;
             }

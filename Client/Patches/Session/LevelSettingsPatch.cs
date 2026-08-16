@@ -16,6 +16,9 @@ public class LevelSettingsPatch : ModulePatch
     [PatchPrefix]
     public static async Task Prefix()
     {
+        //find one off patch to add to
+        await Plugin.StateManager.RequestData();
+        
         await Plugin.StateManager.RequestState();
     }
 }

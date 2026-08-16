@@ -4,13 +4,19 @@ using Newtonsoft.Json;
 
 namespace TerritoryClient.Models;
 
-public class ServerStateData
+public class ServerData
+{
+    [JsonProperty("factionColors")] public Dictionary<string, string> FactionColors { get; set; } = null!;
+    [JsonProperty("botFactionTable")] public Dictionary<string, string> BotFaction { get; set; } = [];
+    [JsonProperty("attitudeEffect")] public bool AttitudeEffect { get; set; }
+    [JsonProperty("allyRep")] public double AllyRep { get; set; }
+    [JsonProperty("neutralRep")] public double NeutralRep { get; set; }
+}
+
+public class ServerState
 {
     [JsonProperty("locations")] public LocationData<LocationState?> Locations { get; set; } = null!;
     [JsonProperty("playerRep")] public Dictionary<MongoID, Dictionary<string, double>> PlayerRep { get; set; } = null!;
-    [JsonProperty("factionColors")] public Dictionary<string, string> FactionColors { get; set; } = null!;
-    [JsonProperty("allyRep")] public double AllyRep { get; set; }
-    [JsonProperty("neutralRep")] public double NeutralRep { get; set; }
 }
 
 public record LocationState
