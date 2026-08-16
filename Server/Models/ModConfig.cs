@@ -12,8 +12,8 @@ public record ModConfig
 
 public record FactionConfig
 {
-    [JsonPropertyName("killRepDecrease")] public double KillReputationDecrease { get; set; } = 0.01f;
-    [JsonPropertyName("killEnemyRep")] public double KillEnemyReputation { get; set; } = 0.005f;
+    [JsonPropertyName("killRepDecrease")] public double KillReputationDecrease { get; set; } = 0.01;
+    [JsonPropertyName("killEnemyRep")] public double KillEnemyReputation { get; set; } = 0.005;
     [JsonPropertyName("overrideTraderRep")] public bool OverrideTraderRep { get; set; } = false;
 }
 
@@ -27,10 +27,10 @@ public record BattleConfig
     [JsonPropertyName("offlineSimulationTime")] public double SimulationInterval { get; set; } = -1f;
     [JsonPropertyName("actionsPerSimulation")] public int SimulationActions { get; set; } = 1;
     [JsonPropertyName("locationsPerSimulation")] public int SimulationLocations { get; set; } = 2;
-    [JsonPropertyName("attackNeutralChance")] public double AttackNeutralChance { get; } = 25.0;
-    [JsonPropertyName("damageMultiplier")] public double DamageMultiplier { get; } = 1.0;
-    [JsonPropertyName("damageMinDistribution")] public double DamageMinRng { get; } = -0.35;
-    [JsonPropertyName("damageMaxDistribution")] public double DamageMaxRng { get; } = 0.15;
+    [JsonPropertyName("attackNeutralChance")] public double AttackNeutralChance { get; set; } = 25.0;
+    [JsonPropertyName("damageMultiplier")] public double DamageMultiplier { get; set; } = 1.0;
+    [JsonPropertyName("damageMinDistribution")] public double DamageMinRng { get; set; } = -0.35;
+    [JsonPropertyName("damageMaxDistribution")] public double DamageMaxRng { get; set; } = 0.15;
 }
 
 public record RaidConfig

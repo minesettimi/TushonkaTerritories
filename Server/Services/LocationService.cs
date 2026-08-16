@@ -1,7 +1,6 @@
+using SPTarkov.Common.Models.Logging;
 using SPTarkov.DI.Annotations;
-using SPTarkov.Server.Core.Models.Eft.Bot.GlobalSettings;
 using SPTarkov.Server.Core.Models.Eft.Common;
-using SPTarkov.Server.Core.Models.Eft.Common.Tables;
 using SPTarkov.Server.Core.Models.Spt.Config;
 using SPTarkov.Server.Core.Models.Spt.Tables;
 using SPTarkov.Server.Core.Utils;
@@ -22,6 +21,7 @@ public class LocationService(DataConfig dataConfig,
     MathUtil mathUtil,
     TerritoryMath territoryMath,
     RandomUtil randomUtil,
+    ISptLogger<LocationService> logger,
     ICloner cloner)
 {
     public static readonly List<string> MapList = 
@@ -31,7 +31,7 @@ public class LocationService(DataConfig dataConfig,
         "interchange",
         "laboratory",
         "lighthouse",
-        "reservbase",
+        "rezervbase",
         "sandbox",
         "shoreline",
         "tarkovstreets",
@@ -69,6 +69,8 @@ public class LocationService(DataConfig dataConfig,
         AdjustLocationSettings();
         BuildHostilityCache();
         UpdateLocations();
+        
+        logger.Info("[TT] Finished initializing location data.");
     }
     
     private void BackupLocationData()
@@ -80,13 +82,16 @@ public class LocationService(DataConfig dataConfig,
             bossesToRemove.AddRange(faction.BossNames);
         }
 
-        foreach ((string locationName, Location locationInfo) in locationTable.GetDictionary())
+        foreach (string locationName in MapList)
         {
+            Location locationInfo = locationTable.GetLocation(locationName)!;
+            
             _bossBackup.Add(locationName, []);
             foreach (BossLocationSpawn bossSpawn in locationInfo.Base.BossLocationSpawn)
             {
                 BossLocationSpawn clonedSpawn = cloner.Clone(bossSpawn)!;
-                if (bossesToRemove.Contains(bossSpawn.BossName!))
+                if (!_mobileBossData.ContainsKey(clonedSpawn.BossName!) 
+                    && bossesToRemove.Contains(bossSpawn.BossName!))
                 {
                     clonedSpawn.TriggerId = "";
                     clonedSpawn.TriggerName = "";
@@ -365,7 +370,7 @@ public class LocationService(DataConfig dataConfig,
         if (factionName == otherFaction)
             return BotRelationship.Friends;
 
-        int attitude = factionData.Attitudes[otherFaction];
+        int attitude = factionData.Attitudes.GetValueOrDefault(otherFaction, -1);
 
         return attitude switch
         {

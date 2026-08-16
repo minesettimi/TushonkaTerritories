@@ -17,15 +17,20 @@ public class InjectConstruct : IOnDIConstruct
 
         if (File.Exists(Path.Join(DataPath, "data_override.json")))
         {
-            dataConfig = await LoadConfig<DataConfig>(Path.Join(ConfigPath, "data_override.json"), cancellationToken) ??
+            dataConfig = await LoadConfig<DataConfig>(Path.Join(DataPath, "data_override.json"), cancellationToken) ??
                 throw new Exception("[TT] Failed to load override mod data.");
         }
         else
         {
-            dataConfig = await LoadConfig<DataConfig>(Path.Join(ConfigPath, "data.json"), cancellationToken) ??
+            dataConfig = await LoadConfig<DataConfig>(Path.Join(DataPath, "data.json"), cancellationToken) ??
                          throw new Exception("[TT] Failed to load mod data.");
         }
-
+        
+        if (!Directory.Exists(ConfigPath))
+        {
+            Directory.CreateDirectory(ConfigPath);
+        }
+        
         string configPath = Path.Join(ConfigPath, "config.jsonc");
         ModConfig? modConfig =
             await LoadConfig<ModConfig>(configPath, cancellationToken);

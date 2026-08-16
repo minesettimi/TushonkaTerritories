@@ -56,7 +56,7 @@
       "mobileBosses": [],
       "strength": 0.4,
       "defensiveness": 0.8,
-      "distanceReduction": 0.8,
+      "distanceReduction": 0.1,
       "persistant": false,
       "defaultRepUsec": 0.5,
       "defaultRepBear": 0.5,
@@ -123,7 +123,7 @@
     "interchange": "scav",
     "laboratory": "raider",
     "lighthouse": "rogue",
-    "reservbase": "raider",
+    "rezervbase": "raider",
     "sandbox": "scav",
     "shoreline": "scav",
     "tarkovstreets": "scav",
@@ -185,7 +185,7 @@
     "bigmap":
     [
       "factory4_day",
-      "reservbase",
+      "rezervbase",
       "interchange"
     ],
     "factory4_day":
@@ -208,9 +208,9 @@
     [
       "woods",
       "shoreline",
-      "reservbase"
+      "rezervbase"
     ],
-    "reservbase":
+    "rezervbase":
     [
       "lighthouse",
       "bigmap",
@@ -233,7 +233,7 @@
     "woods":
     [
       "lighthouse",
-      "reservbase",
+      "rezervbase",
       "factory4_day"
     ],
     "labyrinth": [],

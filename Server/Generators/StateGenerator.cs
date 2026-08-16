@@ -1,3 +1,4 @@
+using SPTarkov.Common.Models.Logging;
 using SPTarkov.DI.Annotations;
 using TerritoryServer.Helpers;
 using TerritoryServer.Models;
@@ -8,7 +9,8 @@ namespace TerritoryServer.Generators;
 [Injectable(InjectionType.Singleton)]
 public class StateGenerator(DataConfig dataConfig,
     LocationMapHelper mapHelper,
-    ModConfig modConfig)
+    ModConfig modConfig,
+    ISptLogger<StateGenerator> logger)
 {
     public SaveState GenerateState()
     {
@@ -44,13 +46,20 @@ public class StateGenerator(DataConfig dataConfig,
             string factionName = dataConfig.LocationTerritories[location];
             Faction faction = dataConfig.Factions[factionName];
             
-            int distance = mapHelper.GetDistance(location, baseLocations[factionName], false);
+            int distance = mapHelper.GetDistance(location, baseLocations.GetValueOrDefault(factionName, location), false);
 
-            double newStrength = faction.Strength - faction.DistanceReduction * distance;
+            if (distance == -1)
+                distance = 1;
+
+            double distanceReduction = modConfig.BattleConfig.StrengthDecrease < 0
+                ? faction.DistanceReduction
+                : modConfig.BattleConfig.StrengthDecrease;
+            
+            double newStrength = faction.Strength - distanceReduction * distance;
 
             //data config takes priority over simulationism
-            if (newStrength < faction.DistanceReduction)
-                newStrength = faction.DistanceReduction;
+            if (newStrength < distanceReduction)
+                newStrength = distanceReduction;
 
             LocationState locationState = new()
             {
@@ -62,9 +71,11 @@ public class StateGenerator(DataConfig dataConfig,
                 }
             };
 
-            newState.Locations[factionName] = locationState;
+            newState.Locations[location] = locationState;
         }
 
+        logger.Info("[TT] Completed save generation.");
+        
         return newState;
     }
 }

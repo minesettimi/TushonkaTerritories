@@ -3,31 +3,31 @@ using SPTarkov.Server.Core.Models.Common;
 
 namespace TerritoryServer.Models;
 
-public record DataConfig
+public class DataConfig
 {
-    [JsonPropertyName("factions")] public Dictionary<string, Faction> Factions { get; } = [];
-    [JsonPropertyName("defaultTerritory")] public LocationData<string> LocationTerritories { get; } = new();
-    [JsonPropertyName("botFactionTable")] public Dictionary<string, string> BotFaction { get; } = [];
-    [JsonPropertyName("locationNeighbors")] public LocationData<List<string>> LocationNeighbors { get; } = new();
+    [JsonPropertyName("factions")] public Dictionary<string, Faction> Factions { get; set; } = [];
+    [JsonPropertyName("defaultTerritory")] public LocationData<string> LocationTerritories { get; set; } = new();
+    [JsonPropertyName("botFactionTable")] public Dictionary<string, string> BotFaction { get; set; } = [];
+    [JsonPropertyName("locationNeighbors")] public LocationData<List<string>> LocationNeighbors { get; set; } = new();
 }
 
-public record Faction
+public class Faction
 {
-    [JsonPropertyName("id")] public string Id { get; } = "invalid";
-    [JsonPropertyName("color")] public string Color { get; } = "#000000";
-    [JsonPropertyName("base")] public string? Base { get; } = null;
-    [JsonPropertyName("botNames")] public List<string> BotNames { get; } = [];
-    [JsonPropertyName("mobileBosses")] public List<string> BossNames { get; } = [];
-    [JsonPropertyName("strength")] public double Strength { get; }
-    [JsonPropertyName("defensiveness")] public double Defensiveness { get; }
-    [JsonPropertyName("distanceReduction")] public double DistanceReduction { get; }
-    [JsonPropertyName("persistant")] public bool Persistant { get; }
-    [JsonPropertyName("defaultRepUsec")] public double DefaultRepUsec { get; }
-    [JsonPropertyName("defaultRepBear")] public double DefaultRepBear { get; }
-    [JsonPropertyName("defaultRepScav")] public double DefaultRepScav { get; }
-    [JsonPropertyName("gainRep")] public bool RepEnabled { get; }
-    [JsonPropertyName("associatedTrader")] public MongoId? Trader { get; }
-    [JsonPropertyName("factionAttitude")] public Dictionary<string, int> Attitudes { get; } = [];
+    [JsonPropertyName("id")] public string Id { get; set; } = "invalid";
+    [JsonPropertyName("color")] public string Color { get; set; } = "#000000";
+    [JsonPropertyName("base")] public string? Base { get; set; } = null;
+    [JsonPropertyName("botNames")] public List<string> BotNames { get; set; } = [];
+    [JsonPropertyName("mobileBosses")] public List<string> BossNames { get; set; } = [];
+    [JsonPropertyName("strength")] public double Strength { get; set; }
+    [JsonPropertyName("defensiveness")] public double Defensiveness { get; set; }
+    [JsonPropertyName("distanceReduction")] public double DistanceReduction { get; set; }
+    [JsonPropertyName("persistant")] public bool Persistant { get; set; }
+    [JsonPropertyName("defaultRepUsec")] public double DefaultRepUsec { get; set; }
+    [JsonPropertyName("defaultRepBear")] public double DefaultRepBear { get; set; }
+    [JsonPropertyName("defaultRepScav")] public double DefaultRepScav { get; set; }
+    [JsonPropertyName("gainRep")] public bool RepEnabled { get; set; }
+    [JsonPropertyName("associatedTrader")] public MongoId? Trader { get; set; }
+    [JsonPropertyName("factionAttitude")] public Dictionary<string, int> Attitudes { get; set; } = [];
 }
 
 //Credit to acidphantasm for the base of this better strategy of mapping locations
@@ -58,7 +58,7 @@ public class LocationData<T>
             "interchange" => Interchange,
             "laboratory" => Laboratory,
             "lighthouse" => Lighthouse,
-            "reservbase" => Reserve,
+            "rezervbase" => Reserve,
             "sandbox" => GroundZero,
             "sandbox_high" => GroundZero,
             "shoreline" => Shoreline,
@@ -78,12 +78,13 @@ public class LocationData<T>
                 case "factory4_night": Factory = value; break;
                 case "interchange": Interchange = value; break;
                 case "lighthouse": Lighthouse = value; break;
-                case "reservbase": Reserve = value; break;
+                case "rezervbase": Reserve = value; break;
                 case "sandbox":
                 case "sandbox_high": GroundZero = value; break;
                 case "shoreline": Shoreline = value; break;
                 case "tarkovstreets": Streets = value; break;
                 case "woods": Woods = value; break;
+                case "laboratory": Laboratory = value; break;
                 case "labyrinth": Labyrinth = value; break;
                 case "suburbs": Icebreaker = value; break;
                 case "terminal": Terminal = value; break;
