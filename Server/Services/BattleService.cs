@@ -14,6 +14,7 @@ public class BattleService(
     StateServer stateServer,
     MathUtil mathUtil,
     RandomUtil randomUtil,
+    LocationService locationService,
     ISptLogger<BattleService> logger)
 {
     private int _currentLocId;
@@ -60,6 +61,7 @@ public class BattleService(
             }
         }
         
+        locationService.UpdateLocations();
         stateServer.SaveToDisk();
     }
 

@@ -30,7 +30,7 @@
       "color": "#244023",
       "base": "interchange",
       "botNames": ["assault"],
-      "mobileBosses": ["bossKolontay", "followerKolontay"],
+      "mobileBosses": ["bossTagilla", "bossKilla"],
       "strength": 0.2,
       "defensiveness": 0.4,
       "distanceReduction": 0.0,

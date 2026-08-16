@@ -119,7 +119,7 @@ public class LocationService(DataConfig dataConfig,
         locationConfig.EnableBotTypeLimits = false;
         locationConfig.AddOpenZonesToAllMaps = false;
         locationConfig.RogueLighthouseSpawnTimeSettings.Enabled = false;
-        
+
         foreach (string locationName in MapList)
         {
             LocationBase location = locationTable.GetLocation(locationName)!.Base;
@@ -166,7 +166,7 @@ public class LocationService(DataConfig dataConfig,
                         (bossSpawn.TriggerId?.Length > 1 || bossSpawn.TriggerName?.Length > 1))
                         continue;
                         
-                    bool isPmc = bossSpawn.BossName == "pmcBear" || bossSpawn.BossName == "pmcUsec";
+                    bool isPmc = bossSpawn.BossName == "pmcBEAR" || bossSpawn.BossName == "pmcUSEC";
                 
                     if (raidConfig.OverridePmcs && isPmc || raidConfig.OverrideBosses && !isPmc)
                     {
@@ -231,7 +231,7 @@ public class LocationService(DataConfig dataConfig,
                     remainingBots = (int)Math.Round(remainingBots * raidConfig.InitialBotMult);
                 }
                 
-                int currentDelay = i * spawnDelay;
+                int currentDelay = i * spawnDelay + 1;
 
                 while (remainingBots > 0)
                 {

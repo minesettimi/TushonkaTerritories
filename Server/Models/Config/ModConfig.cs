@@ -51,14 +51,14 @@ public record RaidConfig
     [JsonPropertyName("minStrengthWaveDelay")] public int MinWaveDelay { get; set; } = 200;
     [JsonPropertyName("maxStrengthWaveDelay")] public int MaxWaveDelay { get; set; } = 400;
     [JsonPropertyName("delayVariance")] public int DelayVariance { get; set; } = 5;
-    [JsonPropertyName("minStrengthWaveSize")] public int MinWaveBotCount { get; set; } = 5;
+    [JsonPropertyName("minStrengthWaveSize")] public int MinWaveBotCount { get; set; } = 6;
     [JsonPropertyName("maxStrengthWaveSize")] public int MaxWaveBotCount { get; set; } = 16;
     [JsonPropertyName("roundedBotCounts")] public bool RoundedBotCounts { get; set; } = true;
     [JsonPropertyName("minStrengthGroupSize")] public int MinStrengthUnits { get; set; } = 1;
-    [JsonPropertyName("maxStrengthGroupSize")] public int MaxStrengthUnits { get; set; } = 4;
+    [JsonPropertyName("maxStrengthGroupSize")] public int MaxStrengthUnits { get; set; } = 3;
     [JsonPropertyName("groupSizeMinCount")] public int VariedGroupSize { get; set; } = 3;
     [JsonPropertyName("spawnEnd")] public int SpawnEnd { get; set; } = 300;
-    [JsonPropertyName("initialBotMultiplier")] public double InitialBotMult { get; set; } = 2;
+    [JsonPropertyName("initialBotMultiplier")] public double InitialBotMult { get; set; } = 3;
 
     [JsonPropertyName("difficultyThresholds")]
     public BotDifficulty DifficultyThresholds { get; set; } = new()
