@@ -5,6 +5,7 @@ namespace TerritoryServer.Models;
 
 public record SaveState
 {
+    [JsonPropertyName("lastSimulatedLoc")] public int LastLoc { get; set; } = 0;
     [JsonPropertyName("locations")] public LocationData<LocationState?> Locations { get; set; } = new();
     [JsonPropertyName("playerRep")] public Dictionary<MongoId, Dictionary<string, double>> PlayerRep { get; set; } = [];
 }

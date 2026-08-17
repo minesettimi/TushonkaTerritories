@@ -168,11 +168,6 @@ public class LocationService(DataConfig dataConfig,
                 }
             }
             
-            if (modConfig.Debug)
-            {
-                logger.Info($"[TT] Creating waves on location: {locationName}.");
-            }
-            
             newSpawns.AddRange(BuildCustomSpawns(locationState, location.BotMax, (double)location.EscapeTimeLimit!));
             
             location.BossLocationSpawn = randomUtil.Shuffle(newSpawns);
@@ -212,7 +207,10 @@ public class LocationService(DataConfig dataConfig,
             {
                 foreach (string bossName in currentFaction.BossNames)
                 {
-                    newSpawns.Add(cloner.Clone(_mobileBossData[bossName])!);
+                    BossLocationSpawn clonedSpawn = cloner.Clone(_mobileBossData[bossName])!;
+                    clonedSpawn.BossChance = 25; //TODO: change with config
+                    
+                    newSpawns.Add(clonedSpawn);
                 }
             }
             
@@ -223,11 +221,6 @@ public class LocationService(DataConfig dataConfig,
                 spawnDelay + raidConfig.DelayVariance));
             int baseBotCount = (int)Math.Round(mathUtil.MapToRange(strength, 0, 1,
                 raidConfig.MinWaveBotCount, raidConfig.MaxWaveBotCount));
-
-            if (modConfig.Debug)
-            {
-                logger.Info($"[TT] Creating waves for faction {factionName}.");
-            }
             
             for (int i = 0; i <= waves; i++)
             {
@@ -271,7 +264,7 @@ public class LocationService(DataConfig dataConfig,
                         IsBossPlayer = false,
                         Time = currentDelay,
                         BossEscortAmount = groupSize == 1 ? "0" : GenerateEscortAmount(groupSize - 1),
-                        IgnoreMaxBots = true,
+                        IgnoreMaxBots = false,
                         ForceSpawn = raidConfig.EnforceBotSpawns,
                         IsRandomTimeSpawn = false,
                         SpawnMode = ["pve", "regular"],
