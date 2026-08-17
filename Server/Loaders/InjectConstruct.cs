@@ -1,6 +1,8 @@
+using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using SPTarkov.Server.Core.DI;
-using SPTarkov.Server.Core.Utils;
+using SPTarkov.Server.Core.Utils.Json.Converters;
 using TerritoryServer.Models;
 using TerritoryServer.Servers;
 
@@ -11,8 +13,19 @@ public class InjectConstruct : IOnDIConstruct
     private static readonly string ConfigPath = Path.Join(StateServer.ModPath, "Config");
     private static readonly string DataPath = Path.Join(StateServer.ModPath, "Data");
 
+    private static readonly JsonSerializerOptions _serializerOptions = new()
+    {
+        ReadCommentHandling = JsonCommentHandling.Skip,
+        WriteIndented = true,
+        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+        Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+        NewLine = "\n",
+        Converters = { new StringToMongoIdConverter() }
+    };
+
     public static async Task OnDIConstructAsync(IServiceCollection serviceCollection, CancellationToken cancellationToken)
     {
+        
         DataConfig dataConfig;
 
         if (File.Exists(Path.Join(DataPath, "data_override.json")))
@@ -39,7 +52,7 @@ public class InjectConstruct : IOnDIConstruct
         {
             modConfig = new ModConfig();
             await File.WriteAllTextAsync(configPath,
-                JsonSerializer.Serialize(modConfig, JsonUtil.JsonSerializerOptionsIndented), cancellationToken);
+                JsonSerializer.Serialize(modConfig, _serializerOptions), cancellationToken);
         }
         
         serviceCollection.AddSingleton(dataConfig);
@@ -47,7 +60,7 @@ public class InjectConstruct : IOnDIConstruct
     }
 
     //from jsonutil but it can be used in a static context
-    public static async Task<T?> LoadConfig<T>(string filePath, CancellationToken cancellationToken)
+    private static async Task<T?> LoadConfig<T>(string filePath, CancellationToken cancellationToken)
     {
         if (!File.Exists(filePath))
         {
@@ -56,6 +69,6 @@ public class InjectConstruct : IOnDIConstruct
         
         await using FileStream fs = new(filePath, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: 4096, useAsync: true);
 
-        return await JsonSerializer.DeserializeAsync<T>(fs, JsonUtil.JsonSerializerOptionsIndented, cancellationToken);
+        return await JsonSerializer.DeserializeAsync<T>(fs, _serializerOptions, cancellationToken);
     }
 }

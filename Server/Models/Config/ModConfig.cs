@@ -4,7 +4,7 @@ namespace TerritoryServer.Models;
 
 public record ModConfig
 {
-    [JsonPropertyName("debug")] public bool Debug { get; } = false;
+    [JsonPropertyName("debug")] public bool Debug { get; set; } = false;
     [JsonPropertyName("factionConfig")] public FactionConfig FactionConfig { get; set; } = new();
     [JsonPropertyName("battleConfig")] public BattleConfig BattleConfig { get; set; } = new();
     [JsonPropertyName("raidConfig")] public RaidConfig RaidConfig { get; set; } = new();
@@ -48,24 +48,26 @@ public record RaidConfig
     [JsonPropertyName("attitudeChangesAllies")] public bool AttitudeEffect { get; set; } = true;
     [JsonPropertyName("neutralityMode")] public NeutralMode NeutralityMode { get; set; } = NeutralMode.Warn;
     [JsonPropertyName("enemyChance")] public int EnemyChance { get; set; } = 50;
-    [JsonPropertyName("minStrengthWaveDelay")] public int MinWaveDelay { get; set; } = 200;
-    [JsonPropertyName("maxStrengthWaveDelay")] public int MaxWaveDelay { get; set; } = 400;
+    [JsonPropertyName("minStrengthWaveDelay")] public int MinWaveDelay { get; set; } = 300;
+    [JsonPropertyName("maxStrengthWaveDelay")] public int MaxWaveDelay { get; set; } = 500;
     [JsonPropertyName("delayVariance")] public int DelayVariance { get; set; } = 5;
-    [JsonPropertyName("minStrengthWaveSize")] public int MinWaveBotCount { get; set; } = 6;
-    [JsonPropertyName("maxStrengthWaveSize")] public int MaxWaveBotCount { get; set; } = 16;
+    [JsonPropertyName("minStrengthWaveSize")] public int MinWaveBotCount { get; set; } = 5;
+    [JsonPropertyName("maxStrengthWaveSize")] public int MaxWaveBotCount { get; set; } = 12;
     [JsonPropertyName("roundedBotCounts")] public bool RoundedBotCounts { get; set; } = true;
-    [JsonPropertyName("minStrengthGroupSize")] public int MinStrengthUnits { get; set; } = 1;
-    [JsonPropertyName("maxStrengthGroupSize")] public int MaxStrengthUnits { get; set; } = 3;
+    [JsonPropertyName("minStrengthGroupSize")] public int MinStrengthUnits { get; set; } = 2;
+    [JsonPropertyName("maxStrengthGroupSize")] public int MaxStrengthUnits { get; set; } = 4;
     [JsonPropertyName("groupSizeMinCount")] public int VariedGroupSize { get; set; } = 3;
+    [JsonPropertyName("groupChance")] public int GroupChance { get; set; } = 50;
     [JsonPropertyName("spawnEnd")] public int SpawnEnd { get; set; } = 300;
-    [JsonPropertyName("initialBotMultiplier")] public double InitialBotMult { get; set; } = 3;
-
+    [JsonPropertyName("initialBotMultiplier")] public double InitialBotMult { get; set; } = 1.5;
+    [JsonPropertyName("enforceBotSpawns")] public bool EnforceBotSpawns { get; set; } = false;
+    
     [JsonPropertyName("difficultyThresholds")]
     public BotDifficulty DifficultyThresholds { get; set; } = new()
     {
-        Impossible = 0.9,
-        Hard = 0.7,
-        Normal = 0.3
+        Impossible = 0.7,
+        Hard = 0.4,
+        Normal = 0.1
     };
     [JsonPropertyName("difficultyDecreaseChance")] public double DifficultyChance { get; set; } = 25.0f;
 }

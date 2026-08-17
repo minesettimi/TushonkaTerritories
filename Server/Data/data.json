@@ -18,7 +18,7 @@
       "associatedTrader": null,
       "factionAttitude":
       {
-        "scav": 0,
+        "scav": -1,
         "rogue": -1,
         "raider": -1,
         "cultist": -1
@@ -42,6 +42,7 @@
       "associatedTrader": "579dc571d53a0658a154fbec",
       "factionAttitude":
       {
+        "none": -1,
         "rogue": -1,
         "raider": -1,
         "cultist": 0
@@ -53,7 +54,7 @@
       "color": "#FA8014",
       "base": "laboratory",
       "botNames": ["pmcBot"],
-      "mobileBosses": [],
+      "mobileBosses": ["bossKolontay"],
       "strength": 0.4,
       "defensiveness": 0.8,
       "distanceReduction": 0.1,
@@ -65,6 +66,7 @@
       "associatedTrader": null,
       "factionAttitude":
       {
+        "none": -1,
         "rogue": -1,
         "scav": -1,
         "cultist": -1
@@ -88,6 +90,7 @@
       "associatedTrader": null,
       "factionAttitude":
       {
+        "none": -1,
         "scav": -1,
         "raider": -1,
         "cultist": -1
@@ -110,6 +113,7 @@
       "associatedTrader": null,
       "factionAttitude":
       {
+        "none": -1,
         "scav": 0,
         "rogue": -1,
         "raider": -1

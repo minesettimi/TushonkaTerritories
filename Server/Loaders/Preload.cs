@@ -9,6 +9,8 @@ namespace TerritoryServer.Loaders;
 [Injectable(TypePriority = OnLoadOrder.Preload + 40)]
 public class Preload(StateServer stateServer,
     StateGenerator stateGenerator,
+    LocationConfig locationConfig,
+    PmcConfig pmcConfig,
     BotConfig botConfig) : IOnLoad
 {
     public async Task OnLoadAsync(CancellationToken cancellationToken)
@@ -21,6 +23,16 @@ public class Preload(StateServer stateServer,
             stateServer.SaveToDisk();
         }
         
+        ChangeVanillaSettings();
+    }
+
+    private void ChangeVanillaSettings()
+    {
+        locationConfig.AddCustomBotWavesToMaps = false;
+        locationConfig.EnableBotTypeLimits = false;
+        locationConfig.AddOpenZonesToAllMaps = false;
+        locationConfig.RogueLighthouseSpawnTimeSettings.Enabled = false;
         botConfig.WeeklyBoss.Enabled = false;
+        pmcConfig.CustomPmcWaves.Clear();
     }
 }

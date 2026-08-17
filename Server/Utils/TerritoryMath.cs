@@ -10,9 +10,4 @@ public class TerritoryMath(MathUtil mathUtil)
     {
         return ((x - min) % (max - min) + (max - min)) % (max - min) + min;
     }
-
-    public double MapToRangeInverted(double x, double minIn, double maxIn, double minOut, double maxOut)
-    {
-        return maxOut - mathUtil.MapToRange(x, minIn, maxIn, minOut, maxOut);
-    }
 }

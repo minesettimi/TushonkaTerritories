@@ -17,9 +17,7 @@ public class LocationService(DataConfig dataConfig,
     ModConfig modConfig,
     StateServer stateServer,
     BotConfig botConfig,
-    LocationConfig locationConfig,
     MathUtil mathUtil,
-    TerritoryMath territoryMath,
     RandomUtil randomUtil,
     ISptLogger<LocationService> logger,
     ICloner cloner)
@@ -28,11 +26,13 @@ public class LocationService(DataConfig dataConfig,
     [
         "bigmap",
         "factory4_day",
+        "factory4_night",
         "interchange",
         "laboratory",
         "lighthouse",
         "rezervbase",
         "sandbox",
+        "sandbox_high",
         "shoreline",
         "tarkovstreets",
         "woods",
@@ -115,11 +115,6 @@ public class LocationService(DataConfig dataConfig,
     //credit to acidphantasm for originally finding the data that needed to be changed
     private void AdjustLocationSettings()
     {
-        locationConfig.AddCustomBotWavesToMaps = false;
-        locationConfig.EnableBotTypeLimits = false;
-        locationConfig.AddOpenZonesToAllMaps = false;
-        locationConfig.RogueLighthouseSpawnTimeSettings.Enabled = false;
-
         foreach (string locationName in MapList)
         {
             LocationBase location = locationTable.GetLocation(locationName)!.Base;
@@ -156,28 +151,31 @@ public class LocationService(DataConfig dataConfig,
                 continue;
             
             List<BossLocationSpawn> newSpawns = cloner.Clone(_bossBackup[locationName])!;
-            if (raidConfig.OverridePmcs || raidConfig.OverrideBosses)
+            for (int i = 0; i < newSpawns.Count; i++)
             {
-                for (int i = 0; i < newSpawns.Count; i++)
-                {
-                    BossLocationSpawn bossSpawn = newSpawns[i];
+                BossLocationSpawn bossSpawn = newSpawns[i];
 
-                    if (!raidConfig.OverrideTriggeredSpawns &&
-                        (bossSpawn.TriggerId?.Length > 1 || bossSpawn.TriggerName?.Length > 1))
-                        continue;
+                if (!raidConfig.OverrideTriggeredSpawns &&
+                    (bossSpawn.TriggerId?.Length > 2 || bossSpawn.TriggerName?.Length > 2))
+                    continue;
                         
-                    bool isPmc = bossSpawn.BossName == "pmcBEAR" || bossSpawn.BossName == "pmcUSEC";
+                bool isPmc = bossSpawn.BossName == "pmcBEAR" || bossSpawn.BossName == "pmcUSEC";
                 
-                    if (raidConfig.OverridePmcs && isPmc || raidConfig.OverrideBosses && !isPmc)
-                    {
-                        newSpawns.RemoveAt(i);
-                    }
+                if (raidConfig.OverridePmcs && isPmc || raidConfig.OverrideBosses && !isPmc)
+                {
+                    newSpawns.RemoveAt(i);
+                    i--;
                 }
             }
             
-            newSpawns.AddRange(BuildCustomSpawns(locationState, (double)location.EscapeTimeLimit!));
-
-            location.BossLocationSpawn = newSpawns;
+            if (modConfig.Debug)
+            {
+                logger.Info($"[TT] Creating waves on location: {locationName}.");
+            }
+            
+            newSpawns.AddRange(BuildCustomSpawns(locationState, location.BotMax, (double)location.EscapeTimeLimit!));
+            
+            location.BossLocationSpawn = randomUtil.Shuffle(newSpawns);
             
             if (raidConfig.AttitudeEffect)
             {
@@ -197,12 +195,16 @@ public class LocationService(DataConfig dataConfig,
 
     //first, setup base spawns
     //second, setup wave
-    private List<BossLocationSpawn> BuildCustomSpawns(LocationState locationState, double timeLimit)
+    private List<BossLocationSpawn> BuildCustomSpawns(LocationState locationState, int maxBots, double timeLimit)
     {
         List<BossLocationSpawn> newSpawns = [];
         RaidConfig raidConfig = modConfig.RaidConfig;
 
         double trueTimeLimit = (timeLimit * 60) - raidConfig.SpawnEnd;
+
+        //make equal space per faction
+        int maxBotsPerWave = maxBots / locationState.Contestants.Count;
+        
         foreach ((string factionName, double strength) in locationState.Contestants)
         {
             Faction currentFaction = dataConfig.Factions[factionName];
@@ -214,13 +216,18 @@ public class LocationService(DataConfig dataConfig,
                 }
             }
             
-            int spawnDelay = (int)Math.Round(territoryMath.MapToRangeInverted(strength, 0, 1,
+            int spawnDelay = (int)Math.Round(mathUtil.MapToRange(1 - strength, 0, 1,
                 raidConfig.MinWaveDelay, raidConfig.MaxWaveDelay));
 
             int waves = (int)Math.Floor(trueTimeLimit / randomUtil.GetInt(spawnDelay - raidConfig.DelayVariance,
                 spawnDelay + raidConfig.DelayVariance));
             int baseBotCount = (int)Math.Round(mathUtil.MapToRange(strength, 0, 1,
                 raidConfig.MinWaveBotCount, raidConfig.MaxWaveBotCount));
+
+            if (modConfig.Debug)
+            {
+                logger.Info($"[TT] Creating waves for faction {factionName}.");
+            }
             
             for (int i = 0; i <= waves; i++)
             {
@@ -230,13 +237,20 @@ public class LocationService(DataConfig dataConfig,
                 {
                     remainingBots = (int)Math.Round(remainingBots * raidConfig.InitialBotMult);
                 }
+
+                remainingBots = Math.Min(remainingBots, maxBotsPerWave);
                 
-                int currentDelay = i * spawnDelay + 1;
+                int currentDelay = 1 + (i * spawnDelay);
 
                 while (remainingBots > 0)
                 {
-                    int groupSize = (int)Math.Round(mathUtil.MapToRange(strength, 0, 1,
-                        raidConfig.MinStrengthUnits, raidConfig.MaxStrengthUnits));
+                    int groupSize;
+
+                    if (randomUtil.GetChance100(raidConfig.GroupChance))
+                        groupSize = (int)Math.Round(mathUtil.MapToRange(strength, 0, 1,
+                            raidConfig.MinStrengthUnits, raidConfig.MaxStrengthUnits));
+                    else
+                        groupSize = 1;
 
                     if (!raidConfig.RoundedBotCounts)
                     {
@@ -245,24 +259,32 @@ public class LocationService(DataConfig dataConfig,
 
                     remainingBots -= groupSize;
 
-                    //TODO: Add map triggers for primarily labs
                     BossLocationSpawn newBotSpawn = new()
                     {
                         BossChance = 100,
+                        Delay = 0,
                         BossDifficulty = GetDifficultyFromStrength(strength),
                         BossEscortDifficulty = GetDifficultyFromStrength(strength),
                         BossName = randomUtil.GetRandomElement(currentFaction.BotNames),
                         BossEscortType = randomUtil.GetRandomElement(currentFaction.BotNames),
+                        BossZone = "",
                         IsBossPlayer = false,
                         Time = currentDelay,
-                        BossEscortAmount = groupSize == 1 ? "1" : GenerateEscortAmount(groupSize),
-                        ForceSpawn = false
+                        BossEscortAmount = groupSize == 1 ? "0" : GenerateEscortAmount(groupSize - 1),
+                        IgnoreMaxBots = true,
+                        ForceSpawn = raidConfig.EnforceBotSpawns,
+                        IsRandomTimeSpawn = false,
+                        SpawnMode = ["pve", "regular"],
+                        TriggerId = "",
+                        TriggerName = "",
+                        ShowOnTarkovMap = false,
+                        ShowOnTarkovMapPvE = false
                     };
                     
                     newSpawns.Add(newBotSpawn);
 
                     if (i > 0)
-                        currentDelay += randomUtil.RandInt(0, 10);
+                        currentDelay += randomUtil.RandInt(1, 10);
                 }
             }
         }

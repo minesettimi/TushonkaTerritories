@@ -13,20 +13,20 @@ public class OnDeadPatch : ModulePatch
     }
 
     [PatchPostfix]
-    public static void Postfix(Player __instance, IPlayer? __LastAggressor, bool __AggressorFound)
+    public static void Postfix(Player __instance, IPlayer? ___LastAggressor, bool ___AggressorFound)
     {
         if (!__instance.IsAI)
             return;
 
         string role = __instance.Profile.Info.Settings.Role.ToString();
         
-        if (__LastAggressor == null || __AggressorFound || __instance == (Player)__LastAggressor)
+        if (___LastAggressor == null || ___AggressorFound || __instance == (Player)___LastAggressor)
         {
             Plugin.KillCounter.KilledEnemy(role);
             return;
         }
 
-        Player killer = __instance.GameWorld.GetAlivePlayerByProfileID(__LastAggressor.ProfileId);
+        Player killer = __instance.GameWorld.GetAlivePlayerByProfileID(___LastAggressor.ProfileId);
         if (killer == null)
         {
             Plugin.KillCounter.KilledEnemy(role);
