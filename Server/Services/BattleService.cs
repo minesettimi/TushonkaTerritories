@@ -43,6 +43,13 @@ public class BattleService(
                 LocationService.MapList.Count);
             string currentLocation = LocationService.MapList[stateServer.CurrentSave.LastLoc];
 
+            //don't simulate twice for these locations
+            if (LocationService.DuplicateMapList.Contains(currentLocation))
+            {
+                i--;
+                continue;
+            }
+            
             if (modConfig.Debug)
             {
                 logger.Info($"[TT] Simulating location: {currentLocation}");
@@ -100,24 +107,26 @@ public class BattleService(
         List<string> nearby = FindNearby(location, noneOnly ? "none" : null);
         double moveCost = moveStrength * modConfig.BattleConfig.SpreadMult;
 
-        int actionCount = 0;
+        //calculate how many actions can be taken before going under the spread threshold
+        int maxActions = 0;
         while (factionStrength > modConfig.BattleConfig.SpreadMinStrength)
         {
             factionStrength -= moveCost;
-            actionCount++;
+            maxActions++;
         }
 
-        actionCount = Math.Min(actionCount, modConfig.BattleConfig.SimulationActions);
+        maxActions = Math.Min(maxActions, modConfig.BattleConfig.SimulationActions);
 
-        while (nearby.Count > actionCount)
+        while (nearby.Count > maxActions)
         {
             nearby.RemoveAt(randomUtil.GetInt(0, nearby.Count - 1));
         }
 
+        //a little above 0, don't want to add killing implementation.
         locState.Contestants[faction] = Math.Clamp(locState.Contestants[faction] - nearby.Count * moveCost, 0.01, 1);
         if (modConfig.Debug && nearby.Count > 0)
         {
-            logger.Info($"[TT] Faction {faction} is spreading from ${location} with a cost of {nearby.Count * moveCost}.");
+            logger.Info($"[TT] Faction {faction} is spreading from {location} with a cost of {nearby.Count * moveCost}.");
         }
         
         foreach (string neighbor in nearby)

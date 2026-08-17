@@ -41,6 +41,12 @@ public class LocationService(DataConfig dataConfig,
         "terminal"
     ];
 
+    public static readonly List<string> DuplicateMapList =
+    [
+        "factory4_night",
+        "sandbox_high"
+    ];
+
     private static readonly List<string> Difficulties =
     [
         "impossible",
