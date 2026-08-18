@@ -6,13 +6,12 @@ namespace TerritoryServer.Loaders;
 
 [Injectable(TypePriority = OnLoadOrder.PostLoad + 100000)]
 public class PostLoad(LocationService locationService, ReputationService reputationService,
-    BattleService battleService) : IOnLoad
+    LocaleService localeService) : IOnLoad
 {
-    public Task OnLoadAsync(CancellationToken cancellationToken)
+    public async Task OnLoadAsync(CancellationToken cancellationToken)
     {
         locationService.Initialize();
         reputationService.CheckRep();
-
-        return Task.CompletedTask;
+        await localeService.Load();
     }
 }

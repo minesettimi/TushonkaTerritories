@@ -11,7 +11,7 @@ public class PlayerAllyPatch : ModulePatch
 {
     protected override MethodBase GetTargetMethod()
     {
-        return AccessTools.Method(typeof(BotsGroup), nameof(BotsGroup));
+        return AccessTools.Method(typeof(BotsGroup), nameof(BotsGroup.IsAlly));
     }
 
     [PatchPrefix]

@@ -1,0 +1,9 @@
+{
+  "TerritoryDescription": "Controlled By {0}",
+  
+  "FactionName none": "Nobody",
+  "FactionName scav": "Scavengers",
+  "FactionName rogue": "Rogues",
+  "FactionName raider": "Raiders",
+  "FactionName cultist": "The Cult"
+}

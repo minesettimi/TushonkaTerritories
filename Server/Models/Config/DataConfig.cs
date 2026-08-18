@@ -13,7 +13,6 @@ public class DataConfig
 
 public class Faction
 {
-    [JsonPropertyName("id")] public string Id { get; set; } = "invalid";
     [JsonPropertyName("color")] public string Color { get; set; } = "#000000";
     [JsonPropertyName("base")] public string? Base { get; set; } = null;
     [JsonPropertyName("botNames")] public List<string> BotNames { get; set; } = [];

@@ -3,7 +3,6 @@
   {
     "none":
     {
-      "id": "none",
       "color": "#000000",
       "botNames": [],
       "mobileBosses": [],
@@ -26,7 +25,6 @@
     },
     "scav":
     {
-      "id": "scav",
       "color": "#244023",
       "base": "interchange",
       "botNames": ["assault"],
@@ -50,7 +48,6 @@
     },
     "raider":
     {
-      "id": "raider",
       "color": "#FA8014",
       "base": "laboratory",
       "botNames": ["pmcBot"],
@@ -74,7 +71,6 @@
     },
     "rogue":
     {
-      "id": "rogue",
       "color": "#4F7061",
       "base": "lighthouse",
       "botNames": ["exUsec"],
@@ -98,7 +94,6 @@
     },
     "cultist":
     {
-      "id": "cultist",
       "color": "#7D04D6",
       "botNames": ["sectantWarrior"],
       "mobileBosses": ["sectantOni", "sectantPredvestnik", "sectantPrizrak"],

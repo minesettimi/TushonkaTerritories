@@ -10,8 +10,8 @@ namespace TerritoryServer.Loaders;
 
 public class InjectConstruct : IOnDIConstruct
 {
-    private static readonly string ConfigPath = Path.Join(StateServer.ModPath, "Config");
-    private static readonly string DataPath = Path.Join(StateServer.ModPath, "Data");
+    public static readonly string ConfigPath = Path.Join(StateServer.ModPath, "Config");
+    public static readonly string DataPath = Path.Join(StateServer.ModPath, "Data");
 
     private static readonly JsonSerializerOptions _serializerOptions = new()
     {
