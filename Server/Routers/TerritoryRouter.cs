@@ -28,7 +28,7 @@ public class TerritoryRouter(JsonUtil jsonUtil, TerritoryCallbacks territoryCall
             sessionId,
             output,
             cancellationToken
-        ) => await territoryCallbacks.HandleStateRetrieval()
+        ) => await territoryCallbacks.HandleDataRetrieval()
     ),
     new RouteAction<EmptyRequestData>(
         "/tt/state/server",
@@ -38,7 +38,7 @@ public class TerritoryRouter(JsonUtil jsonUtil, TerritoryCallbacks territoryCall
             sessionId,
             output,
             cancellationToken
-        ) => await territoryCallbacks.HandleDataRetrieval()
+        ) => await territoryCallbacks.HandleStateRetrieval()
     )
 ])
 { }
