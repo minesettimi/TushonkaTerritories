@@ -15,7 +15,8 @@ public class ServerData
 
 public class ServerState
 {
-    [JsonProperty("locations")] public LocationData<LocationState?> Locations { get; set; } = null!;
+    [JsonProperty("lastSimulatedLoc")] public int LastLoc { get; set; } = 0;
+    [JsonProperty("locations")] public LocationData Locations { get; set; } = null!;
     [JsonProperty("playerRep")] public Dictionary<MongoID, Dictionary<string, double>> PlayerRep { get; set; } = null!;
 }
 
@@ -26,26 +27,26 @@ public record LocationState
     [JsonProperty("base")] public bool Base { get; set; }
 }
 
-public class LocationData<T>
+//convert this back to generic at some point if needed
+public class LocationData
 {
-    [JsonProperty("bigmap")] public T Customs { get; set; }
-    [JsonProperty("factory4_day")] public T Factory { get; set; }
-    [JsonProperty("interchange")] public T Interchange { get; set; }
-    [JsonProperty("laboratory")] public T Laboratory { get; set; }
-    [JsonProperty("lighthouse")] public T Lighthouse { get; set; }
-    [JsonProperty("rezervbase")] public T Reserve { get; set; }
-    [JsonProperty("sandbox")] public T GroundZero { get; set; }
-    [JsonProperty("shoreline")] public T Shoreline { get; set; }
-    [JsonProperty("tarkovstreets")] public T Streets { get; set; }
-    [JsonProperty("woods")] public T Woods { get; set; }
-    [JsonProperty("labyrinth")] public T Labyrinth { get; set; }
-    [JsonProperty("suburbs")] public T Icebreaker { get; set; }
-    [JsonProperty("terminal")] public T Terminal { get; set; }
+    [JsonProperty("bigmap")] public LocationState Customs { get; set; }
+    [JsonProperty("factory4_day")] public LocationState Factory { get; set; }
+    [JsonProperty("interchange")] public LocationState Interchange { get; set; }
+    [JsonProperty("laboratory")] public LocationState Laboratory { get; set; }
+    [JsonProperty("lighthouse")] public LocationState Lighthouse { get; set; }
+    [JsonProperty("rezervbase")] public LocationState Reserve { get; set; }
+    [JsonProperty("sandbox")] public LocationState GroundZero { get; set; }
+    [JsonProperty("shoreline")] public LocationState Shoreline { get; set; }
+    [JsonProperty("tarkovstreets")] public LocationState Streets { get; set; }
+    [JsonProperty("woods")] public LocationState Woods { get; set; }
+    [JsonProperty("labyrinth")] public LocationState Labyrinth { get; set; }
+    [JsonProperty("suburbs")] public LocationState Icebreaker { get; set; }
+    [JsonProperty("terminal")] public LocationState Terminal { get; set; }
 
     [JsonIgnore]
-    public T this[string key]
-    {
-        get => key.ToLowerInvariant() switch
+    public LocationState? this[string key] =>
+        key.ToLowerInvariant() switch
         {
             "bigmap" => Customs,
             "factory4_day" => Factory,
@@ -62,29 +63,26 @@ public class LocationData<T>
             "labyrinth" => Labyrinth,
             "suburbs" => Icebreaker,
             "terminal" => Terminal,
-            _ => throw new KeyNotFoundException($"Location '{key}' not found.")
+            _ => null
         };
-        set
-        {
-            switch (key.ToLowerInvariant())
-            {
-                case "bigmap": Customs = value; break;
-                case "factory4_day":
-                case "factory4_night": Factory = value; break;
-                case "interchange": Interchange = value; break;
-                case "lighthouse": Lighthouse = value; break;
-                case "rezervbase": Reserve = value; break;
-                case "sandbox":
-                case "sandbox_high": GroundZero = value; break;
-                case "shoreline": Shoreline = value; break;
-                case "tarkovstreets": Streets = value; break;
-                case "woods": Woods = value; break;
-                case "laboratory": Laboratory = value; break;
-                case "labyrinth": Labyrinth = value; break;
-                case "suburbs": Icebreaker = value; break;
-                case "terminal": Terminal = value; break;
-                default: throw new KeyNotFoundException($"Location '{key}' not found.");
-            }
-        }
-    }
+
+    //I hate to make more hardcoded map strings but its still a quick fix and way better than a more serious system
+    public static readonly string[] ValidMaps = 
+    [
+        "bigmap", 
+        "factory4_day", 
+        "factory4_night", 
+        "interchange", 
+        "laboratory", 
+        "lighthouse",
+        "rezervbase",
+        "sandbox",
+        "sandbox_high",
+        "shoreline",
+        "tarkovstreets",
+        "woods",
+        "labyrinth",
+        "suburbs",
+        "terminal"
+    ];
 }
