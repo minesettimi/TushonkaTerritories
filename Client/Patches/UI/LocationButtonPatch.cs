@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Reflection;
 using EFT.Communications;
 using EFT.UI;
@@ -5,6 +6,7 @@ using HarmonyLib;
 using JsonType;
 using SPT.Reflection.Patching;
 using TerritoryClient.Models;
+using TerritoryClient.UI;
 using UnityEngine;
 
 namespace TerritoryClient.Patches.UI;
@@ -32,9 +34,13 @@ public class LocationButtonPatch : ModulePatch
             return;
         }
         
-        //Plugin.PluginLogger.LogInfo($"Giving location: {location.Name} the color: {color}");
-        
         __instance._defaultColor = colorObj;
         __instance._specialColor = colorObj;
+    }
+
+    [PatchPostfix]
+    public static void Postfix(LocationSettings.Location location, LocationButton __instance)
+    {
+        TerritoryRenderer.LocationPositions[location.Id.ToLower()] = __instance.transform.position;
     }
 }

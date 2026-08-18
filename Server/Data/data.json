@@ -139,7 +139,6 @@
   "botFactionTable":
   {
     "assault": "scav",
-    "bear": "none",
     "bossBoar": "scav",
     "bossBoarSniper": "scav",
     "bossBully": "scav",
@@ -155,7 +154,6 @@
     "bossTagillaAgro": "scav",
     "bossZryachiy": "cultist",
     "crazyAssaultEvent": "scav",
-    "cursedAssult": "scav",
     "exUsec": "rogue",
     "followerBigPipe": "rogue",
     "followerBirdEye": "rogue",
@@ -181,8 +179,7 @@
     "sectantPrizrak": "cultist",
     "sectantWarrior": "cultist",
     "shooterBtr": "none",
-    "tagillaHelperAgro": "scav",
-    "usec": "none"
+    "tagillaHelperAgro": "scav"
   },
   "locationNeighbors":
   {

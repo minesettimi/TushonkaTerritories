@@ -1,5 +1,6 @@
 using SPTarkov.Common.Models.Logging;
 using SPTarkov.DI.Annotations;
+using SPTarkov.Server.Core.Models.Common;
 using TerritoryServer.Helpers;
 using TerritoryServer.Models;
 using TerritoryServer.Services;
@@ -14,7 +15,10 @@ public class StateGenerator(DataConfig dataConfig,
 {
     public SaveState GenerateState()
     {
-        SaveState newState = new();
+        SaveState newState = new()
+        {
+            StateId = new MongoId()
+        };
 
         Dictionary<string, string> baseLocations = [];
         

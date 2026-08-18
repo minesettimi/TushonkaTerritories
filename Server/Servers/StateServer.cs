@@ -1,6 +1,7 @@
 using System.Reflection;
 using SPTarkov.Common.Models.Logging;
 using SPTarkov.DI.Annotations;
+using SPTarkov.Server.Core.Models.Common;
 using SPTarkov.Server.Core.Utils;
 using TerritoryServer.Models;
 
@@ -34,6 +35,7 @@ public class StateServer(JsonUtil jsonUtil,
 
     public void SaveToDisk()
     {
+        CurrentSave.StateId = new MongoId();
         File.WriteAllTextAsync(_savePath, jsonUtil.Serialize(CurrentSave, true));
     }
 }

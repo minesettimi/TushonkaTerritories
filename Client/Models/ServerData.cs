@@ -15,6 +15,7 @@ public class ServerData
 
 public class ServerState
 {
+    [JsonProperty("stateId")] public MongoID StateId { get; set; }
     [JsonProperty("lastSimulatedLoc")] public int LastLoc { get; set; } = 0;
     [JsonProperty("locations")] public LocationData Locations { get; set; } = null!;
     [JsonProperty("playerRep")] public Dictionary<MongoID, Dictionary<string, double>> PlayerRep { get; set; } = null!;

@@ -1,3 +1,4 @@
+using System;
 using System.Reflection;
 using EFT;
 using EFT.UI.Matchmaker;
@@ -16,9 +17,17 @@ public class LocationSelectionShowPatch : ModulePatch
     }
 
     [PatchPostfix]
-    public static void Postfix(IEftSession session)
+    public static void Postfix()
     {
-        LocationSelectionAwakePatch.TerritoryRenderer.Show(session.LocationSettings);
-        Plugin.PluginLogger.LogInfo("Test Show.");
+        try
+        {
+            LocationSelectionAwakePatch.TerritoryRenderer.Show();
+        }
+        catch (Exception e)
+        {
+            Plugin.PluginLogger.LogError($"Failed to render map with error: {e.Message}");
+            Plugin.PluginLogger.LogError(e.StackTrace);
+            throw;
+        }
     }
 }
