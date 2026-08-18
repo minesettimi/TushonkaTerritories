@@ -41,6 +41,9 @@ public class LocationButtonPatch : ModulePatch
     [PatchPostfix]
     public static void Postfix(LocationSettings.Location location, LocationButton __instance)
     {
-        TerritoryRenderer.LocationPositions[location.Id.ToLower()] = __instance.transform.position;
+        RectTransform rectTransform = (RectTransform)__instance.transform;
+
+        TerritoryRenderer.LocationPositions[location.Id.ToLower()] =
+            RectTransformUtility.WorldToScreenPoint(null, rectTransform.position);
     }
 }

@@ -56,6 +56,7 @@
         <Reference Include="UnityEngine.InputLegacyModule" HintPath="..\..\..\EscapeFromTarkov_Data\Managed\UnityEngine.InputLegacyModule.dll" />
         <Reference Include="UnityEngine.TextRenderingModule" HintPath="..\..\..\EscapeFromTarkov_Data\Managed\UnityEngine.TextRenderingModule.dll" />
         <Reference Include="UnityEngine.UI" HintPath="..\..\..\EscapeFromTarkov_Data\Managed\UnityEngine.UI.dll" />
+        <Reference Include="UnityEngine.UIModule" HintPath="..\..\..\EscapeFromTarkov_Data\Managed\UnityEngine.UIModule.dll" />
     </ItemGroup>
 
     <ItemGroup>

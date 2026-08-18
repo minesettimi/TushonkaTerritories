@@ -53,7 +53,9 @@ public class TerritoryRenderer : MonoBehaviour
         Plugin.PluginLogger.LogInfo("Test renderer.");
 
 
-        Vector3 mapOffset = MapTransform.rect.size / 2f + new Vector2(70, 120);
+        
+        Texture2D newMap = new((int)Math.Ceiling(MapTransform.rect.width),
+            (int)Math.Ceiling(MapTransform.rect.height), TextureFormat.RGBA32, true);
         
         foreach (string location in LocationData.ValidMaps)
         {
@@ -68,25 +70,34 @@ public class TerritoryRenderer : MonoBehaviour
                 continue;
             }
 
-            // Vector2Int startingPos = new((int)locationSettings.IconX - 110, (int)locationSettings.IconY - 90);
-            // if (location == "bigmap")
-            // {
-            //     for (int x = startingPos.x - 8; x < startingPos.x + 9; x++)
-            //     {
-            //         for (int y = startingPos.y - 8; y < startingPos.y + 9; y++)
-            //         {
-            //             newMap.SetPixel(x, y, Color.red);
-            //         }
-            //     }
-            // }
-            
+           
             //any locations that aren't on the visible map
             if (!LocationPositions.TryGetValue(location, out Vector3 locPos))
             {
                 continue;
             }
             
-            Vector2 locationPos = locPos - mapOffset;
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(MapTransform, locPos, 
+                null, out Vector2 locationPos);
+
+            locationPos = MapTransform.rect.size + locationPos;
+            
+            // if (location == "laboratory" || location == "bigmap")
+            // {
+            //     Color testColor = location == "bigmap" ? Color.red : Color.green;
+            //
+            //     Vector2Int startingPos = Vector2Int.RoundToInt(locationPos);
+            //     
+            //     Plugin.PluginLogger.LogInfo(location);
+            //     
+            //     for (int x = startingPos.x - 8; x < startingPos.x + 9; x++)
+            //     {
+            //         for (int y = startingPos.y - 8; y < startingPos.y + 9; y++)
+            //         {
+            //             newMap.SetPixel(x, y, testColor);
+            //         }
+            //     }
+            // }
             
             points.Add(locationPos);
             colors.Add(_colors[locationState.Holder]);
@@ -97,13 +108,10 @@ public class TerritoryRenderer : MonoBehaviour
         Plugin.PluginLogger.LogInfo(JsonConvert.SerializeObject(LocationPositions));
         Plugin.PluginLogger.LogInfo(JsonConvert.SerializeObject(points));
         
-        Texture2D newMap = new((int)Math.Ceiling(MapTransform.rect.width),
-            (int)Math.Ceiling(MapTransform.rect.height));
-        
         for (int i = 0; i < points.Count; i++)
         {
             List<Vector2> vertices = voronoi.GetClippedPolygon(i);
-
+        
             try
             {
                 DrawFilledPolygon(newMap, points[i], vertices, colors[i]);
