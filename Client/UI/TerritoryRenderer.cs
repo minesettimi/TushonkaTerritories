@@ -49,10 +49,6 @@ public class TerritoryRenderer : MonoBehaviour
         
         List<Vector2> points = [];
         List<Color> colors = [];
-
-        Plugin.PluginLogger.LogInfo("Test renderer.");
-
-
         
         Texture2D newMap = new((int)Math.Ceiling(MapTransform.rect.width),
             (int)Math.Ceiling(MapTransform.rect.height), TextureFormat.RGBA32, true);
@@ -69,8 +65,7 @@ public class TerritoryRenderer : MonoBehaviour
                 Plugin.PluginLogger.LogWarning($"Failed to get location for: {location}");
                 continue;
             }
-
-           
+            
             //any locations that aren't on the visible map
             if (!LocationPositions.TryGetValue(location, out Vector3 locPos))
             {
@@ -88,8 +83,6 @@ public class TerritoryRenderer : MonoBehaviour
             //
             //     Vector2Int startingPos = Vector2Int.RoundToInt(locationPos);
             //     
-            //     Plugin.PluginLogger.LogInfo(location);
-            //     
             //     for (int x = startingPos.x - 8; x < startingPos.x + 9; x++)
             //     {
             //         for (int y = startingPos.y - 8; y < startingPos.y + 9; y++)
@@ -104,9 +97,6 @@ public class TerritoryRenderer : MonoBehaviour
         }
         
         Voronator voronoi = new(points, new Vector2(0, 0), MapTransform.rect.size);
-        
-        Plugin.PluginLogger.LogInfo(JsonConvert.SerializeObject(LocationPositions));
-        Plugin.PluginLogger.LogInfo(JsonConvert.SerializeObject(points));
         
         for (int i = 0; i < points.Count; i++)
         {
@@ -124,7 +114,6 @@ public class TerritoryRenderer : MonoBehaviour
         
         newMap.Apply();
 
-        Plugin.PluginLogger.LogInfo("Test finalSprite.");
         Sprite finalSprite =
             Sprite.Create(newMap, new Rect(0, 0, newMap.width, newMap.height), Vector2.one * 0.5f, 300f);
         
