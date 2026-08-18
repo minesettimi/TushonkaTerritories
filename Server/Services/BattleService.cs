@@ -39,8 +39,17 @@ public class BattleService(
         
         for (int i = 0; i < modConfig.BattleConfig.SimulationLocations; i++)
         {
-            stateServer.CurrentSave.LastLoc = TerritoryMath.Wrap(stateServer.CurrentSave.LastLoc + 1, 0,
-                LocationService.MapList.Count);
+            //skip to the current map for the current location so it gets simulated first and not potentially back to back
+            if (raidLocation != null && raidLocation != LocationService.MapList[stateServer.CurrentSave.LastLoc])
+            {
+                stateServer.CurrentSave.LastLoc = LocationService.MapList.IndexOf(raidLocation);
+            }
+            else
+            {
+                stateServer.CurrentSave.LastLoc = TerritoryMath.Wrap(stateServer.CurrentSave.LastLoc + 1, 0,
+                    LocationService.MapList.Count);
+            }
+            
             string currentLocation = LocationService.MapList[stateServer.CurrentSave.LastLoc];
 
             //don't simulate twice for these locations
