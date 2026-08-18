@@ -342,7 +342,7 @@ public class LocationService(DataConfig dataConfig,
 
             foreach ((string otherBot, string otherFaction) in dataConfig.BotFaction)
             {
-                BotRelationship relationship = GetBotRelationship(botName, otherBot);
+                BotRelationship relationship = GetFactionRelationship(botFaction, otherFaction);
 
                 switch (relationship)
                 {
@@ -385,13 +385,10 @@ public class LocationService(DataConfig dataConfig,
         _hostilityCache = finalSettings;
     }
 
-    private BotRelationship GetBotRelationship(string botName, string otherBot)
+    private BotRelationship GetFactionRelationship(string factionName, string otherFaction)
     {
-        string factionName = dataConfig.BotFaction[botName];
-        
         Faction factionData = dataConfig.Factions[factionName];
         
-        string otherFaction = dataConfig.BotFaction[otherBot];
         if (factionName == otherFaction)
             return BotRelationship.Friends;
 

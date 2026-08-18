@@ -12,9 +12,6 @@ public class PostLoad(LocationService locationService, ReputationService reputat
     {
         locationService.Initialize();
         reputationService.CheckRep();
-        
-        //test
-        battleService.Simulate();
 
         return Task.CompletedTask;
     }

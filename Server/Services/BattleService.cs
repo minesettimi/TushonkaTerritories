@@ -214,6 +214,12 @@ public class BattleService(
 
         foreach ((string faction, double damageTaken) in damageDealt)
         {
+            if (!locationState.Contestants.ContainsKey(faction))
+            {
+                logger.Warning($"[TT] Battle at {locationName} had damage dealt to {faction} which isn't present.");
+                continue;
+            }
+            
             if (!modConfig.BattleConfig.BaseTakingEnabled 
                 && faction == locationState.Holder && locationState.Base)
                 continue;
