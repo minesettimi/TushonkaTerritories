@@ -7,29 +7,28 @@ using TerritoryClient.Models;
 
 namespace TerritoryClient.Patches.Bots;
 
-
-public class PlayerEnemyPatch : ModulePatch
+public class PlayerAllyPatch : ModulePatch
 {
     protected override MethodBase GetTargetMethod()
     {
-        return AccessTools.Method(typeof(BotSettings), nameof(BotSettings.IsPlayerEnemy));
+        return AccessTools.Method(typeof(BotsGroup), nameof(BotsGroup));
     }
 
     [PatchPrefix]
-    public static bool Prefix(BotSettings __instance, IPlayer player, ref bool __result)
+    public static bool Prefix(BotsGroup __instance, IPlayer player, ref bool __result)
     {
         ServerData data = Plugin.StateManager.ServerData;
         if (!data.AttitudeEffect || player.AIData.IsAI || player.IsAI)
             return true;
 
-        string bossName = __instance._role.ToString();
+        string bossName = __instance._initialBot.Settings._role.ToString();
         string factionName = data.BotFaction.GetValueOrDefault(bossName, "none");
         
         Dictionary<string, double> playerRep = Plugin.StateManager.State.PlayerRep[player.ProfileId];
 
         double rep = playerRep[factionName];
-
-        __result = rep < data.NeutralRep;
+        
+        __result = rep >= data.AllyRep;
         return false;
     }
 }
