@@ -6,7 +6,7 @@ using TerritoryClient.Services;
 
 namespace TerritoryClient
 {
-    [BepInPlugin("com.minesettimi.territories", "Tushonka Territories", "1.0.1")]
+    [BepInPlugin("com.minesettimi.territories", "Tushonka Territories", "1.0.2")]
     public class Plugin : BaseUnityPlugin
     {
         public static ManualLogSource PluginLogger;

@@ -43,7 +43,7 @@
     "playerRepAttitude": true, //If true a player's reputation with a faction will affect the bot's hostility towards the player
     "neutralityMode": 0, //0 - warn if neutral, 1 - true neutral, 2 - chance to be enemies
     "enemyChance": 50, //0 - 100 / If neutrality mode is 2, this sets the chance.
-    "minStrengthWaveDelay": 300, //Delay at maximum strength (1.0) between wave spawns
+    "minStrengthWaveDelay": 350, //Delay at maximum strength (1.0) between wave spawns
     "maxStrengthWaveDelay": 500, //Delay at minimum strength (0.0)
     "delayVariance": 5, //RNG min and max variance added/subtracted to the wave spawns
     "minStrengthWaveSize": 5, //Bot spawns per wave at minimum strength (1.0)

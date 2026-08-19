@@ -55,11 +55,11 @@ public record RaidConfig
     [JsonPropertyName("playerRepAttitude")] public bool AttitudeEffectPlayer { get; set; } = true;
     [JsonPropertyName("neutralityMode")] public NeutralMode NeutralityMode { get; set; } = NeutralMode.Warn;
     [JsonPropertyName("enemyChance")] public int EnemyChance { get; set; } = 50;
-    [JsonPropertyName("minStrengthWaveDelay")] public int MinWaveDelay { get; set; } = 300;
+    [JsonPropertyName("minStrengthWaveDelay")] public int MinWaveDelay { get; set; } = 350;
     [JsonPropertyName("maxStrengthWaveDelay")] public int MaxWaveDelay { get; set; } = 500;
     [JsonPropertyName("delayVariance")] public int DelayVariance { get; set; } = 5;
-    [JsonPropertyName("minStrengthWaveSize")] public int MinWaveBotCount { get; set; } = 5;
-    [JsonPropertyName("maxStrengthWaveSize")] public int MaxWaveBotCount { get; set; } = 12;
+    [JsonPropertyName("minStrengthWaveSize")] public int MinWaveBotCount { get; set; } = 3;
+    [JsonPropertyName("maxStrengthWaveSize")] public int MaxWaveBotCount { get; set; } = 6;
     [JsonPropertyName("roundedBotCounts")] public bool RoundedBotCounts { get; set; } = true;
     [JsonPropertyName("minStrengthGroupSize")] public int MinStrengthUnits { get; set; } = 2;
     [JsonPropertyName("maxStrengthGroupSize")] public int MaxStrengthUnits { get; set; } = 4;
