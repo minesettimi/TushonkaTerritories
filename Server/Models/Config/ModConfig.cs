@@ -58,6 +58,7 @@ public record RaidConfig
     [JsonPropertyName("minStrengthWaveDelay")] public int MinWaveDelay { get; set; } = 350;
     [JsonPropertyName("maxStrengthWaveDelay")] public int MaxWaveDelay { get; set; } = 500;
     [JsonPropertyName("delayVariance")] public int DelayVariance { get; set; } = 5;
+    [JsonPropertyName("maxWaves")] public int MaxWaveCap { get; set; } = 12;
     [JsonPropertyName("minStrengthWaveSize")] public int MinWaveBotCount { get; set; } = 3;
     [JsonPropertyName("maxStrengthWaveSize")] public int MaxWaveBotCount { get; set; } = 6;
     [JsonPropertyName("roundedBotCounts")] public bool RoundedBotCounts { get; set; } = true;

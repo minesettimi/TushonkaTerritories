@@ -230,6 +230,9 @@ public class LocationService(DataConfig dataConfig,
                 spawnDelay + raidConfig.DelayVariance));
             int baseBotCount = (int)Math.Round(mathUtil.MapToRange(strength, 0, 1,
                 raidConfig.MinWaveBotCount, raidConfig.MaxWaveBotCount));
+
+            if (modConfig.RaidConfig.MaxWaveCap >= 0)
+                waves = Math.Min(modConfig.RaidConfig.MaxWaveCap, waves);
             
             for (int i = 0; i <= waves; i++)
             {

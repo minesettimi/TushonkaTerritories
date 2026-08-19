@@ -46,6 +46,7 @@
     "minStrengthWaveDelay": 350, //Delay at maximum strength (1.0) between wave spawns
     "maxStrengthWaveDelay": 500, //Delay at minimum strength (0.0)
     "delayVariance": 5, //RNG min and max variance added/subtracted to the wave spawns
+    "maxWaves": 12, //Maximum waves that the mod will create for bots. -1 to disable the cap. HAVING THIS HIGH WITH A HIGH LENGTH RAID WILL CAUSE A MASSIVE SPIKE IN RAM USAGE!
     "minStrengthWaveSize": 5, //Bot spawns per wave at minimum strength (1.0)
     "maxStrengthWaveSize": 12, //Bot spawns per wave at maximum strength (0.0)
     "roundedBotCounts": true, //If false, bot groups will be cut off after hitting the bot count of the wave.
