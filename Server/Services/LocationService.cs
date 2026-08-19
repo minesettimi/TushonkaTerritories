@@ -85,7 +85,7 @@ public class LocationService(DataConfig dataConfig,
 
         foreach (Faction faction in dataConfig.Factions.Values)
         {
-            bossesToRemove.AddRange(faction.BossNames);
+            bossesToRemove.AddRange(faction.MobileBossNames);
         }
 
         foreach (string locationName in MapList)
@@ -211,10 +211,13 @@ public class LocationService(DataConfig dataConfig,
             Faction currentFaction = dataConfig.Factions[factionName];
             if (raidConfig.FactionBosses && strength >= raidConfig.MinBossStrength)
             {
-                foreach (string bossName in currentFaction.BossNames)
+                int bossChance = Math.Clamp((int)Math.Round(mathUtil.MapToRange(strength, 0.0,
+                    1.0, raidConfig.MinBossChance, raidConfig.MaxBossChance)), 0, 100);
+                
+                foreach (string bossName in currentFaction.MobileBossNames)
                 {
                     BossLocationSpawn clonedSpawn = cloner.Clone(_mobileBossData[bossName])!;
-                    clonedSpawn.BossChance = 25; //TODO: change with config
+                    clonedSpawn.BossChance = bossChance;
                     
                     newSpawns.Add(clonedSpawn);
                 }

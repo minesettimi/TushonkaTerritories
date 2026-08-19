@@ -195,7 +195,13 @@ public class BattleService(
                 if (!locationState.Contestants.ContainsKey(factionName))
                     continue;
 
-                double damage = deaths * modConfig.BattleConfig.RaidStrengthLoss;
+                Faction faction = dataConfig.Factions[factionName];
+                bool boss = faction.MobileBossNames.Contains(botName) || faction.BossNames.Contains(botName);
+                
+                double enemyDamage = boss ? modConfig.BattleConfig.RaidBossStrengthLoss :
+                    modConfig.BattleConfig.RaidStrengthLoss;
+
+                double damage = deaths * enemyDamage;
 
                 if (!damageDealt.TryAdd(factionName, damage))
                     damageDealt[factionName] += damage;

@@ -3,8 +3,8 @@
   "factionConfig": 
   {
     "killChangesRep": true, //If true, killing bots changes your rep
-    "killRepDecrease": 0.01, //How much rep to lose from a faction for killing one of its members
-    "killEnemyRep": 0.005 //How much rep to gain for killing a member of a rival faction
+    "killRepDecrease": 0.005, //How much rep to lose from a faction for killing one of its members
+    "killEnemyRep": 0.05 //How much rep to gain for killing a member of a rival faction
   },
   "battleConfig": 
   {
@@ -13,7 +13,8 @@
     "strengthDecreaseOverride": -1, //0.0 - 1.0 / Overrides the decrease of a faction's strength when moving locations. -1 for per faction configuration.
     "simulateAfterRaid": true, //If enabled, a battle simulation will trigger after a raid has completed. This guarentees the location will be simulated.
     "raidsChangeOutcome": true, //If enabled, the deaths of bots will contribute to damage taken during the simulated battle for the location
-    "strengthLossPerDeath": 0.1, //0.0 - 1.0 / The damage that will be dealt to a faction per death in raid.
+    "strengthLossPerDeath": 0.05, //0.0 - 1.0 / The damage that will be dealt to a faction per death in raid.
+    "strengthLossPerBossDeath": 0.2, //0.0 - 1.0 / The damage that will be dealt to a faction per boss death in raid.
     "offlineSimulationTime": -1, //The delay between simulations in minutes. -1 to disable timed simulations.
     "actionsPerSimulation": 1, //How many actions can be taken per location i.e how many nearby locations can be taken.
     "locationsPerSimulation": 4, //How many locations to be simulated per activated simulation. The number wraps so 2 * the number of locations will simulate all locations twice.
@@ -34,6 +35,8 @@
     "removeDefaultScavs": true, //Disable default scav spawn system
     "addFactionBosses": true, //Factions can spawn bosses in locations they have presence
     "factionBossMinStrength": 0.5, //0.0 - 1.0 / Minimum strength for a faction's boss spawns to be added to a location
+    "factionBossMinChance": 25, //0 - 100 / Chance for a boss to spawn when a faction's strength is at minimum (0.0)
+    "factionBossMaxChance": 50, //0 - 100 / Chance for a boss to spawn when a faction's strength is at maximum (100.0)
     "allyRepRequirement": 3, //Minimum reputation with a faction to be friendly
     "warnRepRequirement": 1, //Minimum reputation with a faction to be neutral
     "attitudeChangesAllies": true, //If true a faction's attitude with another faction changes their vanilla hostilities

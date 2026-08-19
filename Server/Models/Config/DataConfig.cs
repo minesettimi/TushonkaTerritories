@@ -16,7 +16,8 @@ public class Faction
     [JsonPropertyName("color")] public string Color { get; set; } = "#000000";
     [JsonPropertyName("base")] public string? Base { get; set; } = null;
     [JsonPropertyName("botNames")] public List<string> BotNames { get; set; } = [];
-    [JsonPropertyName("mobileBosses")] public List<string> BossNames { get; set; } = [];
+    [JsonPropertyName("mobileBosses")] public List<string> MobileBossNames { get; set; } = [];
+    [JsonPropertyName("staticBosses")] public List<string> BossNames { get; set; } = [];
     [JsonPropertyName("strength")] public double Strength { get; set; }
     [JsonPropertyName("defensiveness")] public double Defensiveness { get; set; }
     [JsonPropertyName("distanceReduction")] public double DistanceReduction { get; set; }

@@ -13,8 +13,8 @@ public record ModConfig
 public record FactionConfig
 {
     [JsonPropertyName("killChangesRep")] public bool RepChange { get; set; } = true;
-    [JsonPropertyName("killRepDecrease")] public double KillReputationDecrease { get; set; } = 0.05;
-    [JsonPropertyName("killEnemyRep")] public double KillEnemyReputation { get; set; } = 0.005;
+    [JsonPropertyName("killRepDecrease")] public double KillReputationDecrease { get; set; } = 0.005;
+    [JsonPropertyName("killEnemyRep")] public double KillEnemyReputation { get; set; } = 0.05;
 }
 
 public record BattleConfig
@@ -24,7 +24,8 @@ public record BattleConfig
     [JsonPropertyName("strengthDecreaseOverride")] public double StrengthDecrease { get; set; } = -1f;
     [JsonPropertyName("simulateAfterRaid")] public bool RaidBattle { get; set; } = true;
     [JsonPropertyName("raidsChangeOutcome")] public bool RaidChangesBattle { get; set; } = true;
-    [JsonPropertyName("strengthLossPerDeath")] public double RaidStrengthLoss { get; set; } = 0.02;
+    [JsonPropertyName("strengthLossPerDeath")] public double RaidStrengthLoss { get; set; } = 0.05;
+    [JsonPropertyName("strengthLossPerBossDeath")] public double RaidBossStrengthLoss { get; set; } = 0.2;
     [JsonPropertyName("offlineSimulationTime")] public int SimulationInterval { get; set; } = -1;
     [JsonPropertyName("actionsPerSimulation")] public int SimulationActions { get; set; } = 1;
     [JsonPropertyName("locationsPerSimulation")] public int SimulationLocations { get; set; } = 4;
@@ -46,6 +47,8 @@ public record RaidConfig
     [JsonPropertyName("removeDefaultScavs")] public bool OverrideWaves { get; set; } = true;
     [JsonPropertyName("addFactionBosses")] public bool FactionBosses { get; set; } = true;
     [JsonPropertyName("factionBossMinStrength")] public double MinBossStrength { get; set; } = 0.5;
+    [JsonPropertyName("factionBossMinChance")] public int MinBossChance { get; set; } = 25;
+    [JsonPropertyName("factionBossMaxChance")] public int MaxBossChance { get; set; } = 50;
     [JsonPropertyName("allyRepRequirement")] public double AllyRep { get; set; } = 3f;
     [JsonPropertyName("warnRepRequirement")] public double NeutralRep { get; set; } = 1f;
     [JsonPropertyName("attitudeChangesAllies")] public bool AttitudeEffect { get; set; } = true;
