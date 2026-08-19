@@ -63,7 +63,7 @@ public class TerritoryCallbacks(HttpResponseUtil httpResponseUtil,
         ServerDataResponse dataResponse = new()
         {
             BotFaction = dataConfig.BotFaction,
-            AttitudeEffect = modConfig.RaidConfig.AttitudeEffect,
+            AttitudeEffect = modConfig.RaidConfig.AttitudeEffectPlayer,
             AllyRep = modConfig.RaidConfig.AllyRep,
             NeutralRep = modConfig.RaidConfig.NeutralRep,
             FactionColors = []

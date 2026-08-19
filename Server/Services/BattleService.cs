@@ -12,11 +12,24 @@ public class BattleService(
     ModConfig modConfig,
     DataConfig dataConfig,
     StateServer stateServer,
-    MathUtil mathUtil,
     RandomUtil randomUtil,
     LocationService locationService,
     ISptLogger<BattleService> logger)
 {
+    private Timer _battleTimer;
+    
+    public void Setup()
+    {
+        if (modConfig.BattleConfig.SimulationInterval <= 0)
+            return;
+
+        TimeSpan interval = TimeSpan.FromMinutes(modConfig.BattleConfig.SimulationInterval);
+        _battleTimer = new Timer(_ =>
+        {
+            Simulate();
+        }, null, interval, interval);
+    }
+    
     /*
      * Operate in stages:
      * 1. Spread to x nearby "none" locations next to current positions
@@ -257,7 +270,9 @@ public class BattleService(
             }
             
             locationState.Contestants.Remove(faction);
-            locationState.Base = false;
+            
+            if (faction == locationState.Holder)
+                locationState.Base = false;
             
             foreach (string neighbor in dataConfig.LocationNeighbors[locationName]!)
             {

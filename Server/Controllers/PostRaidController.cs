@@ -46,7 +46,16 @@ public class PostRaidController(ProfileHelper profileHelper,
 
         foreach ((string player, Dictionary<string, int> playerKills) in kills)
         {
-            PmcData? characterData = profileHelper.GetProfileByPmcId(player);
+            PmcData? characterData;
+            try
+            {
+                characterData = profileHelper.GetProfileByPmcId(player);
+            }
+            catch (Exception e)
+            {
+                logger.Error($"Failed to get profile for player id: {player}.");
+                continue;
+            }
 
             if (characterData == null || characterData.Id == null)
             {
