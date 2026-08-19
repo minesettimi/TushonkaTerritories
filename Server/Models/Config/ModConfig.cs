@@ -24,7 +24,7 @@ public record BattleConfig
     [JsonPropertyName("strengthDecreaseOverride")] public double StrengthDecrease { get; set; } = -1f;
     [JsonPropertyName("simulateAfterRaid")] public bool RaidBattle { get; set; } = true;
     [JsonPropertyName("raidsChangeOutcome")] public bool RaidChangesBattle { get; set; } = true;
-    [JsonPropertyName("strengthLossPerDeath")] public double RaidStrengthLoss { get; set; } = 0.1;
+    [JsonPropertyName("strengthLossPerDeath")] public double RaidStrengthLoss { get; set; } = 0.02;
     [JsonPropertyName("offlineSimulationTime")] public double SimulationInterval { get; set; } = -1f;
     [JsonPropertyName("actionsPerSimulation")] public int SimulationActions { get; set; } = 1;
     [JsonPropertyName("locationsPerSimulation")] public int SimulationLocations { get; set; } = 4;
@@ -49,7 +49,7 @@ public record RaidConfig
     [JsonPropertyName("allyRepRequirement")] public double AllyRep { get; set; } = 3f;
     [JsonPropertyName("warnRepRequirement")] public double NeutralRep { get; set; } = 1f;
     [JsonPropertyName("attitudeChangesAllies")] public bool AttitudeEffect { get; set; } = true;
-    [JsonPropertyName("attitudeChangesAlliesPlayer")] public bool AttitudeEffectPlayer { get; set; } = true;
+    [JsonPropertyName("playerRepAttitude")] public bool AttitudeEffectPlayer { get; set; } = true;
     [JsonPropertyName("neutralityMode")] public NeutralMode NeutralityMode { get; set; } = NeutralMode.Warn;
     [JsonPropertyName("enemyChance")] public int EnemyChance { get; set; } = 50;
     [JsonPropertyName("minStrengthWaveDelay")] public int MinWaveDelay { get; set; } = 300;

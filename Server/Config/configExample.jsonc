@@ -37,6 +37,7 @@
     "allyRepRequirement": 3, //Minimum reputation with a faction to be friendly
     "warnRepRequirement": 1, //Minimum reputation with a faction to be neutral
     "attitudeChangesAllies": true, //If true a faction's attitude with another faction changes their vanilla hostilities
+    "playerRepAttitude": true, //If true a player's reputation with a faction will affect the bot's hostility towards the player
     "neutralityMode": 0, //0 - warn if neutral, 1 - true neutral, 2 - chance to be enemies
     "enemyChance": 50, //0 - 100 / If neutrality mode is 2, this sets the chance.
     "minStrengthWaveDelay": 300, //Delay at maximum strength (1.0) between wave spawns
