@@ -9,5 +9,5 @@ public class ServerDataResponse
     [JsonPropertyName("attitudeEffect")] public bool AttitudeEffect { get; set; }
     [JsonPropertyName("allyRep")] public double AllyRep { get; set; }
     [JsonPropertyName("neutralRep")] public double NeutralRep { get; set; }
-    [JsonPropertyName("continualUpdates")] public bool ContinualUpdates { get; set; }
+    [JsonPropertyName("continualUpdates")] public int ContinualUpdates { get; set; }
 }

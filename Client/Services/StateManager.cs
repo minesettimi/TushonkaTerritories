@@ -10,6 +10,7 @@ public class StateManager
 {
     public ServerData ServerData { get; private set; }
     public ServerState State { get; private set; }
+    public DateTime LastUpdate { get; private set; }
 
     public async Task<bool> RequestData()
     {
@@ -42,7 +43,8 @@ public class StateManager
             if (data != null)
             {
                 State = JsonConvert.DeserializeObject<ServerState>(data)!;
-
+                LastUpdate = DateTime.UtcNow;
+                
                 return true;
             }
         }
@@ -53,5 +55,17 @@ public class StateManager
         }
 
         return false;
+    }
+
+    public bool ShouldUpdateState()
+    {
+        if (ServerData.ContinualUpdates == -1)
+            return false;
+
+        TimeSpan diff = DateTime.UtcNow - LastUpdate;
+        
+        Plugin.PluginLogger.LogInfo($"Test: {diff.TotalMinutes}");
+
+        return diff.TotalMinutes >= ServerData.ContinualUpdates;
     }
 }

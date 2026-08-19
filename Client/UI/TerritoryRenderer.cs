@@ -18,9 +18,11 @@ public class TerritoryRenderer : MonoBehaviour
     
     [SerializeField]
     public RectTransform MapTransform;
+    
+    [NonSerialized]
+    public MongoID? LastState;
 
     private Dictionary<string, Color> _colors = [];
-    private MongoID? _lastState;
     private static readonly Vector2Int[] FillDirs = [new(1, 0), new(-1, 0), new(0, 1), new(0, -1)];
     public static readonly Dictionary<string, Vector3> LocationPositions = new();
     
@@ -42,10 +44,10 @@ public class TerritoryRenderer : MonoBehaviour
     {
         LocationData locationData = Plugin.StateManager.State.Locations;
 
-        if (Plugin.StateManager.State.StateId == _lastState)
+        if (Plugin.StateManager.State.StateId == LastState)
             return;
         
-        _lastState = Plugin.StateManager.State.StateId;
+        LastState = Plugin.StateManager.State.StateId;
         
         List<Vector2> points = [];
         List<Color> colors = [];

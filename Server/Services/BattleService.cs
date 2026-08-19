@@ -33,8 +33,8 @@ public class BattleService(
     /*
      * Operate in stages:
      * 1. Spread to x nearby "none" locations next to current positions
-     * 2. Run battle calculations if there's a battle
-     * 3. Start contesting x nearby enemy locations if currently uncontested
+     * 2. Start contesting x nearby enemy locations if currently uncontested
+     * 3. Run battle calculations if there's a battle
      * 4. Build up strength if uncontested
      * Run these 3 stages per location
      * Uncap these if configured to
@@ -91,6 +91,11 @@ public class BattleService(
             
             SpreadNearby(currentLocation, locState);
 
+            if (locState.Contestants.Count == 1)
+            {
+                SpreadNearby(currentLocation, locState, false);
+            }
+            
             CalculateBattle(currentLocation, locState, raidLocation == currentLocation ? raidKills : null);
 
             if (locState.Contestants.Count != 1 && !locState.Base) continue;
@@ -103,10 +108,6 @@ public class BattleService(
 
             locState.Contestants[holder] = Math.Clamp(startingStrength + modConfig.BattleConfig.StrengthBuildup, 0, 
                 Math.Min(1, modConfig.BattleConfig.MaxStrengthBuildup));
-
-            if (locState.Contestants.Count != 1) continue;
-            
-            SpreadNearby(currentLocation, locState, false);
         }
         
         locationService.UpdateLocations();
@@ -200,6 +201,9 @@ public class BattleService(
                     damageDealt[factionName] += damage;
             }
         }
+
+        //save
+        int contestants = locationState.Contestants.Count;
         
         //simulation damage
         foreach ((string contestant, double strength) in locationState.Contestants)
@@ -252,7 +256,8 @@ public class BattleService(
             
             Faction factionData = dataConfig.Factions[faction];
 
-            double defenseDecrease = factionData.Defensiveness * locationState.Contestants[faction];
+            double defenseDecrease = (factionData.Defensiveness * locationState.Contestants[faction]) 
+                                     / contestants;
             double finalDamage = Math.Clamp(damageTaken - defenseDecrease, 0.0, 1.0);
 
             locationState.Contestants[faction] -= finalDamage;

@@ -67,7 +67,7 @@ public class TerritoryCallbacks(HttpResponseUtil httpResponseUtil,
             AllyRep = modConfig.RaidConfig.AllyRep,
             NeutralRep = modConfig.RaidConfig.NeutralRep,
             FactionColors = [],
-            ContinualUpdates = modConfig.BattleConfig.SimulationInterval > 0
+            ContinualUpdates = modConfig.BattleConfig.SimulationInterval
         };
 
         foreach ((string factionName, Faction faction) in dataConfig.Factions)
