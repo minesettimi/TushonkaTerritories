@@ -30,9 +30,12 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="Data/**">
-          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
+        <None Update="Data/**">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="Config/**">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
 
     <Target  Name="PostBuild" AfterTargets="PostBuildEvent">

@@ -23,10 +23,8 @@ public class LocationSelectionAwakePatch : ModulePatch
     [PatchPostfix]
     public static void Postfix(MatchMakerSelectionLocationScreen __instance)
     {
-        Plugin.PluginLogger.LogInfo("Test0");
         GameObject? territoryMap = Plugin.BundleLoader.Bundle.LoadAsset<GameObject>("TerritoryMap.prefab");
 
-        Plugin.PluginLogger.LogInfo("Test-1");
         if (territoryMap == null)
         {
             Plugin.PluginLogger.LogError("Failed to load bundle.");
@@ -43,10 +41,8 @@ public class LocationSelectionAwakePatch : ModulePatch
         TerritoryRenderer = territoryObj.GetComponent<TerritoryRenderer>();
         TerritoryRenderer.MapTransform = map.gameObject.GetComponent<RectTransform>();
 
-        Plugin.PluginLogger.LogInfo("Test1");
         GameObject? descriptionAsset = Plugin.BundleLoader.Bundle.LoadAsset<GameObject>("TerritoryLabel.prefab");
 
-        Plugin.PluginLogger.LogInfo("Test2");
         if (descriptionAsset == null)
         {
             Plugin.PluginLogger.LogError("Failed to load bundle.");
@@ -54,14 +50,11 @@ public class LocationSelectionAwakePatch : ModulePatch
             return;
         }
 
-        Plugin.PluginLogger.LogInfo("Test3");
         Transform locationInfoPanel = __instance._infoPanel.transform.Find("DescriptionPanel");
         GameObject descriptionObj = Object.Instantiate(descriptionAsset, locationInfoPanel);
         descriptionObj.name = "TerritoryDescription";
         descriptionObj.transform.SetAsFirstSibling();
         
         TerritoryDescription = descriptionObj.GetComponent<TextMeshProUGUI>();
-        
-        Plugin.PluginLogger.LogInfo("Test");
     }
 }

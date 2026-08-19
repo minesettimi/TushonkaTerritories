@@ -1,3 +1,4 @@
+using System.Text.Json;
 using SPTarkov.Common.Models.Logging;
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.Helpers.Profile;
@@ -31,8 +32,13 @@ public class PostRaidController(ProfileHelper profileHelper,
             battleService.Simulate(location, kills);
     }
     
-    public void UpdateRaidReputation(Dictionary<string, Dictionary<string, int>> kills, bool isScav)
+    public void UpdateRaidReputation(Dictionary<string, Dictionary<string, int>> kills)
     {
+        if (modConfig.Debug)
+        {
+            logger.Info($"Player kills: {JsonSerializer.Serialize(kills)}");
+        }
+        
         if (!modConfig.FactionConfig.RepChange)
             return;
         
@@ -48,13 +54,12 @@ public class PostRaidController(ProfileHelper profileHelper,
                 return;
             }
 
-            if (!stateServer.CurrentSave.PlayerRep.ContainsKey((MongoId)characterData.Id))
+            MongoId characterId = (MongoId)characterData.Id;
+            if (!stateServer.CurrentSave.PlayerRep.TryGetValue(characterId, out Dictionary<string, double>? reputation))
             {
                 logger.Error("[TT] Received raid completed request but profile doesn't have reputation data!");
                 return;
             }
-
-            Dictionary<string, double> reputation = stateServer.CurrentSave.PlayerRep[(MongoId)characterData.Id];
 
             foreach ((string botName, int amount) in playerKills)
             {
@@ -81,6 +86,8 @@ public class PostRaidController(ProfileHelper profileHelper,
                     reputation[otherFaction] += repIncrease;
                 }
             }
+
+            stateServer.CurrentSave.PlayerRep[characterId] = reputation;
         }
 
     }

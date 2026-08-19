@@ -59,7 +59,7 @@
       "defaultRepUsec": 0,
       "defaultRepBear": 0,
       "defaultRepScav": 0,
-      "gainRep": false,
+      "gainRep": true,
       "associatedTrader": null,
       "factionAttitude":
       {

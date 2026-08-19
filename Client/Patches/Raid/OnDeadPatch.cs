@@ -12,8 +12,8 @@ public class OnDeadPatch : ModulePatch
         return AccessTools.Method(typeof(Player), nameof(Player.OnDead));
     }
 
-    [PatchPostfix]
-    public static void Postfix(Player __instance, IPlayer? ___LastAggressor, bool ___AggressorFound)
+    [PatchPrefix]
+    public static void Prefix(Player __instance, IPlayer? ___LastAggressor, bool ___AggressorFound)
     {
         if (!__instance.IsAI)
             return;
@@ -27,7 +27,7 @@ public class OnDeadPatch : ModulePatch
         }
 
         Player killer = __instance.GameWorld.GetAlivePlayerByProfileID(___LastAggressor.ProfileId);
-        if (killer == null)
+        if (killer == null || killer.IsAI)
         {
             Plugin.KillCounter.KilledEnemy(role);
             return;

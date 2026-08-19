@@ -36,13 +36,17 @@ public class BattleService(
         {
             logger.Info("[TT] Starting simulation.");
         }
-        
+
+        bool handledRaid = false;
         for (int i = 0; i < modConfig.BattleConfig.SimulationLocations; i++)
         {
+            //TODO: system that doesn't repeat the same locations per raid
             //skip to the current map for the current location so it gets simulated first and not potentially back to back
-            if (raidLocation != null && raidLocation != LocationService.MapList[stateServer.CurrentSave.LastLoc])
+            if (!handledRaid && raidLocation != null && 
+                raidLocation != LocationService.MapList[stateServer.CurrentSave.LastLoc])
             {
                 stateServer.CurrentSave.LastLoc = LocationService.MapList.IndexOf(raidLocation);
+                handledRaid = true;
             }
             else
             {

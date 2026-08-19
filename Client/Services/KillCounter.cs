@@ -36,6 +36,8 @@ public class KillCounter
         _killCounter.TryAdd(botType, 0);
         _killCounter[botType]++;
 
+        Plugin.PluginLogger.LogInfo($"Bot: {botType} killed by player: {player}");
+        
         if (player != null)
         {
             _playerKillCounter.TryAdd(player, []);
