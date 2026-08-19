@@ -25,7 +25,7 @@ public record BattleConfig
     [JsonPropertyName("simulateAfterRaid")] public bool RaidBattle { get; set; } = true;
     [JsonPropertyName("raidsChangeOutcome")] public bool RaidChangesBattle { get; set; } = true;
     [JsonPropertyName("strengthLossPerDeath")] public double RaidStrengthLoss { get; set; } = 0.02;
-    [JsonPropertyName("offlineSimulationTime")] public double SimulationInterval { get; set; } = -1f;
+    [JsonPropertyName("offlineSimulationTime")] public int SimulationInterval { get; set; } = -1;
     [JsonPropertyName("actionsPerSimulation")] public int SimulationActions { get; set; } = 1;
     [JsonPropertyName("locationsPerSimulation")] public int SimulationLocations { get; set; } = 4;
     [JsonPropertyName("attackNeutralChance")] public double AttackNeutralChance { get; set; } = 25.0;

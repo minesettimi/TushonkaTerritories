@@ -11,6 +11,7 @@ public class ServerData
     [JsonProperty("attitudeEffect")] public bool AttitudeEffect { get; set; }
     [JsonProperty("allyRep")] public double AllyRep { get; set; }
     [JsonProperty("neutralRep")] public double NeutralRep { get; set; }
+    [JsonProperty("continualUpdates")] public bool ContinualUpdates { get; set; }
 }
 
 public class ServerState

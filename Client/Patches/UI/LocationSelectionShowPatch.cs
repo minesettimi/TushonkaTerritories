@@ -17,8 +17,11 @@ public class LocationSelectionShowPatch : ModulePatch
     }
 
     [PatchPostfix]
-    public static void Postfix()
+    public static async void Postfix()
     {
+        if (Plugin.StateManager.ServerData.ContinualUpdates)
+            await Plugin.StateManager.RequestState();
+        
         try
         {
             LocationSelectionAwakePatch.TerritoryRenderer.Show();
