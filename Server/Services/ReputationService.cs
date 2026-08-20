@@ -32,6 +32,16 @@ public class ReputationService(StateServer stateServer,
         stateServer.SaveToDisk();
     }
 
+    public void CheckRepForSession(MongoId sessionId)
+    {
+        SptProfile profile = profileHelper.GetFullProfile(sessionId);
+        
+        CheckProfileRep(profile.CharacterData?.PmcData);
+        CheckProfileRep(profile.CharacterData?.ScavData, true);
+        
+        stateServer.SaveToDisk();
+    }
+
     private void CheckProfileRep(PmcData? pmcData, bool scav = false)
     {
         if (pmcData == null || pmcData.Id == null)

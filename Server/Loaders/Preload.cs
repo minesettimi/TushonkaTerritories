@@ -1,4 +1,5 @@
 using SPTarkov.DI.Annotations;
+using SPTarkov.Reflection.Patching;
 using SPTarkov.Server.Core.DI;
 using SPTarkov.Server.Core.Models.Spt.Config;
 using TerritoryServer.Generators;
@@ -11,10 +12,16 @@ public class Preload(StateServer stateServer,
     StateGenerator stateGenerator,
     LocationConfig locationConfig,
     PmcConfig pmcConfig,
-    BotConfig botConfig) : IOnLoad
+    BotConfig botConfig,
+    IEnumerable<IRuntimePatch> patches) : IOnLoad
 {
     public async Task OnLoadAsync(CancellationToken cancellationToken)
     {
+        foreach (IRuntimePatch patch in patches)
+        {
+            patch.Enable();
+        }
+        
         await stateServer.LoadSave();
 
         if (stateServer.NewSave)
