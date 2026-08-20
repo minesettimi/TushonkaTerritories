@@ -24,9 +24,13 @@ public class PlayerAllyPatch : ModulePatch
         string bossName = __instance._initialBot.Settings._role.ToString();
         string factionName = data.BotFaction.GetValueOrDefault(bossName, "none");
         
-        Dictionary<string, double> playerRep = Plugin.StateManager.State.PlayerRep[player.ProfileId];
+        if (!Plugin.StateManager.State.PlayerRep.TryGetValue(player.ProfileId,
+                out Dictionary<string, double> playerRep))
+        {
+            return true;
+        }
 
-        double rep = playerRep[factionName];
+        double rep = playerRep.GetValueOrDefault(factionName, 0f);
         
         __result = rep >= data.AllyRep;
         return false;
