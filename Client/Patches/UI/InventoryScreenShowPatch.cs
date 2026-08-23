@@ -25,6 +25,6 @@ public class InventoryScreenShowPatch : ModulePatch
         
         Tab repTab = __instance._tabDictionary[CommonUIAwakePatch.RepEnumValue];
         repTab.Init(new ReputationScreen.ReputationTabController(reputationTab, ____backEndSession.AllProfiles, ____inventoryController, ____backEndSession));
-        repTab.SetInteractable(___ScreenController is { InRaid: false, IsInventoryBlocked: false });
+        repTab.SetInteractable(!___ScreenController.InRaid && !___ScreenController.IsInventoryBlocked);
     }
 }
