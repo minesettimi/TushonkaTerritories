@@ -16,7 +16,7 @@
     "strengthLossPerDeath": 0.05, //0.0 - 1.0 / The damage that will be dealt to a faction per death in raid.
     "strengthLossPerBossDeath": 0.2, //0.0 - 1.0 / The damage that will be dealt to a faction per boss death in raid.
     "offlineSimulationTime": -1, //The delay between simulations in minutes. -1 to disable timed simulations.
-    "actionsPerSimulation": 1, //How many actions can be taken per location i.e how many nearby locations can be taken.
+    "actionsPerSimulation": 2, //How many actions can be taken per location i.e how many nearby locations can be taken.
     "locationsPerSimulation": 4, //How many locations to be simulated per activated simulation. The number wraps so 2 * the number of locations will simulate all locations twice.
     "attackNeutralChance": 25, //0 - 100 / The chance that a faction will try to engage in battle with another faction considered neutral
     "damageMultiplier": 1.25, //Multiplier for damage dealt in a battle
@@ -24,8 +24,11 @@
     "damageMaxDistribution": 0.15, //Maximum rng change
     "strengthBuildup": 0.1, //0.0 - 1.0 / How much strength for factions to build up if their location is uncontested
     "maxStrengthBuildup": 0.6, //0.0 - 1.0 / Maximum strenth that can be gained from strength buildup
-    "spreadMinStrength": 0.6, //0.0 - 1.0 / Minimum strength to spread to another location
-    "spreadDecreaseMult": 0.25 //Multiplier to the strength decrease for moving locations to be applied to the original location
+    "spreadMinStrength": 0.35, //0.0 - 1.0 / Minimum strength to spread to another location
+    "spreadDecreaseMult": 0.15, //Multiplier to the strength decrease for moving locations to be applied to the original location
+    "spreadBonusStrength": 0.1, //0.0 - 1.0 / Bonus strength given to new faction presence created by spreading.
+    "uprising": true, //If enabled, certain factions have a chance of fighting at any location.
+    "uprisingStrengthMult": 0.5 //Multiplier of a faction's base strength to grant for uprising appearances.
   },
   "raidConfig": 
   {
