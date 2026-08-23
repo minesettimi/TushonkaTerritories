@@ -14,6 +14,7 @@ public class DataConfig
 public class Faction
 {
     [JsonPropertyName("color")] public string Color { get; set; } = "#000000";
+    [JsonPropertyName("image")] public string? Image { get; set; } = null;
     [JsonPropertyName("base")] public string? Base { get; set; } = null;
     [JsonPropertyName("botNames")] public List<string> BotNames { get; set; } = [];
     [JsonPropertyName("mobileBosses")] public List<string> MobileBossNames { get; set; } = [];

@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using EFT;
 using EFT.UI;
+using TerritoryClient.Models;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace TerritoryClient.UI;
@@ -17,17 +18,22 @@ public class ReputationPanel : UIElement
 
     [SerializeField] public Image baseFill;
     [SerializeField] public Image factionColor;
+    [SerializeField] public Image factionImage;
 
     public readonly string HostileColor = "#E24E4E";
     public readonly string NeutralColor = "#CFC992";
     public readonly string AllyColor = "#7FDB69";
     
-    public void Show(string faction, Dictionary<string, double> playerRep)
+    public void Show(string faction, FactionData factionData, 
+        Dictionary<string, double> playerRep, IImageLoader session)
     {
         ShowGameObject();
         nameLabel.text = $"FactionName {faction}".Localized(EStringCase.Upper);
 
-        factionColor.color = Plugin.StateManager.ServerData.GetFactionColor(faction);
+        
+        ServerData serverData = Plugin.StateManager.ServerData;
+        
+        factionColor.color = factionData.Color;
         
         if (!playerRep.TryGetValue(faction, out double repValue))
         {
@@ -40,18 +46,38 @@ public class ReputationPanel : UIElement
         string hostility = "HOSTILE";
         string color = HostileColor;
 
-        if (repValue >= Plugin.StateManager.ServerData.AllyRep)
+        if (repValue >= serverData.AllyRep)
         {
             hostility = "FRIENDLY";
             color = AllyColor;
         }
-        else if (repValue > Plugin.StateManager.ServerData.NeutralRep)
+        else if (repValue > serverData.NeutralRep)
         {
             hostility = "NEUTRAL";
             color = NeutralColor;
         }
 
         hostilityLabel.text = $"<color={color}>{hostility.Localized()}</color>";
-        baseFill.fillAmount = (float)Math.Clamp(repValue / Plugin.StateManager.ServerData.AllyRep, 0, 1);
+        baseFill.fillAmount = (float)Math.Clamp(repValue / serverData.AllyRep, 0, 1);
+
+        if (factionData.Image == null)
+            return;
+
+        if (factionData.Sprite != null)
+        {
+            factionImage.sprite = factionData.Sprite;
+            return;
+        }
+
+        _ = TryLoadIcon(factionData, session);
+    }
+
+    private async Task TryLoadIcon(FactionData factionData, IImageLoader session)
+    {
+        await factionData.LoadSprite(session);
+        if (factionData.Sprite != null)
+        {
+            factionImage.sprite = factionData.Sprite;
+        }
     }
 }

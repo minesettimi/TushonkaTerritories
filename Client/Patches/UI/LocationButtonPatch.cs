@@ -26,7 +26,7 @@ public class LocationButtonPatch : ModulePatch
         if (locationState == null)
             return;
 
-        Color factionColor = Plugin.StateManager.ServerData.GetFactionColor(locationState.Holder);
+        Color factionColor = Plugin.StateManager.ServerData.Factions[locationState.Holder].Color;
         
         
         __instance._defaultColor = factionColor;

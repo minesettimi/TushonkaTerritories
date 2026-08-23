@@ -21,6 +21,7 @@ public class ReputationScreen : UIElement
 
     private UIAnimatedToggleSpawner _pmcToggle;
     private UIAnimatedToggleSpawner _scavToggle;
+    private IImageLoader _session;
 
     public void Awake()
     {
@@ -34,8 +35,10 @@ public class ReputationScreen : UIElement
         _scavToggle.SpawnedObject.onValueChanged.AddListener(value => UpdateReputation(ReputationList.ERepProfile.Scav, value));
     }
 
-    public void Show(Profile[] allProfiles, InventoryController inventoryController)
+    public void Show(Profile[] allProfiles, InventoryController inventoryController, IImageLoader session)
     {
+        _session = session;
+        
         inventoryController.StopProcesses();
         ItemUiContext.Instance.CloseAllWindows();
 
@@ -56,19 +59,20 @@ public class ReputationScreen : UIElement
             return;
         
         reputationList.Dispose();
-        reputationList.Show(profileType == ReputationList.ERepProfile.PMC ? _pmcProfile : _scavProfile);
+        reputationList.Show(profileType == ReputationList.ERepProfile.PMC ? _pmcProfile : _scavProfile, _session);
         UI.AddDisposable(reputationList);
     }
 
     public class ReputationTabController(
         ReputationScreen reputationTab,
         Profile[] allProfiles,
-        InventoryController inventoryController)
+        InventoryController inventoryController,
+        IImageLoader session)
         : UIElementTabController<ReputationScreen>(reputationTab)
     {
         public override void Show()
         {
-            Content.Show(allProfiles, inventoryController);
+            Content.Show(allProfiles, inventoryController, session);
         }
     }
 }

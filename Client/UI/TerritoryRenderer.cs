@@ -66,7 +66,7 @@ public class TerritoryRenderer : MonoBehaviour
             locationPos = MapTransform.rect.size + locationPos;
             
             points.Add(locationPos);
-            colors.Add(Plugin.StateManager.ServerData.GetFactionColor(locationState.Holder));
+            colors.Add(Plugin.StateManager.ServerData.Factions[locationState.Holder].Color);
         }
         
         Voronator voronoi = new(points, new Vector2(0, 0), MapTransform.rect.size);

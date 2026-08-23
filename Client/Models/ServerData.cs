@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using EFT;
 using EFT.Communications;
 using Newtonsoft.Json;
@@ -8,35 +9,48 @@ namespace TerritoryClient.Models;
 
 public class ServerData
 {
-    [JsonProperty("factionColors")] public Dictionary<string, string> FactionColors { get; set; } = null!;
+    [JsonProperty("factions")] public Dictionary<string, FactionData> Factions { get; set; } = null!;
     [JsonProperty("botFactionTable")] public Dictionary<string, string> BotFaction { get; set; } = [];
     [JsonProperty("attitudeEffect")] public bool AttitudeEffect { get; set; }
     [JsonProperty("allyRep")] public double AllyRep { get; set; }
     [JsonProperty("neutralRep")] public double NeutralRep { get; set; }
     [JsonProperty("continualUpdates")] public int ContinualUpdates { get; set; }
 
-    [JsonIgnore] private readonly Dictionary<string, Color> _colorCache = [];
+}
 
-    //lazy load colors
-    public Color GetFactionColor(string faction)
+public class FactionData
+{
+    [JsonProperty("color")] public string FactionColor { get; set; } = null!;
+    [JsonProperty("image")] public string? Image { get; set; }
+    
+    [JsonIgnore] private Color? _cachedColor;
+    [JsonIgnore] public Sprite? Sprite;
+
+    [JsonIgnore]
+    public Color Color
     {
-        if (!FactionColors.TryGetValue(faction, out string? htmlColor))
+        get
         {
-            Plugin.PluginLogger.LogError($"Tried to retrieve color for invalid faction: {faction}!");
-            return Color.red; //noticable
-        }
-
-        if (_colorCache.TryGetValue(faction, out Color color)) return color;
+            if (_cachedColor != null) return (Color)_cachedColor;
         
-        if (!ColorUtility.TryParseHtmlString(htmlColor, out Color colorObj))
-        {
-            Plugin.PluginLogger.LogError($"Failed to parse color {color}!");
-            return Color.red;
+            if (!ColorUtility.TryParseHtmlString(FactionColor, out Color colorObj))
+            {
+                Plugin.PluginLogger.LogError($"Failed to parse color {FactionColor}!");
+                return Color.red;
+            }
+
+            _cachedColor = colorObj;
+            return colorObj;
         }
+    }
 
-        _colorCache[faction] = colorObj;
-        return colorObj;
-
+    public async Task LoadSprite(IImageLoader session)
+    {
+        if (Image == null)
+            return;
+        
+        Sprite sprite = await Utils.LoadIconSprite(session, Image);
+        Sprite = sprite;
     }
 }
 
