@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using EFT;
+using EFT.Communications;
 using Newtonsoft.Json;
+using UnityEngine;
 
 namespace TerritoryClient.Models;
 
@@ -12,6 +14,30 @@ public class ServerData
     [JsonProperty("allyRep")] public double AllyRep { get; set; }
     [JsonProperty("neutralRep")] public double NeutralRep { get; set; }
     [JsonProperty("continualUpdates")] public int ContinualUpdates { get; set; }
+
+    [JsonIgnore] private readonly Dictionary<string, Color> _colorCache = [];
+
+    //lazy load colors
+    public Color GetFactionColor(string faction)
+    {
+        if (!FactionColors.TryGetValue(faction, out string? htmlColor))
+        {
+            Plugin.PluginLogger.LogError($"Tried to retrieve color for invalid faction: {faction}!");
+            return Color.red; //noticable
+        }
+
+        if (_colorCache.TryGetValue(faction, out Color color)) return color;
+        
+        if (!ColorUtility.TryParseHtmlString(htmlColor, out Color colorObj))
+        {
+            Plugin.PluginLogger.LogError($"Failed to parse color {color}!");
+            return Color.red;
+        }
+
+        _colorCache[faction] = colorObj;
+        return colorObj;
+
+    }
 }
 
 public class ServerState

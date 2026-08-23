@@ -25,17 +25,12 @@ public class LocationButtonPatch : ModulePatch
         
         if (locationState == null)
             return;
+
+        Color factionColor = Plugin.StateManager.ServerData.GetFactionColor(locationState.Holder);
         
-        string color = Plugin.StateManager.ServerData.FactionColors[locationState.Holder];
         
-        if (!ColorUtility.TryParseHtmlString(color, out Color colorObj))
-        {
-            NotificationManager.DisplayMessageNotification($"Failed to parse color {color}!");
-            return;
-        }
-        
-        __instance._defaultColor = colorObj;
-        __instance._specialColor = colorObj;
+        __instance._defaultColor = factionColor;
+        __instance._specialColor = factionColor;
     }
 
     [PatchPostfix]

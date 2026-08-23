@@ -16,6 +16,7 @@ public class ReputationPanel : UIElement
     [SerializeField] public TextMeshProUGUI hostilityLabel;
 
     [SerializeField] public Image baseFill;
+    [SerializeField] public Image factionColor;
 
     public readonly string HostileColor = "#E24E4E";
     public readonly string NeutralColor = "#CFC992";
@@ -25,8 +26,8 @@ public class ReputationPanel : UIElement
     {
         ShowGameObject();
         nameLabel.text = $"FactionName {faction}".Localized(EStringCase.Upper);
-        
-        //TODO: Color square to show faction color.
+
+        factionColor.color = Plugin.StateManager.ServerData.GetFactionColor(faction);
         
         if (!playerRep.TryGetValue(faction, out double repValue))
         {
