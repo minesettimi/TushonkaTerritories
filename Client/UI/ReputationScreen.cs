@@ -3,6 +3,7 @@ using System.Linq;
 using EFT;
 using EFT.InventoryLogic;
 using EFT.UI;
+using TerritoryClient.Patches.UI;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -25,6 +26,9 @@ public class ReputationScreen : UIElement
     {
         _pmcToggle = pmcToggle.GetComponent<UIAnimatedToggleSpawner>();
         _scavToggle = scavToggle.GetComponent<UIAnimatedToggleSpawner>();
+
+        _pmcToggle._object = CommonUIAwakePatch.TemplateToggle;
+        _scavToggle._object = CommonUIAwakePatch.TemplateToggle;
         
         _pmcToggle.SpawnedObject.onValueChanged.AddListener(value => UpdateReputation(ReputationList.ERepProfile.PMC, value));
         _scavToggle.SpawnedObject.onValueChanged.AddListener(value => UpdateReputation(ReputationList.ERepProfile.Scav, value));

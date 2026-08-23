@@ -17,9 +17,17 @@ public class ReputationList : UIElement
             Plugin.PluginLogger.LogError($"Failed to find player rep for id: {profile.Id}");
             return;
         }
+
+        List<string> factions = [];
+
+        foreach (string factionName in Plugin.StateManager.ServerData.FactionColors.Keys)
+        {
+            if (factionName != "none")
+                factions.Add(factionName);
+        }
         
         ShowGameObject();
-        UI.AddViewList(Plugin.StateManager.ServerData.FactionColors.Keys, repTemplate,
+        UI.AddViewList(factions, repTemplate,
             repContainer, (faction, panel) => panel.Show(faction, playerRep));
     }
     

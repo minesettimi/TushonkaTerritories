@@ -24,7 +24,7 @@ public class ReputationPanel : UIElement
     public void Show(string faction, Dictionary<string, double> playerRep)
     {
         ShowGameObject();
-        nameLabel.text = faction.Localized(EStringCase.Upper);
+        nameLabel.text = $"FactionName {faction}".Localized(EStringCase.Upper);
         
         //TODO: Color square to show faction color.
         
@@ -34,14 +34,14 @@ public class ReputationPanel : UIElement
             return;
         }
 
-        reputationLabel.text = repValue.ToString("#.##");
+        reputationLabel.text = repValue.ToString("#0.00");
 
         string hostility = "HOSTILE";
         string color = HostileColor;
 
         if (repValue >= Plugin.StateManager.ServerData.AllyRep)
         {
-            hostility = "Ally";
+            hostility = "FRIENDLY";
             color = AllyColor;
         }
         else if (repValue > Plugin.StateManager.ServerData.NeutralRep)

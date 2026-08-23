@@ -1,7 +1,4 @@
 using System.Reflection;
-using System.Threading.Tasks;
-using Comfort.Common;
-using EFT;
 using EFT.Communications;
 using EFT.UI;
 using HarmonyLib;
@@ -11,21 +8,21 @@ using UnityEngine;
 
 namespace TerritoryClient.Patches.UI;
 
-public class MainMenuAwake : ModulePatch
+public class CommonUIAwakePatch : ModulePatch
 {
     public static ReputationScreen RepScreen;
     public static Tab ReputationTab;
+    public static AnimatedToggle TemplateToggle;
     
     protected override MethodBase GetTargetMethod()
     {
-        return AccessTools.Method(typeof(MainMenuShowOperation), nameof(MainMenuShowOperation.Init));
+        return AccessTools.Method(typeof(CommonUI), nameof(CommonUI.Awake));
     }
 
-    [PatchPrefix]
-    public static void Prefix()
+    [PatchPostfix]
+    public static void Postfix(CommonUI __instance)
     {
-        Transform commonUI = Singleton<CommonUI>.Instance.transform;
-        Transform inventoryScreen = commonUI.Find("Common UI/InventoryScreen");
+        Transform inventoryScreen = __instance.InventoryScreen.transform;
         
         GameObject? reputationTab = Plugin.BundleLoader.Bundle.LoadAsset<GameObject>("Reputation.prefab");
 
@@ -47,11 +44,21 @@ public class MainMenuAwake : ModulePatch
 
         GameObject repScreenObj = Object.Instantiate(reputationScreen, inventoryScreen);
         RepScreen = repScreenObj.GetComponent<ReputationScreen>();
+        repScreenObj.name = "Reputation Panel";
         
         Transform tabGroup = inventoryScreen.Find("Tab Bar/Tabs");
 
         GameObject repObj = Object.Instantiate(reputationTab, tabGroup);
+        repObj.name = "Reputation";
         ReputationTab = repObj.GetComponent<Tab>();
         repObj.transform.SetAsLastSibling();
+        
+        
+        //steal the prefab
+        Transform overallSpawner =
+            inventoryScreen.Find("Overall Panel/RightSide/Buttons/Placeholder/Overall/OverallToggleSpawner");
+
+        UIAnimatedToggleSpawner toggleSpawner = overallSpawner.gameObject.GetComponent<UIAnimatedToggleSpawner>();
+        TemplateToggle = toggleSpawner._object;
     }
 }

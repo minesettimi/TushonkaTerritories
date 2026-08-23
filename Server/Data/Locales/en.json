@@ -2,7 +2,7 @@
   "TerritoryDescription": "Controlled By {0}",
   "HOSTILE": "HOSTILE",
   "NEUTRAL": "NEUTRAL",
-  "ALLY": "ALLY",
+  "FRIENDLY": "FRIENDLY",
   
   "FactionName none": "Nobody",
   "FactionName scav": "Scavengers",
