@@ -8,8 +8,8 @@ namespace TerritoryClient.UI;
 
 public class ReputationList : UIElement
 {
-    [SerializeField] public ReputationPanel repTemplate;
-    [SerializeField] public Transform repContainer;
+    [SerializeField] public ReputationPanel repTemplate = null!;
+    [SerializeField] public Transform repContainer = null!;
     
     public void Show(Profile profile, IImageLoader session)
     {

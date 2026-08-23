@@ -13,9 +13,9 @@ namespace TerritoryClient.Patches.UI;
 
 public class CommonUIAwakePatch : ModulePatch
 {
-    public static ReputationScreen RepScreen;
-    public static Tab ReputationTab;
-    public static AnimatedToggle TemplateToggle;
+    public static ReputationScreen RepScreen = null!;
+    public static Tab ReputationTab = null!;
+    public static AnimatedToggle TemplateToggle = null!;
     
     public static EInventoryTab RepEnumValue;
     

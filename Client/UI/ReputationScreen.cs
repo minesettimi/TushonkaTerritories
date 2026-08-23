@@ -11,17 +11,17 @@ namespace TerritoryClient.UI;
 
 public class ReputationScreen : UIElement
 {
-    [SerializeField] public GameObject pmcToggle;
-    [SerializeField] public GameObject scavToggle;
+    [SerializeField] public GameObject pmcToggle = null!;
+    [SerializeField] public GameObject scavToggle = null!;
 
-    [SerializeField] public ReputationList reputationList;
+    [SerializeField] public ReputationList reputationList = null!;
 
-    private Profile _pmcProfile;
-    private Profile _scavProfile;
+    private Profile _pmcProfile = null!;
+    private Profile _scavProfile = null!;
 
-    private UIAnimatedToggleSpawner _pmcToggle;
-    private UIAnimatedToggleSpawner _scavToggle;
-    private IImageLoader _session;
+    private UIAnimatedToggleSpawner _pmcToggle = null!;
+    private UIAnimatedToggleSpawner _scavToggle = null!;
+    private IImageLoader _session = null!;
 
     public void Awake()
     {

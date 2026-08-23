@@ -1,6 +1,7 @@
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.DI;
 using SPTarkov.Server.Core.Models.Spt.Mod;
+using TerritoryServer.Helpers;
 using TerritoryServer.Services;
 
 namespace TerritoryServer.Loaders;
@@ -9,7 +10,8 @@ namespace TerritoryServer.Loaders;
 public class PostLoad(LocationService locationService, ReputationService reputationService,
     LocaleService localeService,
     BattleService battleService,
-    ClientEnumDefinitions clientEnumDefinitions) : IOnLoad
+    ClientEnumDefinitions clientEnumDefinitions,
+    ImageRouterHelper imageRouterHelper) : IOnLoad
 {
     public async Task OnLoadAsync(CancellationToken cancellationToken)
     {
@@ -29,5 +31,7 @@ public class PostLoad(LocationService locationService, ReputationService reputat
                 JsonEnumName = "reputation"
             }
         );
+        
+        imageRouterHelper.LoadFactionImages();
     }
 }

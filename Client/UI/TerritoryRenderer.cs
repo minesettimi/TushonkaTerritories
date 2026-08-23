@@ -14,10 +14,10 @@ namespace TerritoryClient.UI;
 public class TerritoryRenderer : MonoBehaviour
 {
     [SerializeField] 
-    public Image MapImage;
+    public Image MapImage = null!;
     
     [SerializeField]
-    public RectTransform MapTransform;
+    public RectTransform MapTransform = null!;
     
     [NonSerialized]
     public MongoID? LastState;

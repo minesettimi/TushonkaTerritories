@@ -12,13 +12,13 @@ namespace TerritoryClient.UI;
 
 public class ReputationPanel : UIElement
 {
-    [SerializeField] public TextMeshProUGUI nameLabel;
-    [SerializeField] public TextMeshProUGUI reputationLabel;
-    [SerializeField] public TextMeshProUGUI hostilityLabel;
+    [SerializeField] public TextMeshProUGUI nameLabel = null!;
+    [SerializeField] public TextMeshProUGUI reputationLabel = null!;
+    [SerializeField] public TextMeshProUGUI hostilityLabel = null!;
 
-    [SerializeField] public Image baseFill;
-    [SerializeField] public Image factionColor;
-    [SerializeField] public Image factionImage;
+    [SerializeField] public Image baseFill = null!;
+    [SerializeField] public Image factionColor = null!;
+    [SerializeField] public Image factionImage = null!;
 
     public readonly string HostileColor = "#E24E4E";
     public readonly string NeutralColor = "#CFC992";
