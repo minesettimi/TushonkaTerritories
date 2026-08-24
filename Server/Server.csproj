@@ -8,7 +8,7 @@
         <Nullable>enable</Nullable>
         <OutputType>Library</OutputType>
 
-        <Version>1.0.3</Version>
+        <Version>1.1.0</Version>
         <RootNamespace>TerritoryServer</RootNamespace>
         <AssemblyName>TushonkaTerritories</AssemblyName>
 
