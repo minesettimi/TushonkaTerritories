@@ -18,10 +18,11 @@
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
         <Exec Command="cp -a $(TargetPath) $(SolutionDir)../../BepInEx/plugins/$(SolutionName)/" />
         <Exec Command="cp -a $(TargetDir)/Bundles $(SolutionDir)../../BepInEx/plugins/$(SolutionName)/" />
-        <ItemGroup Condition="$(Configuration) == Release">
-            <Exec Command="cp -a $(TargetPath) $(SolutionDir)release/BepInEx/plugins/$(SolutionName)/" />
-            <Exec Command="cp -a $(TargetDir)/Bundles $(SolutionDir)release/BepInEx/plugins/$(SolutionName)/" />
-        </ItemGroup>
+    </Target>
+
+    <Target Name="PostBuildCopy" AfterTargets="PostBuild" Condition="$(Configuration) == Release">
+        <Exec Command="cp -a $(TargetPath) $(SolutionDir)release/BepInEx/plugins/$(SolutionName)/" />
+        <Exec Command="cp -a $(TargetDir)/Bundles $(SolutionDir)release/BepInEx/plugins/$(SolutionName)/" />
     </Target>
     
     <ItemGroup>

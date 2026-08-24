@@ -47,9 +47,10 @@
         </ItemGroup>
         <Delete Files="@(CompileFiles)" />
         <Exec Command="cp -a $(TargetDir) $(SolutionDir)../../SPT_Runtime/user/mods/" />
-        <ItemGroup Condition="$(Configuration) == Release">
-            <Exec Command="cp -a $(TargetDir) $(SolutionDir)release/SPT_Runtime/user/mods/" />
-        </ItemGroup>
     </Target>
 
+    <Target Name="PostBuildCopy" AfterTargets="PostBuild" Condition="$(Configuration) == Release">
+        <Exec Command="cp -a $(TargetDir) $(SolutionDir)release/SPT_Runtime/user/mods/" />
+    </Target>
+    
 </Project>
