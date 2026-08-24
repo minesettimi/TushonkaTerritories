@@ -172,6 +172,11 @@ public class LocationService(DataConfig dataConfig,
                     newSpawns.RemoveAt(i);
                     i--;
                 }
+                else if (isPmc && !raidConfig.OverridePmcs && raidConfig.EnforcePmcSpawns)
+                {
+                    newSpawns[i].IgnoreMaxBots = true;
+                    newSpawns[i].ForceSpawn = true;
+                }
             }
             
             newSpawns.AddRange(BuildCustomSpawns(locationState, location.BotMax, (double)location.EscapeTimeLimit!));
@@ -277,7 +282,7 @@ public class LocationService(DataConfig dataConfig,
                         Time = currentDelay,
                         BossEscortAmount = groupSize == 1 ? "0" : GenerateEscortAmount(groupSize - 1),
                         IgnoreMaxBots = false,
-                        ForceSpawn = raidConfig.EnforceBotSpawns,
+                        ForceSpawn = raidConfig.EnforceBotSpawns || (i == 0 && raidConfig.EnforceFirstWave),
                         IsRandomTimeSpawn = false,
                         SpawnMode = ["pve", "regular"],
                         TriggerId = "",

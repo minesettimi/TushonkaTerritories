@@ -305,7 +305,7 @@ public class BattleService(
                 logger.Info($"[TT] Contestant {faction} at location: {locationName} has taken {finalDamage} and now has {locationState.Contestants[faction]} strength left.");
             }
             
-            if (!(locationState.Contestants[faction] < 0)) continue;
+            if (!(locationState.Contestants[faction] <= 0)) continue;
             
             if (modConfig.Debug)
             {

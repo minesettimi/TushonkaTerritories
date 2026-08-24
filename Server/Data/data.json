@@ -92,7 +92,7 @@
         "none": -1,
         "rogue": -1,
         "scav": -1,
-        "cultist": -1
+        "cultist": 0
       }
     },
     "rogue":
@@ -117,7 +117,7 @@
         "none": -1,
         "scav": -1,
         "raider": -1,
-        "cultist": -1
+        "cultist": 0
       }
     },
     "cultist":
@@ -126,8 +126,8 @@
       "botNames": ["sectantWarrior"],
       "mobileBosses": ["sectantOni", "sectantPredvestnik", "sectantPrizrak"],
       "staticBosses": ["followerZryachiy", "sectantPriest"],
-      "strength": 0.6,
-      "defensiveness": 1.0,
+      "strength": 0.8,
+      "defensiveness": 0.05,
       "distanceReduction": 1.0,
       "persistant": true,
       "uprising": 10,
