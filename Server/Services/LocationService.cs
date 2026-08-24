@@ -252,6 +252,8 @@ public class LocationService(DataConfig dataConfig,
                 
                 int currentDelay = 1 + (i * spawnDelay);
 
+                bool enforceWave = raidConfig.EnforceBotSpawns || (i == 0 && raidConfig.EnforceFirstWave);
+
                 while (remainingBots > 0)
                 {
                     int groupSize;
@@ -281,8 +283,8 @@ public class LocationService(DataConfig dataConfig,
                         IsBossPlayer = false,
                         Time = currentDelay,
                         BossEscortAmount = groupSize == 1 ? "0" : GenerateEscortAmount(groupSize - 1),
-                        IgnoreMaxBots = false,
-                        ForceSpawn = raidConfig.EnforceBotSpawns || (i == 0 && raidConfig.EnforceFirstWave),
+                        IgnoreMaxBots = enforceWave,
+                        ForceSpawn = enforceWave,
                         IsRandomTimeSpawn = false,
                         SpawnMode = ["pve", "regular"],
                         TriggerId = "",
