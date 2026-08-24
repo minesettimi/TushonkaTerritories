@@ -1,17 +1,57 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using EFT;
+using EFT.Communications;
 using Newtonsoft.Json;
+using UnityEngine;
 
 namespace TerritoryClient.Models;
 
 public class ServerData
 {
-    [JsonProperty("factionColors")] public Dictionary<string, string> FactionColors { get; set; } = null!;
+    [JsonProperty("factions")] public Dictionary<string, FactionData> Factions { get; set; } = null!;
     [JsonProperty("botFactionTable")] public Dictionary<string, string> BotFaction { get; set; } = [];
     [JsonProperty("attitudeEffect")] public bool AttitudeEffect { get; set; }
     [JsonProperty("allyRep")] public double AllyRep { get; set; }
     [JsonProperty("neutralRep")] public double NeutralRep { get; set; }
     [JsonProperty("continualUpdates")] public int ContinualUpdates { get; set; }
+
+}
+
+public class FactionData
+{
+    [JsonProperty("color")] public string FactionColor { get; set; } = null!;
+    [JsonProperty("image")] public string? Image { get; set; }
+    
+    [JsonIgnore] private Color? _cachedColor;
+    [JsonIgnore] public Sprite? Sprite;
+
+    [JsonIgnore]
+    public Color Color
+    {
+        get
+        {
+            if (_cachedColor != null) return (Color)_cachedColor;
+        
+            if (!ColorUtility.TryParseHtmlString(FactionColor, out Color colorObj))
+            {
+                Plugin.PluginLogger.LogError($"Failed to parse color {FactionColor}!");
+                return Color.red;
+            }
+
+            _cachedColor = colorObj;
+            return colorObj;
+        }
+    }
+
+    public async Task LoadSprite(IImageLoader session)
+    {
+        if (Image == null)
+            return;
+        
+        Sprite sprite = await Utils.LoadIconSprite(session, Image);
+        Sprite = sprite;
+    }
 }
 
 public class ServerState

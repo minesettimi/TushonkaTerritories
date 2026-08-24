@@ -14,31 +14,17 @@ namespace TerritoryClient.UI;
 public class TerritoryRenderer : MonoBehaviour
 {
     [SerializeField] 
-    public Image MapImage;
+    public Image MapImage = null!;
     
     [SerializeField]
-    public RectTransform MapTransform;
+    public RectTransform MapTransform = null!;
     
     [NonSerialized]
     public MongoID? LastState;
 
-    private Dictionary<string, Color> _colors = [];
     private static readonly Vector2Int[] FillDirs = [new(1, 0), new(-1, 0), new(0, 1), new(0, -1)];
     public static readonly Dictionary<string, Vector3> LocationPositions = new();
     
-    public void Awake()
-    {
-        foreach ((string faction, string colorData) in Plugin.StateManager.ServerData.FactionColors)
-        {
-            if (!ColorUtility.TryParseHtmlString(colorData, out Color color))
-            {
-                NotificationManager.DisplayMessageNotification($"Failed to parse color {colorData}!");
-                return;
-            }
-
-            _colors[faction] = color;
-        }
-    }
 
     public void Show()
     {
@@ -79,23 +65,8 @@ public class TerritoryRenderer : MonoBehaviour
 
             locationPos = MapTransform.rect.size + locationPos;
             
-            // if (location == "laboratory" || location == "bigmap")
-            // {
-            //     Color testColor = location == "bigmap" ? Color.red : Color.green;
-            //
-            //     Vector2Int startingPos = Vector2Int.RoundToInt(locationPos);
-            //     
-            //     for (int x = startingPos.x - 8; x < startingPos.x + 9; x++)
-            //     {
-            //         for (int y = startingPos.y - 8; y < startingPos.y + 9; y++)
-            //         {
-            //             newMap.SetPixel(x, y, testColor);
-            //         }
-            //     }
-            // }
-            
             points.Add(locationPos);
-            colors.Add(_colors[locationState.Holder]);
+            colors.Add(Plugin.StateManager.ServerData.Factions[locationState.Holder].Color);
         }
         
         Voronator voronoi = new(points, new Vector2(0, 0), MapTransform.rect.size);

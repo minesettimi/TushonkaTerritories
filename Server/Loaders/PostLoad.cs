@@ -1,5 +1,7 @@
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.DI;
+using SPTarkov.Server.Core.Models.Spt.Mod;
+using TerritoryServer.Helpers;
 using TerritoryServer.Services;
 
 namespace TerritoryServer.Loaders;
@@ -7,7 +9,9 @@ namespace TerritoryServer.Loaders;
 [Injectable(TypePriority = OnLoadOrder.PostLoad + 100000)]
 public class PostLoad(LocationService locationService, ReputationService reputationService,
     LocaleService localeService,
-    BattleService battleService) : IOnLoad
+    BattleService battleService,
+    ClientEnumDefinitions clientEnumDefinitions,
+    ImageRouterHelper imageRouterHelper) : IOnLoad
 {
     public async Task OnLoadAsync(CancellationToken cancellationToken)
     {
@@ -16,5 +20,18 @@ public class PostLoad(LocationService locationService, ReputationService reputat
         await localeService.Load();
         
         battleService.Setup();
+        
+        clientEnumDefinitions.Add(
+            "com.minesettimi.territories",
+            new EnumEntryDefinition
+            {
+                EnumType = "EFT.UI.EInventoryTab",
+                ConstantName = "Reputation",
+                ConstantValue = 8,
+                JsonEnumName = "reputation"
+            }
+        );
+        
+        imageRouterHelper.LoadFactionImages();
     }
 }

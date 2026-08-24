@@ -11,7 +11,7 @@ public class BundleLoader
     public static readonly string ModPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
     public static readonly string BundlePath = Path.Combine(ModPath, "Bundles", "ttbundle.bundle");
 
-    public AssetBundle Bundle;
+    public AssetBundle Bundle = null!;
     
     public BundleLoader()
     {

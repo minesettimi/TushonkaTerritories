@@ -13,8 +13,13 @@ public class ChangeRolePatch : ModulePatch
     }
 
     [PatchPrefix]
-    public static bool Prefix()
+    public static bool Prefix(ProfileSettings __instance)
     {
+        if (__instance.Role == WildSpawnType.assaultGroup)
+        {
+            __instance.Role = WildSpawnType.assault;
+        }
+        
         return false;
     }
 }

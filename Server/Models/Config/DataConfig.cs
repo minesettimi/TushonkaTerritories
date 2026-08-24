@@ -14,6 +14,7 @@ public class DataConfig
 public class Faction
 {
     [JsonPropertyName("color")] public string Color { get; set; } = "#000000";
+    [JsonPropertyName("image")] public string? Image { get; set; } = null;
     [JsonPropertyName("base")] public string? Base { get; set; } = null;
     [JsonPropertyName("botNames")] public List<string> BotNames { get; set; } = [];
     [JsonPropertyName("mobileBosses")] public List<string> MobileBossNames { get; set; } = [];
@@ -22,6 +23,7 @@ public class Faction
     [JsonPropertyName("defensiveness")] public double Defensiveness { get; set; }
     [JsonPropertyName("distanceReduction")] public double DistanceReduction { get; set; }
     [JsonPropertyName("persistant")] public bool Persistant { get; set; }
+    [JsonPropertyName("uprising")] public double UprisingChance { get; set; }
     [JsonPropertyName("defaultRepUsec")] public double DefaultRepUsec { get; set; }
     [JsonPropertyName("defaultRepBear")] public double DefaultRepBear { get; set; }
     [JsonPropertyName("defaultRepScav")] public double DefaultRepScav { get; set; }
@@ -33,19 +35,19 @@ public class Faction
 //Credit to acidphantasm for the base of this better strategy of mapping locations
 public class LocationData<T>
 {
-    [JsonPropertyName("bigmap")] public T Customs { get; set; }
-    [JsonPropertyName("factory4_day")] public T Factory { get; set; }
-    [JsonPropertyName("interchange")] public T Interchange { get; set; }
-    [JsonPropertyName("laboratory")] public T Laboratory { get; set; }
-    [JsonPropertyName("lighthouse")] public T Lighthouse { get; set; }
-    [JsonPropertyName("rezervbase")] public T Reserve { get; set; }
-    [JsonPropertyName("sandbox")] public T GroundZero { get; set; }
-    [JsonPropertyName("shoreline")] public T Shoreline { get; set; }
-    [JsonPropertyName("tarkovstreets")] public T Streets { get; set; }
-    [JsonPropertyName("woods")] public T Woods { get; set; }
-    [JsonPropertyName("labyrinth")] public T Labyrinth { get; set; }
-    [JsonPropertyName("suburbs")] public T Icebreaker { get; set; }
-    [JsonPropertyName("terminal")] public T Terminal { get; set; }
+    [JsonPropertyName("bigmap")] public T Customs { get; set; } = default!;
+    [JsonPropertyName("factory4_day")] public T Factory { get; set; } = default!;
+    [JsonPropertyName("interchange")] public T Interchange { get; set; } = default!;
+    [JsonPropertyName("laboratory")] public T Laboratory { get; set; } = default!;
+    [JsonPropertyName("lighthouse")] public T Lighthouse { get; set; } = default!;
+    [JsonPropertyName("rezervbase")] public T Reserve { get; set; } = default!;
+    [JsonPropertyName("sandbox")] public T GroundZero { get; set; } = default!;
+    [JsonPropertyName("shoreline")] public T Shoreline { get; set; } = default!;
+    [JsonPropertyName("tarkovstreets")] public T Streets { get; set; } = default!;
+    [JsonPropertyName("woods")] public T Woods { get; set; } = default!;
+    [JsonPropertyName("labyrinth")] public T Labyrinth { get; set; } = default!;
+    [JsonPropertyName("suburbs")] public T Icebreaker { get; set; } = default!;
+    [JsonPropertyName("terminal")] public T Terminal { get; set; } = default!;
 
     [JsonIgnore]
     public T this[string key]

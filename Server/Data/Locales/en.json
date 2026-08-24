@@ -1,5 +1,8 @@
 {
   "TerritoryDescription": "Controlled By {0}",
+  "HOSTILE": "HOSTILE",
+  "NEUTRAL": "NEUTRAL",
+  "FRIENDLY": "FRIENDLY",
   
   "FactionName none": "Nobody",
   "FactionName scav": "Scavengers",

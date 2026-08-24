@@ -66,13 +66,17 @@ public class TerritoryCallbacks(HttpResponseUtil httpResponseUtil,
             AttitudeEffect = modConfig.RaidConfig.AttitudeEffectPlayer,
             AllyRep = modConfig.RaidConfig.AllyRep,
             NeutralRep = modConfig.RaidConfig.NeutralRep,
-            FactionColors = [],
+            Factions = [],
             ContinualUpdates = modConfig.BattleConfig.SimulationInterval
         };
 
         foreach ((string factionName, Faction faction) in dataConfig.Factions)
         {
-            dataResponse.FactionColors.Add(factionName, faction.Color);
+            dataResponse.Factions.Add(factionName, new FactionDataResponse
+            {
+                FactionColor = faction.Color,
+                Image = faction.Image
+            });
         }
 
         return new ValueTask<string>(httpResponseUtil.NoBody(dataResponse));
