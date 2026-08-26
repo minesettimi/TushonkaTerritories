@@ -4,7 +4,8 @@
   {
     "killChangesRep": true, //If true, killing bots changes your rep
     "killRepDecrease": 0.005, //How much rep to lose from a faction for killing one of its members
-    "killEnemyRep": 0.05 //How much rep to gain for killing a member of a rival faction
+    "killEnemyRep": 0.05, //How much rep to gain for killing a member of a rival faction
+    "overrideTraderRep": false //Should a faction's reputation change a player's standing with traders based on faction configuration
   },
   "battleConfig": 
   {

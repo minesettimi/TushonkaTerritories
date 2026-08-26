@@ -15,6 +15,7 @@ public record FactionConfig
     [JsonPropertyName("killChangesRep")] public bool RepChange { get; set; } = true;
     [JsonPropertyName("killRepDecrease")] public double KillReputationDecrease { get; set; } = 0.005;
     [JsonPropertyName("killEnemyRep")] public double KillEnemyReputation { get; set; } = 0.05;
+    [JsonPropertyName("overrideTraderRep")] public bool TraderReputation { get; set; } = false;
 }
 
 public record BattleConfig

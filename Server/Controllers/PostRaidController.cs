@@ -4,6 +4,7 @@ using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.Helpers.Profile;
 using SPTarkov.Server.Core.Models.Common;
 using SPTarkov.Server.Core.Models.Eft.Common;
+using TerritoryServer.Loaders;
 using TerritoryServer.Models;
 using TerritoryServer.Servers;
 using TerritoryServer.Services;
@@ -16,6 +17,7 @@ public class PostRaidController(ProfileHelper profileHelper,
     ModConfig modConfig,
     DataConfig dataConfig,
     BattleService battleService,
+    ReputationService reputationService,
     ISptLogger<PostRaidController> logger)
 {
     public void PostRaidSimulate(string location, Dictionary<string, int> kills)
@@ -32,7 +34,7 @@ public class PostRaidController(ProfileHelper profileHelper,
             battleService.Simulate(location, kills);
     }
     
-    public void UpdateRaidReputation(Dictionary<string, Dictionary<string, int>> kills)
+    public void UpdateRaidReputation(Dictionary<string, Dictionary<string, int>> kills, bool scav)
     {
         if (modConfig.Debug)
         {
@@ -97,6 +99,11 @@ public class PostRaidController(ProfileHelper profileHelper,
             }
 
             stateServer.CurrentSave.PlayerRep[characterId] = reputation;
+
+            if (modConfig.FactionConfig.TraderReputation && !scav)
+            {
+                reputationService.UpdateTraderRep(characterData);
+            }
         }
 
     }

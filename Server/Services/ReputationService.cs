@@ -11,8 +11,9 @@ using TerritoryServer.Servers;
 
 namespace TerritoryServer.Loaders;
 
-[Injectable(TypePriority = OnLoadOrder.TraderCallbacks - 1)]
+[Injectable(InjectionType.Singleton)]
 public class ReputationService(StateServer stateServer, 
+    ModConfig modConfig,
     DataConfig dataConfig,
     ProfileHelper profileHelper,
     ISptLogger<ReputationService> logger)
@@ -70,6 +71,39 @@ public class ReputationService(StateServer stateServer,
                 defaultRep = faction.DefaultRepUsec;
 
             currentRep[factionName] = defaultRep;
+        }
+
+        if (modConfig.FactionConfig.TraderReputation && !scav)
+        {
+            UpdateTraderRep(pmcData);
+        }
+    }
+
+    public void UpdateTraderRep(PmcData? pmcData)
+    {
+        if (pmcData == null || pmcData.Id == null || pmcData.TradersInfo == null)
+            return;
+        
+        MongoId safeId = (MongoId)pmcData.Id;
+
+        if (!stateServer.CurrentSave.PlayerRep.TryGetValue(safeId, out Dictionary<string, double>? playerRep))
+            return;
+
+        foreach ((string factionName, Faction faction) in dataConfig.Factions)
+        {
+            if (factionName == "none" || faction.Trader == null)
+                continue;
+
+            MongoId traderId = (MongoId)faction.Trader;
+
+            if (!pmcData.TradersInfo.ContainsKey(traderId))
+            {
+                logger.Error($"[TT] Faction: {factionName} has invalid trader id: {traderId}");
+                continue;    
+            }
+            
+            double rep = playerRep[factionName];
+            pmcData.TradersInfo[traderId].Standing = rep;
         }
     }
 }
