@@ -25,7 +25,6 @@ public class InjectConstruct : IOnDIConstruct
 
     public static async Task OnDIConstructAsync(IServiceCollection serviceCollection, CancellationToken cancellationToken)
     {
-        
         DataConfig dataConfig;
 
         if (File.Exists(Path.Join(DataPath, "data_override.json")))
@@ -45,15 +44,12 @@ public class InjectConstruct : IOnDIConstruct
         }
         
         string configPath = Path.Join(ConfigPath, "config.jsonc");
-        ModConfig? modConfig =
-            await LoadConfig<ModConfig>(configPath, cancellationToken);
+        ModConfig modConfig =
+            await LoadConfig<ModConfig>(configPath, cancellationToken) ?? new ModConfig();
 
-        if (modConfig == null)
-        {
-            modConfig = new ModConfig();
-            await File.WriteAllTextAsync(configPath,
-                JsonSerializer.Serialize(modConfig, _serializerOptions), cancellationToken);
-        }
+        //always save to update values
+        await File.WriteAllTextAsync(configPath,
+            JsonSerializer.Serialize(modConfig, _serializerOptions), cancellationToken);
         
         serviceCollection.AddSingleton(dataConfig);
         serviceCollection.AddSingleton(modConfig);
