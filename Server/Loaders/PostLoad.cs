@@ -37,21 +37,5 @@ public class PostLoad(LocationService locationService, ReputationService reputat
         );
         
         imageRouterHelper.LoadFactionImages();
-        
-        templateTable.Quests["5a27b9de86f77464e5044585"].Conditions.AvailableForFinish.Add(new QuestCondition()
-        {
-            ConditionType = "Reputation",
-            DynamicLocale = false,
-            GlobalQuestCounterId = "",
-            Id = "69631a0bc6c5f245d93d25c2",
-            Index = 2,
-            OneSessionOnly = false,
-            IsEncoded = false,
-            ParentId = "",
-            Type = "TraderStanding",
-            Target = new ListOrT<string>(null, "rogue"),
-            Value = 7.5,
-            VisibilityConditions = []
-        });
     }
 }
