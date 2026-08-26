@@ -60,6 +60,17 @@ public class ServerState
     [JsonProperty("lastSimulatedLoc")] public int LastLoc { get; set; } = 0;
     [JsonProperty("locations")] public LocationData Locations { get; set; } = null!;
     [JsonProperty("playerRep")] public Dictionary<MongoID, Dictionary<string, double>> PlayerRep { get; set; } = null!;
+
+    public double GetPlayerRep(MongoID player, string faction)
+    {
+        if (PlayerRep.TryGetValue(player, out Dictionary<string, double> repDict) &&
+            repDict.TryGetValue(faction, out double repValue))
+        {
+            return repValue;
+        }
+
+        return -1.0;
+    }
 }
 
 public record LocationState

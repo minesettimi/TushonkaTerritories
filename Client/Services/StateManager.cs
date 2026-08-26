@@ -12,6 +12,8 @@ public class StateManager
     public ServerState State { get; private set; }
     public DateTime LastUpdate { get; private set; }
 
+    public Action StateUpdated;
+
     public async Task<bool> RequestData()
     {
         try
@@ -45,6 +47,7 @@ public class StateManager
                 State = JsonConvert.DeserializeObject<ServerState>(data)!;
                 LastUpdate = DateTime.UtcNow;
                 
+                StateUpdated?.Invoke();
                 return true;
             }
         }

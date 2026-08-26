@@ -174,7 +174,6 @@ public class LocationService(DataConfig dataConfig,
                 }
                 else if (isPmc && !raidConfig.OverridePmcs && raidConfig.EnforcePmcSpawns)
                 {
-                    newSpawns[i].IgnoreMaxBots = true;
                     newSpawns[i].ForceSpawn = true;
                 }
             }
@@ -250,7 +249,7 @@ public class LocationService(DataConfig dataConfig,
 
                 remainingBots = Math.Min(remainingBots, maxBotsPerWave);
                 
-                int currentDelay = 1 + (i * spawnDelay);
+                int currentDelay = 1 + i * spawnDelay;
 
                 bool enforceWave = raidConfig.EnforceBotSpawns || (i == 0 && raidConfig.EnforceFirstWave);
 
@@ -296,7 +295,7 @@ public class LocationService(DataConfig dataConfig,
                     newSpawns.Add(newBotSpawn);
 
                     if (i > 0)
-                        currentDelay += randomUtil.RandInt(1, 10);
+                        currentDelay += randomUtil.RandInt(0, 5);
                 }
             }
         }

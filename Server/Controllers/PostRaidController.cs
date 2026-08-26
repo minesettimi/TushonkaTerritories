@@ -79,7 +79,7 @@ public class PostRaidController(ProfileHelper profileHelper,
                     continue;
 
                 double repDecrease = factionConfig.KillReputationDecrease * amount;
-                reputation[botFaction] -= repDecrease;
+                reputation[botFaction] = Math.Min(reputation[botFaction] - repDecrease, 0);
 
                 double repIncrease = factionConfig.KillEnemyReputation * amount;
                 foreach ((string otherFaction, int attitude) in faction.Attitudes)

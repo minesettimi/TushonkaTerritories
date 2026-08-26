@@ -1,4 +1,6 @@
 {
+  "UI/Quests/Conditions/Reputation": "Reputation with {0}: {1}",
+  
   "TerritoryDescription": "Controlled By {0}",
   "HOSTILE": "HOSTILE",
   "NEUTRAL": "NEUTRAL",
