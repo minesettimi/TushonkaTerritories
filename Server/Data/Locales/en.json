@@ -1,5 +1,5 @@
 {
-  "UI/Quests/Conditions/Reputation": "Reputation with {0}: {1}",
+  "UI/Quests/Conditions/Reputation": "Reach reputation with {0}",
   
   "TerritoryDescription": "Controlled By {0}",
   "HOSTILE": "HOSTILE",

@@ -49,8 +49,8 @@ public class PostLoad(LocationService locationService, ReputationService reputat
             IsEncoded = false,
             ParentId = "",
             Type = "TraderStanding",
-            Target = new ListOrT<string>(null, "cultist"),
-            Value = 5.5,
+            Target = new ListOrT<string>(null, "rogue"),
+            Value = 7.5,
             VisibilityConditions = []
         });
     }
