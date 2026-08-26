@@ -52,7 +52,7 @@ public class TerritoryCallbacks(HttpResponseUtil httpResponseUtil,
 {
     public ValueTask<string> HandleMatchEnd(RaidStatRequest statRequest)
     {
-        raidController.UpdateRaidReputation(statRequest.PlayerKills, statRequest.Scav);
+        raidController.UpdateRaidReputation(statRequest.PlayerKills);
         raidController.PostRaidSimulate(statRequest.Location, statRequest.Kills);
         
         return new ValueTask<string>(httpResponseUtil.NullResponse());

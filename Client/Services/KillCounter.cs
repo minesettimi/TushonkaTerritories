@@ -12,11 +12,10 @@ public class KillCounter
 {
     private Dictionary<string, int> _killCounter = [];
     private Dictionary<string, Dictionary<string, int>> _playerKillCounter = [];
-    private bool _scavPlayer = false;
     private string _location = "";
     private bool _raidActive;
     
-    public void StartRaid(bool scav, string location)
+    public void StartRaid(string location)
     {
         if (_raidActive)
         {
@@ -28,7 +27,6 @@ public class KillCounter
         _raidActive = true;
         _killCounter.Clear();
         _playerKillCounter.Clear();
-        _scavPlayer = scav;
     }
 
     public void KilledEnemy(string botType, string? player = null)
@@ -61,7 +59,6 @@ public class KillCounter
         {
             Kills = _killCounter,
             PlayerKills = _playerKillCounter,
-            Scav = _scavPlayer,
             Location = _location
         };
 

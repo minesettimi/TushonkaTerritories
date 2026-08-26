@@ -73,7 +73,7 @@ public class ReputationService(StateServer stateServer,
             currentRep[factionName] = defaultRep;
         }
 
-        if (modConfig.FactionConfig.TraderReputation && !scav)
+        if (modConfig.FactionConfig.TraderReputation)
         {
             UpdateTraderRep(pmcData);
         }

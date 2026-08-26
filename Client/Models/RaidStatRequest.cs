@@ -10,9 +10,6 @@ public class RaidStatRequest
     
     [JsonProperty("playerKills")]
     public Dictionary<string, Dictionary<string, int>> PlayerKills { get; set; } = null!;
-    
-    [JsonProperty("scav")]
-    public bool Scav { get; set; }
 
     [JsonProperty("location")]
     public string Location { get; set; } = null!;

@@ -34,7 +34,7 @@ public class PostRaidController(ProfileHelper profileHelper,
             battleService.Simulate(location, kills);
     }
     
-    public void UpdateRaidReputation(Dictionary<string, Dictionary<string, int>> kills, bool scav)
+    public void UpdateRaidReputation(Dictionary<string, Dictionary<string, int>> kills)
     {
         if (modConfig.Debug)
         {
@@ -100,10 +100,7 @@ public class PostRaidController(ProfileHelper profileHelper,
 
             stateServer.CurrentSave.PlayerRep[characterId] = reputation;
 
-            if (modConfig.FactionConfig.TraderReputation && !scav)
-            {
-                reputationService.UpdateTraderRep(characterData);
-            }
+            reputationService.UpdateTraderRep(characterData);
         }
 
     }
