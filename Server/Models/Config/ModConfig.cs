@@ -40,7 +40,7 @@ public record BattleConfig
     [JsonPropertyName("spreadDecreaseMult")] public double SpreadMult { get; set; } = 0.25;
     [JsonPropertyName("spreadBonusStrength")] public double SpreadBonus { get; set; } = 0.05;
     [JsonPropertyName("uprising")] public bool Uprising { get; set; } = true;
-    [JsonPropertyName("uprisingStrengthMult")] public double UprisingMult { get; set; } = 0.5;
+    [JsonPropertyName("uprisingStrengthMult")] public double UprisingMult { get; set; } = 0.35;
 }
 
 public record RaidConfig

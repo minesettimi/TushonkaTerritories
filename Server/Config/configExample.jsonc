@@ -29,7 +29,7 @@
     "spreadDecreaseMult": 0.25, //Multiplier to the strength decrease for moving locations to be applied to the original location
     "spreadBonusStrength": 0.05, //0.0 - 1.0 / Bonus strength given to new faction presence created by spreading.
     "uprising": true, //If enabled, certain factions have a chance of fighting at any location.
-    "uprisingStrengthMult": 0.5 //Multiplier of a faction's base strength to grant for uprising appearances.
+    "uprisingStrengthMult": 0.35 //Multiplier of a faction's base strength to grant for uprising appearances.
   },
   "raidConfig": 
   {
