@@ -12,7 +12,8 @@ namespace TerritoryClient.Patches.UI;
 public class LocationSelectionAwakePatch : ModulePatch
 {
     public static TerritoryRenderer TerritoryRenderer;
-    public static TextMeshProUGUI TerritoryDescription;
+    public static TextMeshProUGUI TerritoryControlled;
+    public static TextMeshProUGUI TerritoryContested;
     
     protected override MethodBase GetTargetMethod()
     {
@@ -41,7 +42,7 @@ public class LocationSelectionAwakePatch : ModulePatch
         TerritoryRenderer = territoryObj.GetComponent<TerritoryRenderer>();
         TerritoryRenderer.MapTransform = map.gameObject.GetComponent<RectTransform>();
 
-        GameObject? descriptionAsset = Plugin.BundleLoader.Bundle.LoadAsset<GameObject>("TerritoryLabel.prefab");
+        GameObject? descriptionAsset = Plugin.BundleLoader.Bundle.LoadAsset<GameObject>("TerritoryInfo.prefab");
 
         if (descriptionAsset == null)
         {
@@ -54,7 +55,11 @@ public class LocationSelectionAwakePatch : ModulePatch
         GameObject descriptionObj = Object.Instantiate(descriptionAsset, locationInfoPanel);
         descriptionObj.name = "TerritoryDescription";
         descriptionObj.transform.SetAsFirstSibling();
+
+        Transform controlled = descriptionObj.transform.Find("ControlledLabel");
+        Transform contested = descriptionObj.transform.Find("ContestedLabel");
         
-        TerritoryDescription = descriptionObj.GetComponent<TextMeshProUGUI>();
+        TerritoryControlled = controlled.GetComponent<TextMeshProUGUI>();
+        TerritoryContested = contested.GetComponent<TextMeshProUGUI>();
     }
 }

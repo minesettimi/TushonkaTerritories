@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Reflection;
 using EFT;
 using EFT.UI;
@@ -27,8 +28,30 @@ public class LocationInfoSetPatch : ModulePatch
         if (locationState == null)
             return;
 
-        TextMeshProUGUI description = LocationSelectionAwakePatch.TerritoryDescription;
+        TextMeshProUGUI controlledDesc = LocationSelectionAwakePatch.TerritoryControlled;
+        TextMeshProUGUI contestedDesc = LocationSelectionAwakePatch.TerritoryContested;
         
-        description.text = string.Format("TerritoryDescription".Localized(), $"FactionName {locationState.Holder}".Localized());
+        controlledDesc.text = string.Format("TerritoryControlled".Localized(), $"FactionName {locationState.Holder}".Localized());
+
+        if (locationState.Contestants.Count < 2)
+        {
+            contestedDesc.gameObject.SetActive(false);
+            return;
+        }
+
+        contestedDesc.gameObject.SetActive(true);
+        
+        //form list of translated strings
+        List<string> factionNames = [];
+        
+        foreach (string faction in locationState.Contestants.Keys)
+        {
+            if (faction == locationState.Holder)
+                continue;
+
+            factionNames.Add($"FactionName {faction}".Localized());
+        }
+        
+        contestedDesc.text = string.Format("TerritoryContested".Localized(), string.Join(", ", factionNames));
     }
 }

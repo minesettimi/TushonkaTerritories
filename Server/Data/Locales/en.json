@@ -1,7 +1,8 @@
 {
   "UI/Quests/Conditions/Reputation": "Reach reputation with {0}",
   
-  "TerritoryDescription": "Controlled By {0}",
+  "TerritoryControlled": "Controlled By {0}",
+  "TerritoryContested": "Contested By {0}",
   "HOSTILE": "HOSTILE",
   "NEUTRAL": "NEUTRAL",
   "FRIENDLY": "FRIENDLY",
