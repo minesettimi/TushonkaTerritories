@@ -3,12 +3,16 @@ using Microsoft.AspNetCore.Components;
 using SPTarkov.DI.Annotations;
 using SPTarkov.Reflection.Patching;
 using SPTarkov.Server.Core.Helpers.Commerce;
+using SPTarkov.Server.Core.Helpers.Server;
+using SPTarkov.Server.Core.Models.Common;
 using SPTarkov.Server.Core.Models.Eft.Common;
 using SPTarkov.Server.Core.Models.Eft.Common.Tables;
 using SPTarkov.Server.Core.Models.Eft.Profile;
+using SPTarkov.Server.Core.Models.Eft.Ws;
 using SPTarkov.Server.Core.Models.Enums;
 using TerritoryServer.Helpers;
 using TerritoryServer.Loaders;
+using TerritoryServer.Models.Ws;
 using TerritoryServer.Servers;
 
 namespace TerritoryServer.Overrides;
@@ -16,12 +20,16 @@ namespace TerritoryServer.Overrides;
 [Injectable]
 public class ApplyRewardOverride : AbstractPatch
 {
-    public static ReputationHelper ReputationHelper = null!;
-    public static StateServer StateServer = null!;
+    private static ReputationHelper ReputationHelper = null!;
+    private static StateServer StateServer = null!;
+    public static NotificationSendHelper NotificationSendHelper = null!;
 
-    public ApplyRewardOverride(ReputationHelper reputationHelper)
+    public ApplyRewardOverride(ReputationHelper reputationHelper, StateServer stateServer,
+        NotificationSendHelper notificationSendHelper)
     {
         ReputationHelper = reputationHelper;
+        StateServer = stateServer;
+        NotificationSendHelper = notificationSendHelper;
     }
     
     protected override MethodBase? GetTargetMethod()
@@ -46,6 +54,15 @@ public class ApplyRewardOverride : AbstractPatch
                 case (RewardType)150:
                     ReputationHelper.AddRepToProfile(pmcData, reward.Target!, reward.Value!.Value);
                     tempRewards.RemoveAt(i--);
+                    NotificationSendHelper.SendMessageAsync(
+                        fullProfile.ProfileInfo!.ProfileId!.Value,
+                        new WsStateUpdateEvent
+                        {
+                            EventIdentifier = new MongoId(),
+                            EventType = (NotificationEventType)100,
+                            SaveState = StateServer.CurrentSave
+                        }
+                    );
                     break;
                 
                 case (RewardType)151:

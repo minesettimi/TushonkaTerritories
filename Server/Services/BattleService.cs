@@ -1,7 +1,12 @@
 using SPTarkov.Common.Models.Logging;
 using SPTarkov.DI.Annotations;
+using SPTarkov.Server.Core.Helpers.Server;
+using SPTarkov.Server.Core.Models.Common;
+using SPTarkov.Server.Core.Models.Eft.Ws;
+using SPTarkov.Server.Core.Servers.Ws;
 using SPTarkov.Server.Core.Utils;
 using TerritoryServer.Models;
+using TerritoryServer.Models.Ws;
 using TerritoryServer.Servers;
 using TerritoryServer.Utils;
 
@@ -14,6 +19,7 @@ public class BattleService(
     StateServer stateServer,
     RandomUtil randomUtil,
     LocationService locationService,
+    SptWebSocketConnectionHandler webSocketConnectionHandler,
     ISptLogger<BattleService> logger)
 {
     private Timer _battleTimer;
@@ -34,6 +40,12 @@ public class BattleService(
         _battleTimer = new Timer(_ =>
         {
             Simulate();
+            webSocketConnectionHandler.SendMessageToAll(new WsStateUpdateEvent
+            {
+                EventIdentifier = new MongoId(),
+                EventType = (NotificationEventType)100,
+                SaveState = stateServer.CurrentSave
+            });
         }, null, interval, interval);
     }
     

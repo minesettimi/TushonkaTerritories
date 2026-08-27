@@ -1,5 +1,7 @@
 using System;
 using System.Threading.Tasks;
+using Comfort.Common;
+using EFT.Communications;
 using Newtonsoft.Json;
 using SPT.Common.Http;
 using TerritoryClient.Models;
@@ -10,9 +12,25 @@ public class StateManager
 {
     public ServerData ServerData { get; private set; }
     public ServerState State { get; private set; }
-    public DateTime LastUpdate { get; private set; }
 
     public Action StateUpdated;
+
+    public void Init()
+    {
+        _ = RequestState();
+        if (Singleton<NotificationManager>.Instantiated)
+        {
+
+            Singleton<NotificationManager>.Instance.OnNotificationReceived += notification =>
+            {
+                if (notification is NotificationTerritoryState territoryNotification)
+                {
+                    State = territoryNotification.ServerState;
+                }
+            };
+        }
+    }
+
 
     public async Task<bool> RequestData()
     {
@@ -45,7 +63,6 @@ public class StateManager
             if (data != null)
             {
                 State = JsonConvert.DeserializeObject<ServerState>(data)!;
-                LastUpdate = DateTime.UtcNow;
                 
                 StateUpdated?.Invoke();
                 return true;
@@ -58,17 +75,5 @@ public class StateManager
         }
 
         return false;
-    }
-
-    public bool ShouldUpdateState()
-    {
-        if (ServerData.ContinualUpdates == -1)
-            return false;
-
-        TimeSpan diff = DateTime.UtcNow - LastUpdate;
-        
-        Plugin.PluginLogger.LogInfo($"Test: {diff.TotalMinutes}");
-
-        return diff.TotalMinutes >= ServerData.ContinualUpdates;
     }
 }

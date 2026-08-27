@@ -15,17 +15,6 @@ public class LocationSelectionShowPatch : ModulePatch
             nameof(MatchMakerSelectionLocationScreen.Show), 
             [typeof(IEftSession), typeof(RaidSettings), typeof(MatchmakerPlayersController)]);
     }
-
-    [PatchPrefix]
-    public static async void Prefix()
-    {
-        if (Plugin.StateManager.ShouldUpdateState())
-        {
-            //HACK: force the territory to re-render anyways!
-            await Plugin.StateManager.RequestState();
-            LocationSelectionAwakePatch.TerritoryRenderer.LastState = new MongoID();
-        }
-    }
     
     [PatchPostfix]
     public static void Postfix()

@@ -8,5 +8,10 @@
     "enumType": "SPTarkov.Server.Core.Models.Enums.RewardType",
     "constantName": "FactionUnlock",
     "constantValue": 151
+  },
+  {
+    "enumType": "SPTarkov.Server.Core.Models.Eft.Ws.NotificationEventType",
+    "constantName": "TerritoryUpdate",
+    "constantValue": 100
   }
 ]

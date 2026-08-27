@@ -1,5 +1,6 @@
 {
   "UI/Quests/Conditions/Reputation": "Reach reputation with {0}",
+  "TerritoryUpdated": "Territory data has been updated.",
   
   "TerritoryControlled": "Controlled By {0}",
   "TerritoryContested": "Contested By {0}",
