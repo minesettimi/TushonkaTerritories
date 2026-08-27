@@ -1,0 +1,7 @@
+[
+  {
+    "enumType": "SPTarkov.Server.Core.Models.Enums.RewardType",
+    "constantName": "Reputation",
+    "constantValue": 150
+  }
+]

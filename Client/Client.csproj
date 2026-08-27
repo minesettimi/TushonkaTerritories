@@ -12,17 +12,19 @@
 
         <AssemblyName>TushonkaTerritories</AssemblyName>
         <OutputPath>bin\$(Configuration)\$(SolutionName)\$(AssemblyName)\</OutputPath>
+        <GamePath>$(SolutionDir)../../BepInEx/plugins/$(SolutionName)/</GamePath>
+        <RewardPath>$(SolutionDir)release/BepInEx/plugins/$(SolutionName)/</RewardPath>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     </PropertyGroup>
 
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-        <Exec Command="cp -a $(TargetPath) $(SolutionDir)../../BepInEx/plugins/$(SolutionName)/" />
-        <Exec Command="cp -a $(TargetDir)/Bundles $(SolutionDir)../../BepInEx/plugins/$(SolutionName)/" />
+        <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(GamePath)" />
+        <Copy SourceFiles="$(TargetDir)/Bundles/ttbundle.bundle" DestinationFolder="$(GamePath)/Bundles" />
     </Target>
 
     <Target Name="PostBuildCopy" AfterTargets="PostBuild" Condition="$(Configuration) == Release">
-        <Exec Command="cp -a $(TargetPath) $(SolutionDir)release/BepInEx/plugins/$(SolutionName)/" />
-        <Exec Command="cp -a $(TargetDir)/Bundles $(SolutionDir)release/BepInEx/plugins/$(SolutionName)/" />
+        <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(RewardPath)" />
+        <Copy SourceFiles="$(TargetDir)/Bundles/ttbundle.bundle" DestinationFolder="$(RewardPath)/Bundles" />
     </Target>
     
     <ItemGroup>
@@ -43,14 +45,6 @@
         <Reference Include="Comfort.Unity" HintPath="..\..\..\EscapeFromTarkov_Data\Managed\Comfort.Unity.dll" />
         <Reference Include="Newtonsoft.Json" HintPath="..\..\..\EscapeFromTarkov_Data\Managed\Newtonsoft.Json.dll" />
         <Reference Include="Sirenix.Serialization" HintPath="..\..\..\EscapeFromTarkov_Data\Managed\Sirenix.Serialization.dll" />
-        <Reference Include="System" />
-        <Reference Include="System.Core" />
-        <Reference Include="System.Xml.Linq" />
-        <Reference Include="System.Data.DataSetExtensions" />
-        <Reference Include="Microsoft.CSharp" />
-        <Reference Include="System.Data" />
-        <Reference Include="System.Net.Http" />
-        <Reference Include="System.Xml" />
         <Reference Include="Unity.TextMeshPro" HintPath="..\..\..\EscapeFromTarkov_Data\Managed\Unity.TextMeshPro.dll" />
         <Reference Include="UnityEngine" HintPath="..\..\..\EscapeFromTarkov_Data\Managed\UnityEngine.dll" />
         <Reference Include="UnityEngine.AssetBundleModule" HintPath="..\..\..\EscapeFromTarkov_Data\Managed\UnityEngine.AssetBundleModule.dll" />

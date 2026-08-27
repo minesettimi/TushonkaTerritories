@@ -11,6 +11,9 @@ public class ImageRouterHelper(ImageRouter imageRouter)
 
     public void LoadFactionImages()
     {
+        if (!Directory.Exists(ImagePath))
+            return;
+        
         IEnumerable<string> factionImages = Directory.EnumerateFiles(ImagePath, "*", SearchOption.TopDirectoryOnly);
         foreach (string path in factionImages)
         {

@@ -25,15 +25,24 @@ public class PostLoad(LocationService locationService, ReputationService reputat
         
         battleService.Setup();
         
-        clientEnumDefinitions.Add(
+        clientEnumDefinitions.AddRange(
             "com.minesettimi.territories",
-            new EnumEntryDefinition
-            {
-                EnumType = "EFT.UI.EInventoryTab",
-                ConstantName = "Reputation",
-                ConstantValue = 8,
-                JsonEnumName = "reputation"
-            }
+            [
+                new EnumEntryDefinition
+                {
+                    EnumType = "EFT.UI.EInventoryTab",
+                    ConstantName = "Reputation",
+                    ConstantValue = 8,
+                    JsonEnumName = "reputation"
+                },
+                new EnumEntryDefinition
+                {
+                    EnumType = "EFT.Quests.ERewardType",
+                    ConstantName = "Reputation",
+                    ConstantValue = 150,
+                    JsonEnumName = "reputation"
+                }
+            ]
         );
         
         imageRouterHelper.LoadFactionImages();
