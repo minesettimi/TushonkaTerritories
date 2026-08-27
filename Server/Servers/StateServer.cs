@@ -1,14 +1,20 @@
 using System.Reflection;
 using SPTarkov.Common.Models.Logging;
 using SPTarkov.DI.Annotations;
+using SPTarkov.Server.Core.Helpers.Server;
 using SPTarkov.Server.Core.Models.Common;
+using SPTarkov.Server.Core.Models.Eft.Ws;
+using SPTarkov.Server.Core.Servers.Ws;
 using SPTarkov.Server.Core.Utils;
 using TerritoryServer.Models;
+using TerritoryServer.Models.Ws;
 
 namespace TerritoryServer.Servers;
 
 [Injectable(InjectionType.Singleton)]
 public class StateServer(JsonUtil jsonUtil,
+    SptWebSocketConnectionHandler webSocketConnectionHandler,
+    NotificationSendHelper notificationSendHelper,
     ISptLogger<StateServer> logger)
 {
     public static readonly string ModPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
@@ -37,5 +43,24 @@ public class StateServer(JsonUtil jsonUtil,
     {
         CurrentSave.StateId = new MongoId();
         File.WriteAllTextAsync(_savePath, jsonUtil.Serialize(CurrentSave, true));
+    }
+
+    public void SendStateUpdate(MongoId? sessionId = null)
+    {
+        WsStateUpdateEvent message = new()
+        {
+            EventIdentifier = new MongoId(),
+            EventType = (NotificationEventType)100,
+            SaveState = CurrentSave
+        };
+
+        if (sessionId == null)
+        {
+            webSocketConnectionHandler.SendMessageToAll(message);
+        }
+        else
+        {
+            notificationSendHelper.SendMessageAsync(sessionId.Value, message);
+        }
     }
 }

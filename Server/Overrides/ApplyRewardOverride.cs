@@ -22,14 +22,11 @@ public class ApplyRewardOverride : AbstractPatch
 {
     private static ReputationHelper ReputationHelper = null!;
     private static StateServer StateServer = null!;
-    public static NotificationSendHelper NotificationSendHelper = null!;
 
-    public ApplyRewardOverride(ReputationHelper reputationHelper, StateServer stateServer,
-        NotificationSendHelper notificationSendHelper)
+    public ApplyRewardOverride(ReputationHelper reputationHelper, StateServer stateServer)
     {
         ReputationHelper = reputationHelper;
         StateServer = stateServer;
-        NotificationSendHelper = notificationSendHelper;
     }
     
     protected override MethodBase? GetTargetMethod()
@@ -54,20 +51,13 @@ public class ApplyRewardOverride : AbstractPatch
                 case (RewardType)150:
                     ReputationHelper.AddRepToProfile(pmcData, reward.Target!, reward.Value!.Value);
                     tempRewards.RemoveAt(i--);
-                    NotificationSendHelper.SendMessageAsync(
-                        fullProfile.ProfileInfo!.ProfileId!.Value,
-                        new WsStateUpdateEvent
-                        {
-                            EventIdentifier = new MongoId(),
-                            EventType = (NotificationEventType)100,
-                            SaveState = StateServer.CurrentSave
-                        }
-                    );
+                    StateServer.SendStateUpdate(fullProfile.ProfileInfo!.ProfileId!);
                     break;
                 
                 case (RewardType)151:
                     //TODO: Implement unlockable factions
                     tempRewards.RemoveAt(i--);
+                    StateServer.SendStateUpdate(fullProfile.ProfileInfo!.ProfileId!);
                     break;
             }
         }

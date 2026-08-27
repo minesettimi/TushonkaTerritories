@@ -19,7 +19,6 @@ public class BattleService(
     StateServer stateServer,
     RandomUtil randomUtil,
     LocationService locationService,
-    SptWebSocketConnectionHandler webSocketConnectionHandler,
     ISptLogger<BattleService> logger)
 {
     private Timer _battleTimer;
@@ -40,12 +39,7 @@ public class BattleService(
         _battleTimer = new Timer(_ =>
         {
             Simulate();
-            webSocketConnectionHandler.SendMessageToAll(new WsStateUpdateEvent
-            {
-                EventIdentifier = new MongoId(),
-                EventType = (NotificationEventType)100,
-                SaveState = stateServer.CurrentSave
-            });
+            stateServer.SendStateUpdate();
         }, null, interval, interval);
     }
     
