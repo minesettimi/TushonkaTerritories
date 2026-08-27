@@ -16,4 +16,5 @@ public class FactionDataResponse
 {
     [JsonPropertyName("color")] public string FactionColor { get; set; } = null!;
     [JsonPropertyName("image")] public string? Image { get; set; } = null!;
+    [JsonPropertyName("locked")] public bool Locked { get; set; }
 }

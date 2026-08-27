@@ -19,6 +19,8 @@ public class ReputationPanel : UIElement
     [SerializeField] public Image baseFill = null!;
     [SerializeField] public Image factionColor = null!;
     [SerializeField] public Image factionImage = null!;
+    [SerializeField] public Image lockImage = null!;
+    [SerializeField] public Image unlockImage = null!;
 
     public readonly string HostileColor = "#E24E4E";
     public readonly string NeutralColor = "#CFC992";
@@ -33,7 +35,10 @@ public class ReputationPanel : UIElement
         ServerData serverData = Plugin.StateManager.ServerData;
         
         factionColor.color = factionData.Color;
-        
+
+        lockImage.enabled = factionData.Locked;
+        unlockImage.enabled = false; //TODO: Unlockable factions
+
         if (!playerRep.TryGetValue(faction, out double repValue))
         {
             Plugin.PluginLogger.LogError($"Failed to find player rep for faction: {faction}");

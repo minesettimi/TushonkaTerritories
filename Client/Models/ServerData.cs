@@ -22,6 +22,7 @@ public class FactionData
 {
     [JsonProperty("color")] public string FactionColor { get; set; } = null!;
     [JsonProperty("image")] public string? Image { get; set; }
+    [JsonProperty("locked")] public bool Locked { get; set; }
     
     [JsonIgnore] private Color? _cachedColor;
     [JsonIgnore] public Sprite? Sprite;
