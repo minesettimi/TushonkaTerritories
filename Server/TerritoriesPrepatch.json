@@ -3,5 +3,10 @@
     "enumType": "SPTarkov.Server.Core.Models.Enums.RewardType",
     "constantName": "Reputation",
     "constantValue": 150
+  },
+  {
+    "enumType": "SPTarkov.Server.Core.Models.Enums.RewardType",
+    "constantName": "FactionUnlock",
+    "constantValue": 151
   }
 ]

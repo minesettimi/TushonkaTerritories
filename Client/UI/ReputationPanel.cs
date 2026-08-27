@@ -29,7 +29,6 @@ public class ReputationPanel : UIElement
     {
         ShowGameObject();
         nameLabel.text = $"FactionName {faction}".Localized(EStringCase.Upper);
-
         
         ServerData serverData = Plugin.StateManager.ServerData;
         

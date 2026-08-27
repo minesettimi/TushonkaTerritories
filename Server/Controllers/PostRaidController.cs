@@ -4,6 +4,7 @@ using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.Helpers.Profile;
 using SPTarkov.Server.Core.Models.Common;
 using SPTarkov.Server.Core.Models.Eft.Common;
+using TerritoryServer.Helpers;
 using TerritoryServer.Loaders;
 using TerritoryServer.Models;
 using TerritoryServer.Servers;
@@ -17,14 +18,13 @@ public class PostRaidController(ProfileHelper profileHelper,
     ModConfig modConfig,
     DataConfig dataConfig,
     BattleService battleService,
-    ReputationService reputationService,
+    ReputationHelper reputationHelper,
     ISptLogger<PostRaidController> logger)
 {
     public void PostRaidSimulate(string location, Dictionary<string, int> kills)
     {
         if (!modConfig.BattleConfig.BattlesEnabled || !modConfig.BattleConfig.RaidBattle)
         {
-            stateServer.SaveToDisk();
             return;
         }
         
@@ -38,7 +38,7 @@ public class PostRaidController(ProfileHelper profileHelper,
     {
         if (modConfig.Debug)
         {
-            logger.Info($"Player kills: {JsonSerializer.Serialize(kills)}");
+            logger.Info($"[TT] Player kills: {JsonSerializer.Serialize(kills)}");
         }
         
         if (!modConfig.FactionConfig.RepChange)
@@ -100,8 +100,10 @@ public class PostRaidController(ProfileHelper profileHelper,
 
             stateServer.CurrentSave.PlayerRep[characterId] = reputation;
 
-            reputationService.UpdateTraderRep(characterData);
+            reputationHelper.UpdateTraderRep(characterData);
         }
 
+        
+        stateServer.SaveToDisk();
     }
 }
