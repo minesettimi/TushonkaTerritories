@@ -125,7 +125,7 @@
       "color": "#7D04D6",
       "botNames": ["sectantWarrior"],
       "mobileBosses": ["sectantOni", "sectantPredvestnik", "sectantPrizrak"],
-      "staticBosses": ["followerZryachiy", "sectantPriest"],
+      "staticBosses": ["bossZryachiy", "followerZryachiy", "sectantPriest"],
       "strength": 0.5,
       "defensiveness": 0.00,
       "distanceReduction": 1.0,

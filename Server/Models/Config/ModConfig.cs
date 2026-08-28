@@ -46,6 +46,7 @@ public record BattleConfig
 public record RaidConfig
 {
     [JsonPropertyName("overridePmcs")] public bool OverridePmcs { get; set; } = false;
+    [JsonPropertyName("overrideCultists")] public bool OverrideCultists { get; set; } = true;
     [JsonPropertyName("overrideBosses")] public bool OverrideBosses { get; set; } = false;
     [JsonPropertyName("overrideTriggeredSpawns")] public bool OverrideTriggeredSpawns { get; set; } = false;
     [JsonPropertyName("removeDefaultScavs")] public bool OverrideWaves { get; set; } = true;
@@ -63,13 +64,13 @@ public record RaidConfig
     [JsonPropertyName("maxStrengthWaveDelay")] public int MaxWaveDelay { get; set; } = 460;
     [JsonPropertyName("delayVariance")] public int DelayVariance { get; set; } = 5;
     [JsonPropertyName("maxWaves")] public int MaxWaveCap { get; set; } = 12;
-    [JsonPropertyName("minStrengthWaveSize")] public int MinWaveBotCount { get; set; } = 5;
+    [JsonPropertyName("minStrengthWaveSize")] public int MinWaveBotCount { get; set; } = 3;
     [JsonPropertyName("maxStrengthWaveSize")] public int MaxWaveBotCount { get; set; } = 9;
     [JsonPropertyName("roundedBotCounts")] public bool RoundedBotCounts { get; set; } = true;
     [JsonPropertyName("minStrengthGroupSize")] public int MinStrengthUnits { get; set; } = 2;
     [JsonPropertyName("maxStrengthGroupSize")] public int MaxStrengthUnits { get; set; } = 4;
-    [JsonPropertyName("groupSizeMinCount")] public int VariedGroupSize { get; set; } = 3;
-    [JsonPropertyName("groupChance")] public int GroupChance { get; set; } = 50;
+    [JsonPropertyName("groupSizeVariance")] public int VariedGroupSize { get; set; } = 1;
+    [JsonPropertyName("groupChance")] public int GroupChance { get; set; } = 30;
     [JsonPropertyName("spawnEnd")] public int SpawnEnd { get; set; } = 300;
     [JsonPropertyName("initialBotMultiplier")] public double InitialBotMult { get; set; } = 2;
     [JsonPropertyName("enforceBotSpawns")] public bool EnforceBotSpawns { get; set; } = false;

@@ -166,8 +166,9 @@ public class LocationService(DataConfig dataConfig,
                     continue;
                         
                 bool isPmc = bossSpawn.BossName == "pmcBEAR" || bossSpawn.BossName == "pmcUSEC";
+                bool isCultist = bossSpawn.BossName.StartsWith("sectant");
                 
-                if (raidConfig.OverridePmcs && isPmc || raidConfig.OverrideBosses && !isPmc)
+                if ((raidConfig.OverridePmcs && isPmc) || (raidConfig.OverrideCultists && isCultist) || (raidConfig.OverrideBosses && !isPmc && !isCultist))
                 {
                     newSpawns.RemoveAt(i);
                     i--;
@@ -247,9 +248,9 @@ public class LocationService(DataConfig dataConfig,
                     remainingBots = (int)Math.Round(remainingBots * raidConfig.InitialBotMult);
                 }
 
-                remainingBots = Math.Min(remainingBots, maxBotsPerWave);
+                remainingBots = Math.Min(remainingBots, (int)Math.Round(maxBotsPerWave * strength));
                 
-                int currentDelay = 1 + i * spawnDelay;
+                int currentDelay = 1 + (i * spawnDelay);
 
                 bool enforceWave = raidConfig.EnforceBotSpawns || (i == 0 && raidConfig.EnforceFirstWave);
 
@@ -259,7 +260,8 @@ public class LocationService(DataConfig dataConfig,
 
                     if (randomUtil.GetChance100(raidConfig.GroupChance))
                         groupSize = (int)Math.Round(mathUtil.MapToRange(strength, 0, 1,
-                            raidConfig.MinStrengthUnits, raidConfig.MaxStrengthUnits));
+                            raidConfig.MinStrengthUnits, raidConfig.MaxStrengthUnits)) + 
+                                randomUtil.RandInt(-raidConfig.VariedGroupSize, raidConfig.VariedGroupSize + 1);
                     else
                         groupSize = 1;
 
@@ -281,7 +283,7 @@ public class LocationService(DataConfig dataConfig,
                         BossZone = "",
                         IsBossPlayer = false,
                         Time = currentDelay,
-                        BossEscortAmount = groupSize == 1 ? "0" : GenerateEscortAmount(groupSize - 1),
+                        BossEscortAmount = groupSize == 1 ? "0" : groupSize.ToString(),
                         IgnoreMaxBots = false,
                         ForceSpawn = enforceWave,
                         IsRandomTimeSpawn = false,
@@ -315,23 +317,6 @@ public class LocationService(DataConfig dataConfig,
         }
             
         return "normal";
-    }
-
-    private string GenerateEscortAmount(int groupSize)
-    {
-        string result = "";
-        for (int size = 1; size <= groupSize; size++)
-        {
-            for (int count = modConfig.RaidConfig.VariedGroupSize + groupSize - size; count > 0; count--)
-            {
-                if (result.Length > 0)
-                    result += ",";
-
-                result += count.ToString();
-            }
-        }
-
-        return result;
     }
     
     private void BuildHostilityCache()

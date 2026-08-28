@@ -18,12 +18,12 @@ using TerritoryServer.Servers;
 namespace TerritoryServer.Overrides;
 
 [Injectable]
-public class ApplyRewardOverride : AbstractPatch
+public class ApplyRewardPatch : AbstractPatch
 {
     private static ProfileStateHelper _profileStateHelper = null!;
     private static StateServer StateServer = null!;
 
-    public ApplyRewardOverride(ProfileStateHelper profileStateHelper, StateServer stateServer)
+    public ApplyRewardPatch(ProfileStateHelper profileStateHelper, StateServer stateServer)
     {
         _profileStateHelper = profileStateHelper;
         StateServer = stateServer;

@@ -8,11 +8,11 @@ using TerritoryServer.Loaders;
 namespace TerritoryServer.Overrides;
 
 [Injectable]
-public class CreateProfileOverride : AbstractPatch
+public class CreateProfilePatch : AbstractPatch
 {
     public static ReputationService ReputationService = null!;
     
-    public CreateProfileOverride(ReputationService reputationService)
+    public CreateProfilePatch(ReputationService reputationService)
     {
         ReputationService = reputationService;
     }

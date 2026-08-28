@@ -34,6 +34,7 @@
   "raidConfig": 
   {
     "overridePmcs": false, //Remove pmc spawns from the map spawn pool
+    "overrideCultists": true, //Remove all cultists from the spawn pool
     "overrideBosses": false, //Remove all other bosses (includes raiders and rogues) from the map spawn pool
     "overrideTriggeredSpawns": false, //Remove all spawns that require a trigger to activate. i.e spawning raiders when opening the garage in labs
     "removeDefaultScavs": true, //Disable default scav spawn system
@@ -51,12 +52,12 @@
     "maxStrengthWaveDelay": 460, //Delay at minimum strength (0.0)
     "delayVariance": 5, //RNG min and max variance added/subtracted to the wave spawns
     "maxWaves": 12, //Maximum waves that the mod will create for bots. -1 to disable the cap. HAVING THIS HIGH WITH A HIGH LENGTH RAID WILL CAUSE A MASSIVE SPIKE IN RAM USAGE!
-    "minStrengthWaveSize": 4, //Bot spawns per wave at minimum strength (1.0)
-    "maxStrengthWaveSize": 7, //Bot spawns per wave at maximum strength (0.0)
+    "minStrengthWaveSize": 3, //Bot spawns per wave at minimum strength (0.0)
+    "maxStrengthWaveSize": 9, //Bot spawns per wave at maximum strength (1.0)
     "roundedBotCounts": true, //If false, bot groups will be cut off after hitting the bot count of the wave.
     "minStrengthGroupSize": 2, //Minimum bot size at minimum strength (0.0) if a group is created.
     "maxStrengthGroupSize": 4, //Maximum bot size at maximum strength (1.0)
-    "groupSizeMinCount": 3, //How many chances does a group have to be minimum possible size
+    "groupSizeVariance": 1, //Random variance above and below the group size
     "groupChance": 50, //Chance bots will spawn as a group
     "spawnEnd": 300, //Seconds before the end of a wave that spawning stops
     "initialBotMultiplier": 1.5, //Multiplier to wave bot count at the beginning of a raid
