@@ -57,7 +57,7 @@
 
     <Target Name="PostBuildCopy" AfterTargets="PostBuild" Condition="$(Configuration) == Release">
         <Copy SourceFiles="@(CopyFiles)" DestinationFolder="$(SolutionDir)release/SPT_Runtime/user/mods/$(AssemblyName)\%(RecursiveDir)"/>
-        <Copy SourceFiles="$(TargetDir)\TerritoriesPrepatch.json" DestinationFolder="$(SolutionDir)release/SPT_Runtime/user/patches/com.minesettimi.territories" />
+        <Copy SourceFiles="$(TargetDir)\TerritoriesPrepatch.json" DestinationFolder="$(SolutionDir)release/SPT_Runtime/user/patchers/com.minesettimi.territories" />
     </Target>
 
 </Project>
