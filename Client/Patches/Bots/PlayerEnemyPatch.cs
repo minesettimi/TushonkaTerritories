@@ -25,13 +25,13 @@ public class PlayerEnemyPatch : ModulePatch
         string bossName = __instance._role.ToString();
         string factionName = data.BotFaction.GetValueOrDefault(bossName, "none");
 
-        if (!Plugin.StateManager.State.PlayerRep.TryGetValue(player.ProfileId,
-                out Dictionary<string, double> playerRep))
+        if (!Plugin.StateManager.State.PlayerState.TryGetValue(player.ProfileId,
+                out PlayerState playerState))
         {
             return true;
         }
 
-        double rep = playerRep.GetValueOrDefault(factionName, 0f);
+        double rep = playerState.Reputation.GetValueOrDefault(factionName, 0f);
 
         __result = rep < data.NeutralRep;
         return false;

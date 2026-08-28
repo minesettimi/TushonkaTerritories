@@ -20,12 +20,12 @@ namespace TerritoryServer.Overrides;
 [Injectable]
 public class ApplyRewardOverride : AbstractPatch
 {
-    private static ReputationHelper ReputationHelper = null!;
+    private static ProfileStateHelper _profileStateHelper = null!;
     private static StateServer StateServer = null!;
 
-    public ApplyRewardOverride(ReputationHelper reputationHelper, StateServer stateServer)
+    public ApplyRewardOverride(ProfileStateHelper profileStateHelper, StateServer stateServer)
     {
-        ReputationHelper = reputationHelper;
+        _profileStateHelper = profileStateHelper;
         StateServer = stateServer;
     }
     
@@ -49,13 +49,13 @@ public class ApplyRewardOverride : AbstractPatch
             switch (reward.Type)
             {
                 case (RewardType)150:
-                    ReputationHelper.AddRepToProfile(pmcData, reward.Target!, reward.Value!.Value);
+                    _profileStateHelper.AddRepToProfile(pmcData, reward.Target!, reward.Value!.Value);
                     tempRewards.RemoveAt(i--);
                     StateServer.SendStateUpdate(fullProfile.ProfileInfo!.ProfileId!);
                     break;
                 
                 case (RewardType)151:
-                    //TODO: Implement unlockable factions
+                    _profileStateHelper.SetFactionLock(pmcData, reward.Target!);
                     tempRewards.RemoveAt(i--);
                     StateServer.SendStateUpdate(fullProfile.ProfileInfo!.ProfileId!);
                     break;

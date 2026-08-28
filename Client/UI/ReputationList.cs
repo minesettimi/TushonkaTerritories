@@ -13,7 +13,7 @@ public class ReputationList : UIElement
     
     public void Show(Profile profile, IImageLoader session)
     {
-        if (!Plugin.StateManager.State.PlayerRep.TryGetValue(profile.Id, out Dictionary<string, double> playerRep))
+        if (!Plugin.StateManager.State.PlayerState.TryGetValue(profile.Id, out PlayerState playerState))
         {
             Plugin.PluginLogger.LogError($"Failed to find player rep for id: {profile.Id}");
             return;
@@ -37,7 +37,7 @@ public class ReputationList : UIElement
             (faction,
                 panel) => panel.Show(faction,
                 Plugin.StateManager.ServerData.Factions[faction],
-                playerRep,
+                playerState,
                 session));
     }
     

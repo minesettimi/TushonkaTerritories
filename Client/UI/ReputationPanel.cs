@@ -27,7 +27,7 @@ public class ReputationPanel : UIElement
     public readonly string AllyColor = "#7FDB69";
     
     public void Show(string faction, FactionData factionData, 
-        Dictionary<string, double> playerRep, IImageLoader session)
+        PlayerState playerState, IImageLoader session)
     {
         ShowGameObject();
         nameLabel.text = $"FactionName {faction}".Localized(EStringCase.Upper);
@@ -36,10 +36,23 @@ public class ReputationPanel : UIElement
         
         factionColor.color = factionData.Color;
 
-        lockImage.enabled = factionData.Locked;
-        unlockImage.enabled = false; //TODO: Unlockable factions
+        switch (factionData.Locked)
+        {
+            case true when !playerState.Unlocked[faction]:
+                lockImage.enabled = true;
+                unlockImage.enabled = false;
+                break;
+            case true when playerState.Unlocked[faction]:
+                lockImage.enabled = false;
+                unlockImage.enabled = true;
+                break;
+            default:
+                lockImage.enabled = false;
+                unlockImage.enabled = false;
+                break;
+        }
 
-        if (!playerRep.TryGetValue(faction, out double repValue))
+        if (!playerState.Reputation.TryGetValue(faction, out double repValue))
         {
             Plugin.PluginLogger.LogError($"Failed to find player rep for faction: {faction}");
             return;

@@ -9,12 +9,13 @@ using SPTarkov.Server.Core.Models.Eft.Profile;
 using TerritoryServer.Helpers;
 using TerritoryServer.Models;
 using TerritoryServer.Servers;
+#pragma warning disable CS0612 // Type or member is obsolete
 
 namespace TerritoryServer.Loaders;
 
 [Injectable(InjectionType.Singleton)]
 public class ReputationService(StateServer stateServer, 
-    ReputationHelper reputationHelper,
+    ProfileStateHelper profileStateHelper,
     ProfileHelper profileHelper,
     ISptLogger<ReputationService> logger)
 {
@@ -26,9 +27,11 @@ public class ReputationService(StateServer stateServer,
 
         foreach (SptProfile profile in profiles.Values)
         {
-            reputationHelper.CheckProfileRep(profile.CharacterData?.PmcData);
-            reputationHelper.CheckProfileRep(profile.CharacterData?.ScavData, true);
+            profileStateHelper.CheckProfileData(profile.CharacterData?.PmcData);
+            profileStateHelper.CheckProfileData(profile.CharacterData?.ScavData, true);
         }
+        
+        stateServer.CurrentSave.PlayerRep = null;
         
         stateServer.SaveToDisk();
     }
@@ -37,8 +40,8 @@ public class ReputationService(StateServer stateServer,
     {
         SptProfile profile = profileHelper.GetFullProfile(sessionId);
         
-        reputationHelper.CheckProfileRep(profile.CharacterData?.PmcData);
-        reputationHelper.CheckProfileRep(profile.CharacterData?.ScavData, true);
+        profileStateHelper.CheckProfileData(profile.CharacterData?.PmcData);
+        profileStateHelper.CheckProfileData(profile.CharacterData?.ScavData, true);
         
         stateServer.SaveToDisk();
     }

@@ -18,7 +18,7 @@ public class PostRaidController(ProfileHelper profileHelper,
     ModConfig modConfig,
     DataConfig dataConfig,
     BattleService battleService,
-    ReputationHelper reputationHelper,
+    ProfileStateHelper profileStateHelper,
     ISptLogger<PostRaidController> logger)
 {
     public void PostRaidSimulate(string location, Dictionary<string, int> kills)
@@ -66,7 +66,7 @@ public class PostRaidController(ProfileHelper profileHelper,
             }
 
             MongoId characterId = (MongoId)characterData.Id;
-            if (!stateServer.CurrentSave.PlayerRep.TryGetValue(characterId, out Dictionary<string, double>? reputation))
+            if (!stateServer.CurrentSave.PlayerState.TryGetValue(characterId, out PlayerState? playerData))
             {
                 logger.Error("[TT] Received raid completed request but profile doesn't have reputation data!");
                 return;
@@ -77,11 +77,11 @@ public class PostRaidController(ProfileHelper profileHelper,
                 string botFaction = dataConfig.BotFaction.GetValueOrDefault(botName, "none");
                 Faction faction = dataConfig.Factions[botFaction];
             
-                if (!faction.RepEnabled)
+                if (!playerData.Unlocked[botFaction])
                     continue;
 
                 double repDecrease = factionConfig.KillReputationDecrease * amount;
-                reputation[botFaction] = Math.Max(reputation[botFaction] - repDecrease, 0);
+                playerData.Reputation[botFaction] = Math.Max(playerData.Reputation[botFaction] - repDecrease, 0);
 
                 double repIncrease = factionConfig.KillEnemyReputation * amount;
                 foreach ((string otherFaction, int attitude) in faction.Attitudes)
@@ -94,13 +94,13 @@ public class PostRaidController(ProfileHelper profileHelper,
                     if (!otherFactionData.RepEnabled)
                         continue;
 
-                    reputation[otherFaction] += repIncrease;
+                    playerData.Reputation[otherFaction] += repIncrease;
                 }
             }
 
-            stateServer.CurrentSave.PlayerRep[characterId] = reputation;
+            stateServer.CurrentSave.PlayerState[characterId] = playerData;
 
-            reputationHelper.UpdateTraderRep(characterData);
+            profileStateHelper.UpdateTraderRep(characterData);
         }
 
         

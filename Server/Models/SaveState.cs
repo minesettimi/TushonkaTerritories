@@ -8,7 +8,9 @@ public record SaveState
     [JsonPropertyName("stateId")] public MongoId StateId { get; set; }
     [JsonPropertyName("lastSimulatedLoc")] public int LastLoc { get; set; } = 0;
     [JsonPropertyName("locations")] public LocationData<LocationState?> Locations { get; set; } = new();
-    [JsonPropertyName("playerRep")] public Dictionary<MongoId, Dictionary<string, double>> PlayerRep { get; set; } = [];
+
+    [Obsolete, JsonPropertyName("playerRep")] public Dictionary<MongoId, Dictionary<string, double>>? PlayerRep { get; set; }
+    [JsonPropertyName("playerState")] public Dictionary<MongoId, PlayerState> PlayerState { get; set; } = [];
 }
 
 public record LocationState
@@ -16,4 +18,10 @@ public record LocationState
     [JsonPropertyName("holder")] public string Holder { get; set; } = "none";
     [JsonPropertyName("contestants")] public Dictionary<string, double> Contestants { get; set; } = []; //faction to strength
     [JsonPropertyName("base")] public bool Base { get; set; } = false;
+}
+
+public record PlayerState
+{
+    [JsonPropertyName("reputation")] public Dictionary<string, double> Reputation { get; set; } = [];
+    [JsonPropertyName("unlocked")] public Dictionary<string, bool> Unlocked { get; set; } = [];
 }

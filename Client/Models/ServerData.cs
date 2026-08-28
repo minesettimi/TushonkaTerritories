@@ -59,12 +59,12 @@ public class ServerState
     [JsonProperty("stateId")] public MongoID StateId { get; set; }
     [JsonProperty("lastSimulatedLoc")] public int LastLoc { get; set; } = 0;
     [JsonProperty("locations")] public LocationData Locations { get; set; } = null!;
-    [JsonProperty("playerRep")] public Dictionary<MongoID, Dictionary<string, double>> PlayerRep { get; set; } = null!;
+    [JsonProperty("playerState")] public Dictionary<MongoID, PlayerState> PlayerState { get; set; } = null!;
 
     public double GetPlayerRep(MongoID player, string faction)
     {
-        if (PlayerRep.TryGetValue(player, out Dictionary<string, double> repDict) &&
-            repDict.TryGetValue(faction, out double repValue))
+        if (PlayerState.TryGetValue(player, out PlayerState playerState) &&
+            playerState.Reputation.TryGetValue(faction, out double repValue))
         {
             return repValue;
         }
@@ -78,6 +78,12 @@ public record LocationState
     [JsonProperty("holder")] public string Holder { get; set; } = null!;
     [JsonProperty("contestants")] public Dictionary<string, double> Contestants { get; set; } = null!;
     [JsonProperty("base")] public bool Base { get; set; }
+}
+
+public record PlayerState
+{
+    [JsonProperty("reputation")] public Dictionary<string, double> Reputation = [];
+    [JsonProperty("unlocked")] public Dictionary<string, bool> Unlocked = [];
 }
 
 //convert this back to generic at some point if needed
