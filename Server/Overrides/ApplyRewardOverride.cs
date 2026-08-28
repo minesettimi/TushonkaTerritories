@@ -55,7 +55,10 @@ public class ApplyRewardOverride : AbstractPatch
                     break;
                 
                 case (RewardType)151:
+                    PmcData? scavData = fullProfile.CharacterData?.ScavData;
+                    
                     _profileStateHelper.SetFactionLock(pmcData, reward.Target!);
+                    _profileStateHelper.SetFactionLock(scavData, reward.Target!);
                     tempRewards.RemoveAt(i--);
                     StateServer.SendStateUpdate(fullProfile.ProfileInfo!.ProfileId!);
                     break;
