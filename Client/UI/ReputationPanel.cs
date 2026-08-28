@@ -83,12 +83,12 @@ public class ReputationPanel : UIElement
             return;
         }
 
-        _ = TryLoadIcon(factionData, session);
+        _ = TryLoadIcon(factionData, faction, session);
     }
 
-    private async Task TryLoadIcon(FactionData factionData, IImageLoader session)
+    private async Task TryLoadIcon(FactionData factionData, string faction, IImageLoader session)
     {
-        await factionData.LoadSprite(session);
+        await factionData.LoadSprite(session, faction);
         if (factionData.Sprite != null)
         {
             factionImage.sprite = factionData.Sprite;

@@ -74,7 +74,6 @@ public class TerritoryCallbacks(HttpResponseUtil httpResponseUtil,
             dataResponse.Factions.Add(factionName, new FactionDataResponse
             {
                 FactionColor = faction.Color,
-                Image = faction.Image,
                 Locked = !faction.RepEnabled
             });
         }

@@ -5,6 +5,7 @@ using SPTarkov.Server.Core.Models.Eft.Common.Tables;
 using SPTarkov.Server.Core.Models.Enums;
 using SPTarkov.Server.Core.Models.Spt.Mod;
 using SPTarkov.Server.Core.Models.Spt.Tables;
+using SPTarkov.Server.Core.Utils.Json;
 using TerritoryServer.Helpers;
 using TerritoryServer.Services;
 
@@ -57,5 +58,45 @@ public class PostLoad(LocationService locationService, ReputationService reputat
         );
         
         imageRouterHelper.LoadFactionImages();
+        
+        //debug
+        templateTable.Quests["5a27b9de86f77464e5044585"].Rewards?["Success"].Add(new Reward
+        {
+            AvailableInGameEditions = [],
+            GameMode = ["regular", "pve"],
+            Id = new MongoId(),
+            IsHidden = false,
+            Type = (RewardType)150,
+            Unknown = false,
+            Target = "cultist",
+            Value = 0.3
+        });
+        
+        templateTable.Quests["5a27b9de86f77464e5044585"].Rewards?["Success"].Add(new Reward
+        {
+            AvailableInGameEditions = [],
+            GameMode = ["regular", "pve"],
+            Id = new MongoId(),
+            IsHidden = false,
+            Type = (RewardType)151,
+            Unknown = false,
+            Target = "cultist"
+        });
+        
+        templateTable.Quests["5a27b9de86f77464e5044585"].Conditions.AvailableForFinish?.Add(new QuestCondition
+        {
+            ConditionType = "Reputation",
+            DynamicLocale = false,
+            GlobalQuestCounterId = "",
+            Id = "69631a0bc6c5f245d93d25c2",
+            Index = 2,
+            OneSessionOnly = false,
+            IsEncoded = false,
+            ParentId = "",
+            Type = "TraderStanding",
+            Target = new ListOrT<string>(null, "cultist"),
+            Value = 7.5,
+            VisibilityConditions = []
+        });
     }
 }

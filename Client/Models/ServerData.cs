@@ -20,9 +20,8 @@ public class ServerData
 public class FactionData
 {
     [JsonProperty("color")] public string FactionColor { get; set; } = null!;
-    [JsonProperty("image")] public string? Image { get; set; }
     [JsonProperty("locked")] public bool Locked { get; set; }
-    
+
     [JsonIgnore] private Color? _cachedColor;
     [JsonIgnore] public Sprite? Sprite;
 
@@ -44,11 +43,9 @@ public class FactionData
         }
     }
 
-    public async Task LoadSprite(IImageLoader session)
+    public async Task LoadSprite(IImageLoader session, string factionName)
     {
-        Image ??= "default_faction";
-        
-        Sprite sprite = await Utils.LoadIconSprite(session, $"/files/factions/icon/{Image}");
+        Sprite sprite = await Utils.LoadIconSprite(session, $"/files/factions/icon/{factionName}");
         Sprite = sprite;
     }
 }

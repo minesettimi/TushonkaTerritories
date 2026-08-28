@@ -34,15 +34,15 @@ public class TraderRewardViewPatch : ModulePatch
         if (factionData.Sprite == null) return false;
         
         __instance._avatar.sprite = factionData.Sprite;
-        _ = TryLoadIcon(__instance, factionData, QuestViewShowPatch.BackendSession);
+        _ = TryLoadIcon(__instance, factionData, QuestViewShowPatch.BackendSession, reward.target);
         
         return false;
 
     }
     
-    private static async Task TryLoadIcon(TraderRewardView instance, FactionData factionData, IImageLoader session)
+    private static async Task TryLoadIcon(TraderRewardView instance, FactionData factionData, IImageLoader session, string faction)
     {
-        await factionData.LoadSprite(session);
+        await factionData.LoadSprite(session, faction);
         if (factionData.Sprite != null)
         {
             instance._avatar.sprite = factionData.Sprite;
