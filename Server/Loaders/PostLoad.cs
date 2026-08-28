@@ -57,29 +57,5 @@ public class PostLoad(LocationService locationService, ReputationService reputat
         );
         
         imageRouterHelper.LoadFactionImages();
-        
-        //debug
-        templateTable.Quests["5a27b9de86f77464e5044585"].Rewards?["Success"].Add(new Reward
-        {
-            AvailableInGameEditions = [],
-            GameMode = ["regular", "pve"],
-            Id = new MongoId(),
-            IsHidden = false,
-            Type = (RewardType)150,
-            Unknown = false,
-            Target = "cultist",
-            Value = 0.3
-        });
-        
-        templateTable.Quests["5a27b9de86f77464e5044585"].Rewards?["Success"].Add(new Reward
-        {
-            AvailableInGameEditions = [],
-            GameMode = ["regular", "pve"],
-            Id = new MongoId(),
-            IsHidden = false,
-            Type = (RewardType)151,
-            Unknown = false,
-            Target = "cultist"
-        });
     }
 }
