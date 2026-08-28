@@ -51,9 +51,9 @@ public record RaidConfig
     [JsonPropertyName("overrideTriggeredSpawns")] public bool OverrideTriggeredSpawns { get; set; } = false;
     [JsonPropertyName("removeDefaultScavs")] public bool OverrideWaves { get; set; } = true;
     [JsonPropertyName("addFactionBosses")] public bool FactionBosses { get; set; } = true;
-    [JsonPropertyName("factionBossMinStrength")] public double MinBossStrength { get; set; } = 0.75;
+    [JsonPropertyName("factionBossMinStrength")] public double MinBossStrength { get; set; } = 0.6;
     [JsonPropertyName("factionBossMinChance")] public int MinBossChance { get; set; } = 15;
-    [JsonPropertyName("factionBossMaxChance")] public int MaxBossChance { get; set; } = 45;
+    [JsonPropertyName("factionBossMaxChance")] public int MaxBossChance { get; set; } = 25;
     [JsonPropertyName("allyRepRequirement")] public double AllyRep { get; set; } = 3f;
     [JsonPropertyName("warnRepRequirement")] public double NeutralRep { get; set; } = 1f;
     [JsonPropertyName("attitudeChangesAllies")] public bool AttitudeEffect { get; set; } = true;
