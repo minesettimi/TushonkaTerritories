@@ -1,24 +1,27 @@
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.Routers;
+using TerritoryServer.Models;
 using TerritoryServer.Servers;
 
 namespace TerritoryServer.Helpers;
 
 [Injectable(InjectionType.Singleton)]
-public class ImageRouterHelper(ImageRouter imageRouter)
+public class ImageRouterHelper(ImageRouter imageRouter, DataConfig dataConfig)
 {
     public static readonly string ImagePath = Path.Join(StateServer.ModPath, "Assets", "Images");
 
     public void LoadFactionImages()
     {
-        if (!Directory.Exists(ImagePath))
-            return;
+        imageRouter.AddRoute("/files/factions/icon/default_faction", Path.Join(ImagePath, "default_faction.png"));
         
-        IEnumerable<string> factionImages = Directory.EnumerateFiles(ImagePath, "*", SearchOption.TopDirectoryOnly);
-        foreach (string path in factionImages)
+        foreach ((string factionName, Faction faction) in dataConfig.Factions)
         {
-            string imageName = Path.GetFileNameWithoutExtension(path);
-            imageRouter.AddRoute($"/files/factions/icon/{imageName}", path);
+            if (faction.Image == null)
+                continue;
+            
+            string path = Path.Join(ImagePath, $"{faction.Image}.png");
+            imageRouter.AddRoute($"/files/factions/icon/{faction.Image}", path);
         }
+        
     }
 }

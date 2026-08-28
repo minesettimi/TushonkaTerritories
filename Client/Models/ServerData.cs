@@ -46,10 +46,9 @@ public class FactionData
 
     public async Task LoadSprite(IImageLoader session)
     {
-        if (Image == null)
-            return;
+        Image ??= "default_faction";
         
-        Sprite sprite = await Utils.LoadIconSprite(session, Image);
+        Sprite sprite = await Utils.LoadIconSprite(session, $"/files/factions/icon/{Image}");
         Sprite = sprite;
     }
 }

@@ -77,9 +77,6 @@ public class ReputationPanel : UIElement
         hostilityLabel.text = $"<color={color}>{hostility.Localized()}</color>";
         baseFill.fillAmount = (float)Math.Clamp(repValue / serverData.AllyRep, 0, 1);
 
-        if (factionData.Image == null)
-            return;
-
         if (factionData.Sprite != null)
         {
             factionImage.sprite = factionData.Sprite;
