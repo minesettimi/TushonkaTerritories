@@ -67,7 +67,7 @@
         "none": -1,
         "rogue": -1,
         "raider": -1,
-        "cultist": 0
+        "cultist": -1
       }
     },
     "raider":
@@ -92,7 +92,7 @@
         "none": -1,
         "rogue": -1,
         "scav": -1,
-        "cultist": 0
+        "cultist": -1
       }
     },
     "rogue":
@@ -117,7 +117,7 @@
         "none": -1,
         "scav": -1,
         "raider": -1,
-        "cultist": 0
+        "cultist": -1
       }
     },
     "cultist":
