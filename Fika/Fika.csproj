@@ -1,0 +1,50 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <LangVersion>latest</LangVersion>
+        <Nullable>enable</Nullable>
+        <OutputType>Library</OutputType>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+
+        <Version>1.0.0</Version>
+        <RootNamespace>TushonkaTerritoriesFika</RootNamespace>
+
+        <AssemblyName>TushonkaTerritoriesFika</AssemblyName>
+        <OutputPath>bin\$(Configuration)\$(SolutionName)\$(AssemblyName)\</OutputPath>
+        <GamePath>$(SolutionDir)../../BepInEx/plugins/</GamePath>
+        <RewardPath>$(SolutionDir)releaseFika/BepInEx/plugins/$(SolutionName)/</RewardPath>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    </PropertyGroup>
+
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+        <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(GamePath)" />
+    </Target>
+
+    <Target Name="PostBuildCopy" AfterTargets="PostBuild" Condition="$(Configuration) == Release">
+        <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(RewardPath)" />
+    </Target>
+
+    <ItemGroup>
+        <Reference Include="PhysicsModule" HintPath="..\..\..\EscapeFromTarkov_Data\Managed\UnityEngine.PhysicsModule.dll" />
+        <Reference Include="0Harmony" HintPath="..\..\..\BepInEx\core\0Harmony.dll" />
+        <Reference Include="spt-common" HintPath="..\..\..\BepInEx\plugins\spt\spt-common.dll" />
+        <Reference Include="spt-custom" HintPath="..\..\..\BepInEx\plugins\spt\spt-custom.dll" />
+        <Reference Include="spt-reflection" HintPath="..\..\..\BepInEx\plugins\spt\spt-reflection.dll" />
+        <Reference Include="spt-reflection" HintPath="..\..\..\BepInEx\plugins\Fika\Fika.Core.dll" />
+        <Reference Include="Assembly-CSharp" HintPath="..\..\..\EscapeFromTarkov_Data\Managed\Assembly-CSharp.dll" />
+        <Reference Include="BepInEx" HintPath="..\..\..\BepInEx\core\BepInEx.dll" />
+        <Reference Include="Comfort" HintPath="..\..\..\EscapeFromTarkov_Data\Managed\Comfort.dll" />
+        <Reference Include="Comfort.Unity" HintPath="..\..\..\EscapeFromTarkov_Data\Managed\Comfort.Unity.dll" />
+        <Reference Include="Newtonsoft.Json" HintPath="..\..\..\EscapeFromTarkov_Data\Managed\Newtonsoft.Json.dll" />
+        <Reference Include="Sirenix.Serialization" HintPath="..\..\..\EscapeFromTarkov_Data\Managed\Sirenix.Serialization.dll" />
+        <Reference Include="UnityEngine" HintPath="..\..\..\EscapeFromTarkov_Data\Managed\UnityEngine.dll" />
+        <Reference Include="UnityEngine.CoreModule" HintPath="..\..\..\EscapeFromTarkov_Data\Managed\UnityEngine.CoreModule.dll" />
+        <Reference Include="UnityEngine.InputLegacyModule" HintPath="..\..\..\EscapeFromTarkov_Data\Managed\UnityEngine.InputLegacyModule.dll" />
+        <Reference Include="UnityEngine.TextRenderingModule" HintPath="..\..\..\EscapeFromTarkov_Data\Managed\UnityEngine.TextRenderingModule.dll" />
+        <ProjectReference Include="..\Client\Client.csproj" />
+    </ItemGroup>
+
+    
+    
+</Project>
