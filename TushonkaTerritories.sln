@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server\Server.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csproj", "{8EE302FA-1D19-48EA-AD2C-63B04701B5B7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fika", "Fika\Fika.csproj", "{ACAFA6AD-F568-40EF-AA6B-61927EEB91D4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{8EE302FA-1D19-48EA-AD2C-63B04701B5B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8EE302FA-1D19-48EA-AD2C-63B04701B5B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8EE302FA-1D19-48EA-AD2C-63B04701B5B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACAFA6AD-F568-40EF-AA6B-61927EEB91D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACAFA6AD-F568-40EF-AA6B-61927EEB91D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACAFA6AD-F568-40EF-AA6B-61927EEB91D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACAFA6AD-F568-40EF-AA6B-61927EEB91D4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

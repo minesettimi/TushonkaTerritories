@@ -70,21 +70,22 @@ public class TerritoryRenderer : MonoBehaviour
         }
         
         Voronator voronoi = new(points, new Vector2(0, 0), MapTransform.rect.size);
-        
+
+        Color[] pixels = newMap.GetPixels();
         for (int i = 0; i < points.Count; i++)
         {
             List<Vector2> vertices = voronoi.GetClippedPolygon(i);
         
             try
             {
-                DrawFilledPolygon(newMap, points[i], vertices, colors[i]);
+                DrawFilledPolygon(newMap, ref pixels, points[i], vertices, colors[i]);
             }
             catch (Exception e)
             {
                 Plugin.PluginLogger.LogError($"Failed to draw polygon for point: {i}");
             }
         }
-        
+        newMap.SetPixels(pixels);
         newMap.Apply();
 
         Sprite finalSprite =
@@ -94,7 +95,7 @@ public class TerritoryRenderer : MonoBehaviour
         MapImage.enabled = true;
     }
     
-    private void DrawFilledPolygon(Texture2D texture, Vector2 point, List<Vector2> vertices, Color color)
+    private void DrawFilledPolygon(Texture2D texture, ref Color[] imagePixels, Vector2 point, List<Vector2> vertices, Color color)
     {
         Vector2Int clamp = new(texture.width - 1, texture.height - 1);
 
@@ -114,7 +115,7 @@ public class TerritoryRenderer : MonoBehaviour
                 
                 rounded.Clamp(Vector2Int.zero, clamp);
                 
-                texture.SetPixel(rounded.x, rounded.y, color);
+                imagePixels[rounded.y * texture.width + rounded.x] = color;
 
             } while (currentVertex != nextPoint);
         }
@@ -124,7 +125,7 @@ public class TerritoryRenderer : MonoBehaviour
         Vector2Int firstPixel = Vector2Int.RoundToInt(point);
         floodFill.Enqueue(firstPixel);
         
-        texture.SetPixel(firstPixel.x, firstPixel.y, color);
+        imagePixels[firstPixel.y * texture.width + firstPixel.x] = color;
 
         while (floodFill.Count > 0)
         {
@@ -133,12 +134,13 @@ public class TerritoryRenderer : MonoBehaviour
             for (int i = 0; i < 4; i++)
             {
                 Vector2Int neighbor = new Vector2Int(pxCoord.x, pxCoord.y) + FillDirs[i];
+                int neighborIndex = neighbor.y * texture.width + neighbor.x;
                 
                 if (neighbor.x < 0 || neighbor.y < 0 || neighbor.x > clamp.x || neighbor.y > clamp.y ||
-                    texture.GetPixel(neighbor.x, neighbor.y) == color)
+                    imagePixels[neighborIndex] == color)
                     continue;
                 
-                texture.SetPixel(neighbor.x, neighbor.y, color);
+                imagePixels[neighborIndex] = color;
                 floodFill.Enqueue(neighbor);
             }
         }

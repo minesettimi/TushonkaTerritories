@@ -13,7 +13,7 @@ public static class Metadata
         public string Author { get; init; } = "minesettimi";
         public List<string>? Contributors { get; init; }
 
-        public Version Version { get; init; } = new(1, 3, 2);
+        public Version Version { get; init; } = new(1, 3, 3);
         public Range SptVersion { get; init; } = new("~4.1.2");
 
         public bool HasPrepatcher { get; init; } = true;

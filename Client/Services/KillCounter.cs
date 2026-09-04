@@ -31,6 +31,9 @@ public class KillCounter
 
     public void KilledEnemy(string botType, string? player = null)
     {
+        if (!_raidActive)
+            return;
+        
         _killCounter.TryAdd(botType, 0);
         _killCounter[botType]++;
 
@@ -49,7 +52,6 @@ public class KillCounter
     {
         if (!_raidActive)
         {
-            Plugin.PluginLogger.LogError("Tried to end raid for kill counter without the raid starting!");
             return;
         }
 
