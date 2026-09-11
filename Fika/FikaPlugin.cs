@@ -9,7 +9,7 @@ using TerritoryClient.Services;
 
 namespace Fika
 {
-    [BepInPlugin("com.minesettimi.territoriesfika", "Tushonka Territories Fika", "1.0.0")]
+    [BepInPlugin("com.minesettimi.territoriesfika", "Tushonka Territories Fika", "1.0.1")]
     [BepInDependency("com.minesettimi.territories", "1.3.3")]
     [BepInDependency("com.fika.core", "2.4.2")]
     public class FikaPlugin : BaseUnityPlugin
@@ -33,7 +33,7 @@ namespace Fika
         [PatchPrefix]
         public static bool Prefix()
         {
-            return FikaBackendUtils.IsServer;
+            return FikaBackendUtils.IsServer || FikaBackendUtils.IsHeadlessRequester;
         }
     }
 }

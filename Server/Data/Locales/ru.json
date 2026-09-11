@@ -1,0 +1,17 @@
+{
+  "UI/Quests/Conditions/Reputation": "Достичь репутации с фракцией: {0}",
+  "TerritoryUpdated": "Данные по территориям были обновлены.",
+  
+  "TerritoryControlled": "Контролирующая фракция: {0}",
+  "TerritoryContested": "Оспаривается фракцией:  {0}",
+  "HOSTILE": "ВРАЖЕСКИЙ",
+  "NEUTRAL": "НЕЙТРАЛЬНЫЙ",
+  "FRIENDLY": "ДРУЖЕСТВЕННЫЙ",
+  "REPUTATION": "РЕПУТАЦИЯ",
+  
+  "FactionName none": "Никем",
+  "FactionName scav": "Дикие",
+  "FactionName rogue": "Отступники",
+  "FactionName raider": "Рейдеры",
+  "FactionName cultist": "Культисты"
+}
