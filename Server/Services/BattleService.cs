@@ -218,7 +218,8 @@ public class BattleService(
     //use percentage of location strength and faction strength to reduce values
     private void CalculateBattle(string locationName, LocationState locationState, Dictionary<string, int>? kills = null)
     {
-        if (locationState.Contestants.Count < 2)
+        int contestants = locationState.Contestants.Count;
+        if (contestants < 2 && kills == null)
             return;
 
         Dictionary<string, double> damageDealt = [];
@@ -246,43 +247,43 @@ public class BattleService(
             }
         }
 
-        //save
-        int contestants = locationState.Contestants.Count;
-        
-        //simulation damage
-        foreach ((string contestant, double strength) in locationState.Contestants)
+        if (contestants >= 2)
         {
-            Faction factionData = dataConfig.Factions[contestant];
-
-            List<string> targets = [];
-
-            foreach (string other in locationState.Contestants.Keys)
+            //simulation damage
+            foreach ((string contestant, double strength) in locationState.Contestants)
             {
-                if (contestant == other)
-                    continue;
+                Faction factionData = dataConfig.Factions[contestant];
 
-                if (factionData.Attitudes[other] == 1 || 
-                    (factionData.Attitudes[other] == 0 && 
-                     !randomUtil.GetChance100(modConfig.BattleConfig.AttackNeutralChance)))
-                    continue;
+                List<string> targets = [];
+
+                foreach (string other in locationState.Contestants.Keys)
+                {
+                    if (contestant == other)
+                        continue;
+
+                    if (factionData.Attitudes[other] == 1 || 
+                        (factionData.Attitudes[other] == 0 && 
+                         !randomUtil.GetChance100(modConfig.BattleConfig.AttackNeutralChance)))
+                        continue;
                 
-                targets.Add(other);
-            }
+                    targets.Add(other);
+                }
 
-            double updatedStrength = strength;
-            if (contestant == locationState.Holder)
-            {
-                updatedStrength += factionData.Defensiveness * locationState.Contestants[locationState.Holder];
-            }
+                double updatedStrength = strength;
+                if (contestant == locationState.Holder)
+                {
+                    updatedStrength += factionData.Defensiveness * locationState.Contestants[locationState.Holder];
+                }
 
-            double damage = (updatedStrength / targets.Count) * modConfig.BattleConfig.DamageMultiplier;
+                double damage = (updatedStrength / targets.Count) * modConfig.BattleConfig.DamageMultiplier;
 
-            damage += randomUtil.RandNum(modConfig.BattleConfig.DamageMinRng, modConfig.BattleConfig.DamageMaxRng);
+                damage += randomUtil.RandNum(modConfig.BattleConfig.DamageMinRng, modConfig.BattleConfig.DamageMaxRng);
 
-            foreach (string target in targets)
-            {
-                if (!damageDealt.TryAdd(target, damage))
-                    damageDealt[target] += damage;
+                foreach (string target in targets)
+                {
+                    if (!damageDealt.TryAdd(target, damage))
+                        damageDealt[target] += damage;
+                }
             }
         }
 
