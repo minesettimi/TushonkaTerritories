@@ -23,7 +23,7 @@ public class LocationInfoSetPatch : ModulePatch
         if (location == null)
             return;
         
-        LocationState? locationState = Plugin.StateManager.State.Locations[location.Id];
+        LocationState? locationState = TerritoryPlugin.StateManager.State.Locations[location.Id];
         
         if (locationState == null)
             return;

@@ -25,8 +25,8 @@ public class LocationSelectionShowPatch : ModulePatch
         }
         catch (Exception e)
         {
-            Plugin.PluginLogger.LogError($"Failed to render map with error: {e.Message}");
-            Plugin.PluginLogger.LogError(e.StackTrace);
+            TerritoryPlugin.PluginLogger.LogError($"Failed to render map with error: {e.Message}");
+            TerritoryPlugin.PluginLogger.LogError(e.StackTrace);
             throw;
         }
     }

@@ -22,17 +22,22 @@ public class OnDeadPatch : ModulePatch
         
         if (___LastAggressor == null || ___AggressorFound || __instance == (Player)___LastAggressor)
         {
-            Plugin.KillCounter.KilledEnemy(role);
+            TerritoryPlugin.KillCounter.KilledEnemy(role);
             return;
         }
 
-        Player killer = __instance.GameWorld.GetAlivePlayerByProfileID(___LastAggressor.ProfileId);
-        if (killer == null || killer.IsAI)
+        if (___LastAggressor.IsAI || ___LastAggressor is not Player killer)
         {
-            Plugin.KillCounter.KilledEnemy(role);
+            TerritoryPlugin.KillCounter.KilledEnemy(role);
+            return;
+        }
+
+        if (!killer.IsYourPlayer && !killer.gameObject.name.StartsWith("Player_"))
+        {
+            TerritoryPlugin.KillCounter.KilledEnemy(role);
             return;
         }
         
-        Plugin.KillCounter.KilledEnemy(role, killer.ProfileId);
+        TerritoryPlugin.KillCounter.KilledEnemy(role, killer.ProfileId);
     }
 }

@@ -15,6 +15,6 @@ public class LocalGameCreatePatch : ModulePatch
     [PatchPrefix]
     public static void Prefix(TarkovApplication __instance)
     {
-        Plugin.KillCounter.StartRaid(__instance._raidSettings.LocationId);
+        TerritoryPlugin.KillCounter.StartRaid(__instance._raidSettings.LocationId);
     }
 }

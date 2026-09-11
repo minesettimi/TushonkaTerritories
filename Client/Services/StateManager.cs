@@ -47,7 +47,7 @@ public class StateManager
         }
         catch (Exception e)
         {
-            Plugin.PluginLogger.LogError($"Failed to get data from server with error: {e.Message}");
+            TerritoryPlugin.PluginLogger.LogError($"Failed to get data from server with error: {e.Message}");
             throw;
         }
 
@@ -70,7 +70,7 @@ public class StateManager
         }
         catch (Exception e)
         {
-            Plugin.PluginLogger.LogError($"Failed to get state from server with error: {e.Message}");
+            TerritoryPlugin.PluginLogger.LogError($"Failed to get state from server with error: {e.Message}");
             throw;
         }
 

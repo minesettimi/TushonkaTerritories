@@ -29,7 +29,7 @@ public class TraderRewardViewPatch : ModulePatch
         TaskRewardValuesTextGetter.GetRewardValuesText(reward, out string _, out string nameText, out string _, out string _);
         __instance._traderName.text = nameText;
 
-        FactionData factionData = Plugin.StateManager.ServerData.Factions[reward.target];
+        FactionData factionData = TerritoryPlugin.StateManager.ServerData.Factions[reward.target];
 
         if (factionData.Sprite == null) return false;
         

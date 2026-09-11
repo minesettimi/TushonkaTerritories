@@ -16,8 +16,7 @@ public class PostLoad(LocationService locationService, ReputationService reputat
     LocaleService localeService,
     BattleService battleService,
     ClientEnumDefinitions clientEnumDefinitions,
-    ImageRouterHelper imageRouterHelper,
-    TemplateTable templateTable) : IOnLoad
+    ImageRouterHelper imageRouterHelper) : IOnLoad
 {
     public async Task OnLoadAsync(CancellationToken cancellationToken)
     {

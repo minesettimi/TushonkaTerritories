@@ -21,12 +21,12 @@ public class LocationButtonPatch : ModulePatch
     [PatchPrefix]
     public static void Prefix(LocationSettings.Location location, LocationButton __instance)
     {
-        LocationState? locationState = Plugin.StateManager.State.Locations[location.Id];
+        LocationState? locationState = TerritoryPlugin.StateManager.State.Locations[location.Id];
         
         if (locationState == null)
             return;
 
-        Color factionColor = Plugin.StateManager.ServerData.Factions[locationState.Holder].Color;
+        Color factionColor = TerritoryPlugin.StateManager.ServerData.Factions[locationState.Holder].Color;
         
         
         __instance._defaultColor = factionColor;

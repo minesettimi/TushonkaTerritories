@@ -28,12 +28,12 @@ public class TerritoryRenderer : MonoBehaviour
 
     public void Show()
     {
-        LocationData locationData = Plugin.StateManager.State.Locations;
+        LocationData locationData = TerritoryPlugin.StateManager.State.Locations;
 
-        if (Plugin.StateManager.State.StateId == LastState)
+        if (TerritoryPlugin.StateManager.State.StateId == LastState)
             return;
         
-        LastState = Plugin.StateManager.State.StateId;
+        LastState = TerritoryPlugin.StateManager.State.StateId;
         
         List<Vector2> points = [];
         List<Color> colors = [];
@@ -50,7 +50,7 @@ public class TerritoryRenderer : MonoBehaviour
 
             if (locationState == null)
             {
-                Plugin.PluginLogger.LogWarning($"Failed to get location for: {location}");
+                TerritoryPlugin.PluginLogger.LogWarning($"Failed to get location for: {location}");
                 continue;
             }
             
@@ -66,7 +66,7 @@ public class TerritoryRenderer : MonoBehaviour
             locationPos = MapTransform.rect.size + locationPos;
             
             points.Add(locationPos);
-            colors.Add(Plugin.StateManager.ServerData.Factions[locationState.Holder].Color);
+            colors.Add(TerritoryPlugin.StateManager.ServerData.Factions[locationState.Holder].Color);
         }
         
         Voronator voronoi = new(points, new Vector2(0, 0), MapTransform.rect.size);
@@ -82,7 +82,7 @@ public class TerritoryRenderer : MonoBehaviour
             }
             catch (Exception e)
             {
-                Plugin.PluginLogger.LogError($"Failed to draw polygon for point: {i}");
+                TerritoryPlugin.PluginLogger.LogError($"Failed to draw polygon for point: {i}");
             }
         }
         newMap.SetPixels(pixels);

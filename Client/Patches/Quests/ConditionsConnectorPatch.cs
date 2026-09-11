@@ -21,12 +21,12 @@ public class ConditionsConnectorPatch : ModulePatch
         if (condition is ConditionReputation reputationCondition)
         {
             ConditionProgressChecker progressChecker = conditional.ProgressCheckers[reputationCondition];
-            progressChecker.SetCurrentValueGetter(_ => Plugin.StateManager.State.GetPlayerRep(__instance.Profile.Id, reputationCondition.target));
+            progressChecker.SetCurrentValueGetter(_ => TerritoryPlugin.StateManager.State.GetPlayerRep(__instance.Profile.Id, reputationCondition.target));
             
             Action repUpdated = () => __instance.OnConditionValueChanged?.Invoke(conditional, status, reputationCondition, true);
 
-            Plugin.StateManager.StateUpdated += repUpdated;
-            progressChecker.OnDisconnect += _ => Plugin.StateManager.StateUpdated -= repUpdated;
+            TerritoryPlugin.StateManager.StateUpdated += repUpdated;
+            progressChecker.OnDisconnect += _ => TerritoryPlugin.StateManager.StateUpdated -= repUpdated;
             progressChecker.OnReset += _ => __instance.ForceReset(conditional, status, condition);
             
             return false;

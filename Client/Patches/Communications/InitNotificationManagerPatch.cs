@@ -15,6 +15,6 @@ public class InitNotificationManagerPatch : ModulePatch
     [PatchPostfix]
     public static void Postfix()
     {
-        Plugin.StateManager.Init();
+        TerritoryPlugin.StateManager.Init();
     }
 }

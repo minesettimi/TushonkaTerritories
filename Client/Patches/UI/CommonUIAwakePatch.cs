@@ -29,20 +29,20 @@ public class CommonUIAwakePatch : ModulePatch
     {
         //instantiate everything
         Transform inventoryTransform = __instance.InventoryScreen.transform;
-        GameObject? reputationTab = Plugin.BundleLoader.Bundle.LoadAsset<GameObject>("Reputation.prefab");
+        GameObject? reputationTab = TerritoryPlugin.BundleLoader.Bundle.LoadAsset<GameObject>("Reputation.prefab");
 
         if (reputationTab == null)
         {
-            Plugin.PluginLogger.LogError("Failed to load bundle.");
+            TerritoryPlugin.PluginLogger.LogError("Failed to load bundle.");
             NotificationManager.DisplayMessageNotification("Error loading Reputation tab button from bundle.");
             return;
         }
         
-        GameObject? reputationScreen = Plugin.BundleLoader.Bundle.LoadAsset<GameObject>("ReputationPanel.prefab");
+        GameObject? reputationScreen = TerritoryPlugin.BundleLoader.Bundle.LoadAsset<GameObject>("ReputationPanel.prefab");
 
         if (reputationTab == null)
         {
-            Plugin.PluginLogger.LogError("Failed to load bundle.");
+            TerritoryPlugin.PluginLogger.LogError("Failed to load bundle.");
             NotificationManager.DisplayMessageNotification("Error loading Reputation screen from bundle.");
             return;
         }
@@ -72,7 +72,7 @@ public class CommonUIAwakePatch : ModulePatch
         //get enum and add to tab dictionary
         if (!Enum.TryParse("Reputation", out EInventoryTab repEnum))
         {
-            Plugin.PluginLogger.LogError("Failed to get Reputation enum value!");
+            TerritoryPlugin.PluginLogger.LogError("Failed to get Reputation enum value!");
             return;
         }
 

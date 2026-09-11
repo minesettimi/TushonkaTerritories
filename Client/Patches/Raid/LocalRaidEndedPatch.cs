@@ -16,8 +16,11 @@ public class LocalRaidEndedPatch : ModulePatch
     [PatchPostfix]
     public static async Task Postfix(Task __result)
     {
+        if (TerritoryPlugin.IsFika && TerritoryPlugin.IsSyncPresent)
+            return;
+        
         await __result;
         
-        await Plugin.KillCounter.EndRaid();
+        await TerritoryPlugin.KillCounter.EndRaid();
     }
 }

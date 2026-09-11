@@ -34,7 +34,7 @@ public class FactionData
         
             if (!ColorUtility.TryParseHtmlString(FactionColor, out Color colorObj))
             {
-                Plugin.PluginLogger.LogError($"Failed to parse color {FactionColor}!");
+                TerritoryPlugin.PluginLogger.LogError($"Failed to parse color {FactionColor}!");
                 return Color.red;
             }
 

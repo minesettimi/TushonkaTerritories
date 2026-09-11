@@ -36,11 +36,6 @@ public class PostRaidController(ProfileHelper profileHelper,
     
     public void UpdateRaidReputation(Dictionary<string, Dictionary<string, int>> kills)
     {
-        if (modConfig.Debug)
-        {
-            logger.Info($"[TT] Player kills: {JsonSerializer.Serialize(kills)}");
-        }
-        
         if (!modConfig.FactionConfig.RepChange)
             return;
         
@@ -53,7 +48,7 @@ public class PostRaidController(ProfileHelper profileHelper,
             {
                 characterData = profileHelper.GetProfileByPmcId(player);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 logger.Error($"Failed to get profile for player id: {player}.");
                 continue;

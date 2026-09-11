@@ -19,7 +19,7 @@ public class KillCounter
     {
         if (_raidActive)
         {
-            Plugin.PluginLogger.LogError("Tried to start raid for kill counter with a raid already started!");
+            TerritoryPlugin.PluginLogger.LogError("Tried to start raid for kill counter with a raid already started!");
             return;
         }
 
@@ -37,7 +37,7 @@ public class KillCounter
         _killCounter.TryAdd(botType, 0);
         _killCounter[botType]++;
 
-        Plugin.PluginLogger.LogInfo($"Bot: {botType} killed by player: {player}");
+        TerritoryPlugin.PluginLogger.LogInfo($"Bot: {botType} killed by player: {player}");
         
         if (player != null)
         {
@@ -48,7 +48,7 @@ public class KillCounter
         }
     }
 
-    public async Task EndRaid()
+    public async Task EndRaid(bool isServer = true)
     {
         if (!_raidActive)
         {
@@ -57,6 +57,11 @@ public class KillCounter
 
         _raidActive = false;
 
+        if (!isServer)
+        {
+            return;
+        }
+        
         RaidStatRequest statRequest = new()
         {
             Kills = _killCounter,

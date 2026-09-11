@@ -13,16 +13,16 @@ public class ReputationList : UIElement
     
     public void Show(Profile profile, IImageLoader session)
     {
-        if (!Plugin.StateManager.State.PlayerState.TryGetValue(profile.Id, out PlayerState playerState))
+        if (!TerritoryPlugin.StateManager.State.PlayerState.TryGetValue(profile.Id, out PlayerState playerState))
         {
-            Plugin.PluginLogger.LogError($"Failed to find player rep for id: {profile.Id}");
+            TerritoryPlugin.PluginLogger.LogError($"Failed to find player rep for id: {profile.Id}");
             return;
         }
 
         //split it up for BSG's code
         List<string> factions = [];
 
-        foreach (string factionName in Plugin.StateManager.ServerData.Factions.Keys)
+        foreach (string factionName in TerritoryPlugin.StateManager.ServerData.Factions.Keys)
         {
             if (factionName != "none")
             {
@@ -36,7 +36,7 @@ public class ReputationList : UIElement
             repContainer,
             (faction,
                 panel) => panel.Show(faction,
-                Plugin.StateManager.ServerData.Factions[faction],
+                TerritoryPlugin.StateManager.ServerData.Factions[faction],
                 playerState,
                 session));
     }

@@ -15,6 +15,6 @@ public class StartGamePatch : ModulePatch
     [PatchPostfix]
     public static async void Postfix()
     {
-        await Plugin.StateManager.RequestData();
+        await TerritoryPlugin.StateManager.RequestData();
     }
 }

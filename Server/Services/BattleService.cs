@@ -21,7 +21,7 @@ public class BattleService(
     LocationService locationService,
     ISptLogger<BattleService> logger)
 {
-    private Timer _battleTimer;
+    private Timer _battleTimer = null!;
 
     private enum RaidBattleState
     {

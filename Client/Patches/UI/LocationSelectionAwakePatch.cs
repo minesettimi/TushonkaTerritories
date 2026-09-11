@@ -24,11 +24,11 @@ public class LocationSelectionAwakePatch : ModulePatch
     [PatchPostfix]
     public static void Postfix(MatchMakerSelectionLocationScreen __instance)
     {
-        GameObject? territoryMap = Plugin.BundleLoader.Bundle.LoadAsset<GameObject>("TerritoryMap.prefab");
+        GameObject? territoryMap = TerritoryPlugin.BundleLoader.Bundle.LoadAsset<GameObject>("TerritoryMap.prefab");
 
         if (territoryMap == null)
         {
-            Plugin.PluginLogger.LogError("Failed to load bundle.");
+            TerritoryPlugin.PluginLogger.LogError("Failed to load bundle.");
             NotificationManager.DisplayMessageNotification("Error loading territory map from bundle.");
             return;
         }
@@ -42,11 +42,11 @@ public class LocationSelectionAwakePatch : ModulePatch
         TerritoryRenderer = territoryObj.GetComponent<TerritoryRenderer>();
         TerritoryRenderer.MapTransform = map.gameObject.GetComponent<RectTransform>();
 
-        GameObject? descriptionAsset = Plugin.BundleLoader.Bundle.LoadAsset<GameObject>("TerritoryInfo.prefab");
+        GameObject? descriptionAsset = TerritoryPlugin.BundleLoader.Bundle.LoadAsset<GameObject>("TerritoryInfo.prefab");
 
         if (descriptionAsset == null)
         {
-            Plugin.PluginLogger.LogError("Failed to load bundle.");
+            TerritoryPlugin.PluginLogger.LogError("Failed to load bundle.");
             NotificationManager.DisplayMessageNotification("Error loading territory description from bundle.");
             return;
         }

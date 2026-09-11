@@ -32,7 +32,7 @@ public class ReputationPanel : UIElement
         ShowGameObject();
         nameLabel.text = $"FactionName {faction}".Localized(EStringCase.Upper);
         
-        ServerData serverData = Plugin.StateManager.ServerData;
+        ServerData serverData = TerritoryPlugin.StateManager.ServerData;
         
         factionColor.color = factionData.Color;
 
@@ -54,7 +54,7 @@ public class ReputationPanel : UIElement
 
         if (!playerState.Reputation.TryGetValue(faction, out double repValue))
         {
-            Plugin.PluginLogger.LogError($"Failed to find player rep for faction: {faction}");
+            TerritoryPlugin.PluginLogger.LogError($"Failed to find player rep for faction: {faction}");
             return;
         }
 

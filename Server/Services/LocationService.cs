@@ -166,7 +166,7 @@ public class LocationService(DataConfig dataConfig,
                     continue;
                         
                 bool isPmc = bossSpawn.BossName == "pmcBEAR" || bossSpawn.BossName == "pmcUSEC";
-                bool isCultist = bossSpawn.BossName.StartsWith("sectant");
+                bool isCultist = bossSpawn.BossName?.StartsWith("sectant") ?? false;
                 
                 if ((raidConfig.OverridePmcs && isPmc) || (raidConfig.OverrideCultists && isCultist) || (raidConfig.OverrideBosses && !isPmc && !isCultist))
                 {

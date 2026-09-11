@@ -1,3 +1,5 @@
+using System.Text.Json;
+using SPTarkov.Common.Models.Logging;
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.DI;
 using SPTarkov.Server.Core.Models.Eft.Common;
@@ -48,10 +50,16 @@ public class TerritoryCallbacks(HttpResponseUtil httpResponseUtil,
     PostRaidController raidController,
     StateServer stateServer,
     ModConfig modConfig,
-    DataConfig dataConfig)
+    DataConfig dataConfig,
+    ISptLogger<TerritoryCallbacks> logger)
 {
     public ValueTask<string> HandleMatchEnd(RaidStatRequest statRequest)
     {
+        if (modConfig.Debug)
+        {
+            logger.Info($"[TT] Raid stat output: {JsonSerializer.Serialize(statRequest)}");
+        }
+        
         raidController.UpdateRaidReputation(statRequest.PlayerKills);
         raidController.PostRaidSimulate(statRequest.Location, statRequest.Kills);
         
