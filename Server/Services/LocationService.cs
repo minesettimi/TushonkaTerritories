@@ -221,7 +221,12 @@ public class LocationService(DataConfig dataConfig,
                 
                 foreach (string bossName in currentFaction.MobileBossNames)
                 {
-                    BossLocationSpawn clonedSpawn = cloner.Clone(_mobileBossData[bossName])!;
+                    
+                    //TODO: Create new boss entries for unavailable bosses
+                    if (!_mobileBossData.TryGetValue(bossName, out BossLocationSpawn? mobileBoss))
+                        continue;
+                    
+                    BossLocationSpawn clonedSpawn = cloner.Clone(mobileBoss)!;
                     clonedSpawn.BossChance = bossChance;
                     
                     newSpawns.Add(clonedSpawn);

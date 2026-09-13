@@ -48,7 +48,7 @@ public class KillCounter
         }
     }
 
-    public async Task EndRaid(bool isServer = true)
+    public async Task EndRaid()
     {
         if (!_raidActive)
         {
@@ -56,11 +56,6 @@ public class KillCounter
         }
 
         _raidActive = false;
-
-        if (!isServer)
-        {
-            return;
-        }
         
         RaidStatRequest statRequest = new()
         {

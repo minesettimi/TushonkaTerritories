@@ -24,13 +24,15 @@ namespace Fika
             _patchManager = new PatchManager(this, true);
             _patchManager.EnablePatches();
 
-            TerritoryPlugin.IsSyncPresent = true;
             FikaEventDispatcher.SubscribeEvent<FikaGameEndedEvent>(GameEnded);
         }
 
         private void GameEnded(FikaGameEndedEvent gameEndedEvent)
         {
-            _ = TerritoryPlugin.KillCounter.EndRaid(gameEndedEvent.IsServer);
+            if (!gameEndedEvent.IsServer)
+                return;
+            
+            _ = TerritoryPlugin.KillCounter.EndRaid();
         }
     }
     

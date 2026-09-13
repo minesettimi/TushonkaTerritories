@@ -20,7 +20,6 @@ namespace TerritoryClient
         private PatchManager _patchManager = null!;
 
         public static bool IsFika;
-        public static bool IsSyncPresent;
 
         protected void Awake()
         {
