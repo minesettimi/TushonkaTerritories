@@ -158,7 +158,7 @@
     "tarkovstreets": "scav",
     "woods": "scav",
     "labyrinth": "none",
-    "suburbs": "none",
+    "icebreaker": "none",
     "terminal": "none"
   },
   "botFactionTable":
@@ -265,7 +265,7 @@
       "factory4_day"
     ],
     "labyrinth": [],
-    "suburbs": [],
+    "icebreaker": [],
     "terminal":
     [
       "shoreline"

@@ -37,7 +37,7 @@ public class LocationService(DataConfig dataConfig,
         "tarkovstreets",
         "woods",
         "labyrinth",
-        "suburbs",
+        "icebreaker",
         "terminal"
     ];
 

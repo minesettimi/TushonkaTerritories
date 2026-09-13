@@ -45,7 +45,7 @@ public class LocationData<T>
     [JsonPropertyName("tarkovstreets")] public T Streets { get; set; } = default!;
     [JsonPropertyName("woods")] public T Woods { get; set; } = default!;
     [JsonPropertyName("labyrinth")] public T Labyrinth { get; set; } = default!;
-    [JsonPropertyName("suburbs")] public T Icebreaker { get; set; } = default!;
+    [JsonPropertyName("icebreaker")] public T Icebreaker { get; set; } = default!;
     [JsonPropertyName("terminal")] public T Terminal { get; set; } = default!;
 
     [JsonIgnore]
@@ -66,7 +66,7 @@ public class LocationData<T>
             "tarkovstreets" => Streets,
             "woods" => Woods,
             "labyrinth" => Labyrinth,
-            "suburbs" => Icebreaker,
+            "icebreaker" => Icebreaker,
             "terminal" => Terminal,
             _ => throw new KeyNotFoundException($"Location '{key}' not found.")
         };
@@ -87,7 +87,7 @@ public class LocationData<T>
                 case "woods": Woods = value; break;
                 case "laboratory": Laboratory = value; break;
                 case "labyrinth": Labyrinth = value; break;
-                case "suburbs": Icebreaker = value; break;
+                case "icebreaker": Icebreaker = value; break;
                 case "terminal": Terminal = value; break;
                 default: throw new KeyNotFoundException($"Location '{key}' not found.");
             }

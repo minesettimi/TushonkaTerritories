@@ -96,7 +96,7 @@ public class LocationData
     [JsonProperty("tarkovstreets")] public LocationState Streets { get; set; }
     [JsonProperty("woods")] public LocationState Woods { get; set; }
     [JsonProperty("labyrinth")] public LocationState Labyrinth { get; set; }
-    [JsonProperty("suburbs")] public LocationState Icebreaker { get; set; }
+    [JsonProperty("icebreaker")] public LocationState Icebreaker { get; set; }
     [JsonProperty("terminal")] public LocationState Terminal { get; set; }
 
     [JsonIgnore]
@@ -116,7 +116,7 @@ public class LocationData
             "tarkovstreets" => Streets,
             "woods" => Woods,
             "labyrinth" => Labyrinth,
-            "suburbs" => Icebreaker,
+            "icebreaker" => Icebreaker,
             "terminal" => Terminal,
             _ => null
         };
@@ -137,7 +137,7 @@ public class LocationData
         "tarkovstreets",
         "woods",
         "labyrinth",
-        "suburbs",
+        "icebreaker",
         "terminal"
     ];
 }
