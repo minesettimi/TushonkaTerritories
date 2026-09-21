@@ -242,7 +242,8 @@
     [
       "lighthouse",
       "bigmap",
-      "woods"
+      "woods",
+      "shoreline"
     ],
     "sandbox":
     [
@@ -250,7 +251,8 @@
     ],
     "shoreline":
     [
-      "lighthouse"
+      "lighthouse",
+      "rezervbase"
     ],
     "tarkovstreets":
     [
