@@ -1,5 +1,6 @@
 {
   "debug": false, //Debug printing
+  "initialSimulations": 2, //How many battle simulations to run on a new save
   "factionConfig": 
   {
     "killChangesRep": true, //If true, killing bots changes your rep

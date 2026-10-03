@@ -12,7 +12,6 @@ namespace TerritoryServer.Generators;
 public class StateGenerator(DataConfig dataConfig,
     LocationMapHelper mapHelper,
     ModConfig modConfig,
-    CacheService cacheService,
     ISptLogger<StateGenerator> logger)
 {
     public SaveState GenerateState()

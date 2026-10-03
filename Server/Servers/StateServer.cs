@@ -39,7 +39,9 @@ public class StateServer(JsonUtil jsonUtil,
 
         CurrentSave = tempSave;
         
-        ValidateState();
+        if (!NewSave)
+            ValidateState();
+        
         SaveToDisk();
     }
 
@@ -103,6 +105,8 @@ public class StateServer(JsonUtil jsonUtil,
                 {
                     locationState.Holder = "none";
                 }
+                
+                locationState.Base = false;
             }
 
             //if the holder doesn't have a contestant spot

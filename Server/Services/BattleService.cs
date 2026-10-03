@@ -28,15 +28,24 @@ public class BattleService(
     
     public void Setup()
     {
-        if (modConfig.BattleConfig.SimulationInterval <= 0)
-            return;
-
-        TimeSpan interval = TimeSpan.FromMinutes(modConfig.BattleConfig.SimulationInterval);
-        _battleTimer = new Timer(_ =>
+        if (modConfig.BattleConfig.SimulationInterval > 0)
         {
-            Simulate();
-            stateServer.SendStateUpdate();
-        }, null, interval, interval);
+            TimeSpan interval = TimeSpan.FromMinutes(modConfig.BattleConfig.SimulationInterval);
+            _battleTimer = new Timer(_ =>
+            {
+                Simulate();
+                stateServer.SendStateUpdate();
+            }, null, interval, interval);   
+        }
+
+        if (stateServer.NewSave)
+        {
+            //won't run at 0 anyway, no need for a check
+            for (int i = 0; i < modConfig.InitialSimulations; i++)
+            {
+                Simulate();
+            }
+        }
     }
     
     /*

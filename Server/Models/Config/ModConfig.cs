@@ -5,6 +5,7 @@ namespace TerritoryServer.Models;
 public record ModConfig
 {
     [JsonPropertyName("debug")] public bool Debug { get; set; } = false;
+    [JsonPropertyName("initialSimulations")] public int InitialSimulations { get; set; } = 2;
     [JsonPropertyName("factionConfig")] public FactionConfig FactionConfig { get; set; } = new();
     [JsonPropertyName("battleConfig")] public BattleConfig BattleConfig { get; set; } = new();
     [JsonPropertyName("raidConfig")] public RaidConfig RaidConfig { get; set; } = new();
