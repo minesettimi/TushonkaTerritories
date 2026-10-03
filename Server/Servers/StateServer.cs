@@ -108,11 +108,11 @@ public class StateServer(JsonUtil jsonUtil,
             //if the holder doesn't have a contestant spot
             if (locationState.Holder != "none")
                 locationState.Contestants.TryAdd(locationState.Holder, 0.01);
-
-            if (modConfig.Debug)
-            {
-                logger.Info("[TT] Finished sanitizing state file");
-            }
+        }
+        
+        if (modConfig.Debug)
+        {
+            logger.Info("[TT] Finished sanitizing state file");
         }
     }
 }

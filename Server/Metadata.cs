@@ -14,7 +14,7 @@ public static class Metadata
         public List<string>? Contributors { get; init; }
 
         public Version Version { get; init; } = new(2, 0, 0);
-        public Range SptVersion { get; init; } = new("~4.1.2");
+        public Range SptVersion { get; init; } = new("~4.1.3");
 
         public bool HasPrepatcher { get; init; } = true;
         public List<string>? Incompatibilities { get; init; }
