@@ -22,12 +22,15 @@
         "scav": -1,
         "rogue": -1,
         "raider": -1,
-        "cultist": -1
+        "cultist": -1,
+        "blackdiv": -1,
+        "ruaf": 0,
+        "untar": 0
       }
     },
     "scav":
     {
-      "color": "#244023",
+      "color": "#055e1e",
       "base": "interchange",
       "botNames": ["assault"],
       "mobileBosses": ["bossTagilla", "bossKilla"],
@@ -67,16 +70,19 @@
         "none": -1,
         "rogue": -1,
         "raider": -1,
-        "cultist": -1
+        "cultist": -1,
+        "blackdiv": -1,
+        "ruaf": -1,
+        "untar": -1
       }
     },
     "raider":
     {
       "color": "#FA8014",
       "base": "laboratory",
-      "botNames": ["pmcBot"],
+      "botNames": ["pmcBot", "followerKolontaySecurity", "followerKolontayAssault"],
       "mobileBosses": ["bossKolontay"],
-      "staticBosses": ["followerKolontaySecurity", "followerKolontayAssault"],
+      "staticBosses": [],
       "strength": 0.6,
       "defensiveness": 0.3,
       "distanceReduction": 0.1,
@@ -92,7 +98,10 @@
         "none": -1,
         "rogue": -1,
         "scav": -1,
-        "cultist": -1
+        "cultist": -1,
+        "blackdiv": -1,
+        "ruaf": 0,
+        "untar": 0
       }
     },
     "rogue":
@@ -107,7 +116,7 @@
       "distanceReduction": 0.6,
       "persistant": false,
       "uprising": 0,
-      "defaultRepUsec": 3,
+      "defaultRepUsec": 2,
       "defaultRepBear": 0,
       "defaultRepScav": 0,
       "gainRep": true,
@@ -117,15 +126,18 @@
         "none": -1,
         "scav": -1,
         "raider": -1,
-        "cultist": -1
+        "cultist": 0,
+        "blackdiv": -1,
+        "ruaf": -1,
+        "untar": 0
       }
     },
     "cultist":
     {
       "color": "#7D04D6",
-      "botNames": ["sectantWarrior"],
-      "mobileBosses": ["sectantPriest"],
-      "staticBosses": ["bossZryachiy", "followerZryachiy", "sectantOni", "sectantPredvestnik", "sectantPrizrak"],
+      "botNames": ["sectantWarrior", "followerZryachiy"],
+      "mobileBosses": ["sectantPriest", "sectantOni"],
+      "staticBosses": ["bossZryachiy", "sectantPredvestnik", "sectantPrizrak"],
       "strength": 0.5,
       "defensiveness": 0.00,
       "distanceReduction": 1.0,
@@ -141,8 +153,11 @@
       {
         "none": -1,
         "scav": -1,
-        "rogue": -1,
-        "raider": -1
+        "rogue": 0,
+        "raider": -1,
+        "blackdiv": -1,
+        "ruaf": -1,
+        "untar": -1
       }
     },
     "blackdiv":
@@ -173,25 +188,109 @@
         "scav": -1,
         "rogue": -1,
         "raider": -1,
-        "cultist": -1
+        "cultist": -1,
+        "ruaf": -1,
+        "untar": -1
+      }
+    },
+    "ruaf":
+    {
+      "color": "#011e09",
+      "base": "terminal",
+      "botNames": 
+      [
+        "ruafRifleman",
+        "ruafRiflemanSenior",
+        "ruafAutorifleman",
+        "ruafGrenadier",
+        "ruafMarksman",
+        "ruafMachinegunner",
+        "remnantRifleman"
+      ],
+      "mobileBosses": [],
+      "staticBosses": [],
+      "strength": 0.7,
+      "defensiveness": 0.7,
+      "distanceReduction": 0.4,
+      "persistant": true,
+      "uprising": 0,
+      "defaultRepUsec": 0,
+      "defaultRepBear": 2,
+      "defaultRepScav": 0,
+      "gainRep": false,
+      "associatedTrader": null,
+      "modSupport":
+      {
+        "modGuid": "com.ruafcomehome.tacticaltoaster",
+        "backupFaction": "scav"
+      },
+      "factionAttitude":
+      {
+        "none": -1,
+        "scav": -1,
+        "raider": 0,
+        "rogue": -1,
+        "cultist": -1,
+        "blackdiv": -1,
+        "untar": 1
+      }
+    },
+    "untar":
+    {
+      "color": "#5b92e5",
+      "base": "shoreline",
+      "botNames":
+      [
+        "followeruntar",
+        "followeruntarmarksman"
+      ],
+      "mobileBosses": 
+      [
+        "bossuntarlead",
+        "bossuntarofficer"
+      ],
+      "staticBosses": [],
+      "strength": 0.4,
+      "defensiveness": 0.4,
+      "distanceReduction": 0.0,
+      "persistant": true,
+      "uprising": 5,
+      "defaultRepUsec": 2,
+      "defaultRepBear": 2,
+      "defaultRepScav": 2,
+      "gainRep": true,
+      "associatedTrader": "5935c25fb3acc3127c3d8cd9",
+      "modSupport":
+      {
+        "modGuid": "com.untargh.tacticaltoaster",
+        "backupFaction": "scav"
+      },
+      "factionAttitude":
+      {
+        "none": 0,
+        "scav": 0,
+        "raider": 0,
+        "rogue": 0,
+        "cultist": -1,
+        "blackdiv": -1
       }
     }
   },
   "defaultTerritory":
   {
-    "bigmap": "scav",
+    "bigmap": "untar",
     "factory4_day": "scav",
     "interchange": "scav",
     "laboratory": "raider",
     "lighthouse": "rogue",
     "rezervbase": "raider",
     "sandbox": "scav",
-    "shoreline": "scav",
+    "shoreline": "ruaf",
     "tarkovstreets": "scav",
     "woods": "scav",
     "labyrinth": "none",
     "icebreaker": "none",
-    "terminal": "none"
+    "terminal": "ruaf"
   },
   "locationNeighbors":
   {
