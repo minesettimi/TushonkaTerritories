@@ -7,7 +7,6 @@ using SPTarkov.Server.Core.Utils;
 using SPTarkov.Server.Core.Utils.Cloners;
 using TerritoryServer.Models;
 using TerritoryServer.Servers;
-using TerritoryServer.Utils;
 
 namespace TerritoryServer.Services;
 
@@ -19,6 +18,7 @@ public class LocationService(DataConfig dataConfig,
     BotConfig botConfig,
     MathUtil mathUtil,
     RandomUtil randomUtil,
+    CacheService cacheService,
     ISptLogger<LocationService> logger,
     ICloner cloner)
 {
@@ -90,7 +90,10 @@ public class LocationService(DataConfig dataConfig,
 
         foreach (string locationName in MapList)
         {
-            Location locationInfo = locationTable.GetLocation(locationName)!;
+            Location? locationInfo = locationTable.GetLocation(locationName);
+            
+            if (locationInfo == null)
+                continue;
             
             _bossBackup.Add(locationName, []);
             foreach (BossLocationSpawn bossSpawn in locationInfo.Base.BossLocationSpawn)
@@ -123,7 +126,10 @@ public class LocationService(DataConfig dataConfig,
     {
         foreach (string locationName in MapList)
         {
-            LocationBase location = locationTable.GetLocation(locationName)!.Base;
+            LocationBase? location = locationTable.GetLocation(locationName)?.Base;
+            
+            if (location == null)
+                continue;
             
             location.Waves = [];
             location.NewSpawn = false;
@@ -149,7 +155,11 @@ public class LocationService(DataConfig dataConfig,
         RaidConfig raidConfig = modConfig.RaidConfig;
         foreach (string locationName in maps ?? MapList)
         {
-            LocationBase location = locationTable.GetLocation(locationName)!.Base;
+            LocationBase? location = locationTable.GetLocation(locationName)?.Base;
+            
+            if (location == null)
+                continue;
+            
             LocationState locationState = stateServer.CurrentSave.Locations[locationName]!;
 
             //re-uses previous configuration if there's no faction, change if not desired
@@ -328,7 +338,7 @@ public class LocationService(DataConfig dataConfig,
     {
         List<AdditionalHostilitySettings> finalSettings = [];
         
-        foreach ((string botName, string botFaction) in dataConfig.BotFaction)
+        foreach ((string botName, string botFaction) in cacheService.BotFactions)
         {
             //player behavior is handled by a patch, don't mess with it
             AdditionalHostilitySettings newSettings = new()
@@ -342,7 +352,7 @@ public class LocationService(DataConfig dataConfig,
 
             List<string> warnList = [];
 
-            foreach ((string otherBot, string otherFaction) in dataConfig.BotFaction)
+            foreach ((string otherBot, string otherFaction) in cacheService.BotFactions)
             {
                 BotRelationship relationship = GetFactionRelationship(botFaction, otherFaction);
 

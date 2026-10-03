@@ -7,6 +7,7 @@ using SPTarkov.Server.Core.Utils;
 using TerritoryServer.Controllers;
 using TerritoryServer.Models;
 using TerritoryServer.Servers;
+using TerritoryServer.Services;
 
 namespace TerritoryServer.Routers;
 
@@ -51,6 +52,7 @@ public class TerritoryCallbacks(HttpResponseUtil httpResponseUtil,
     StateServer stateServer,
     ModConfig modConfig,
     DataConfig dataConfig,
+    CacheService cacheService,
     ISptLogger<TerritoryCallbacks> logger)
 {
     public ValueTask<string> HandleMatchEnd(RaidStatRequest statRequest)
@@ -70,7 +72,7 @@ public class TerritoryCallbacks(HttpResponseUtil httpResponseUtil,
     {
         ServerDataResponse dataResponse = new()
         {
-            BotFaction = dataConfig.BotFaction,
+            BotFaction = cacheService.BotFactions,
             AttitudeEffect = modConfig.RaidConfig.AttitudeEffectPlayer,
             AllyRep = modConfig.RaidConfig.AllyRep,
             NeutralRep = modConfig.RaidConfig.NeutralRep,
@@ -79,6 +81,9 @@ public class TerritoryCallbacks(HttpResponseUtil httpResponseUtil,
 
         foreach ((string factionName, Faction faction) in dataConfig.Factions)
         {
+            if (faction.Deactivated)
+                continue;
+            
             dataResponse.Factions.Add(factionName, new FactionDataResponse
             {
                 FactionColor = faction.Color,

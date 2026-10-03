@@ -1,12 +1,7 @@
 using SPTarkov.Common.Models.Logging;
 using SPTarkov.DI.Annotations;
-using SPTarkov.Server.Core.Helpers.Server;
-using SPTarkov.Server.Core.Models.Common;
-using SPTarkov.Server.Core.Models.Eft.Ws;
-using SPTarkov.Server.Core.Servers.Ws;
 using SPTarkov.Server.Core.Utils;
 using TerritoryServer.Models;
-using TerritoryServer.Models.Ws;
 using TerritoryServer.Servers;
 using TerritoryServer.Utils;
 
@@ -19,6 +14,7 @@ public class BattleService(
     StateServer stateServer,
     RandomUtil randomUtil,
     LocationService locationService,
+    CacheService cacheService,
     ISptLogger<BattleService> logger)
 {
     private Timer _battleTimer = null!;
@@ -229,7 +225,7 @@ public class BattleService(
         {
             foreach ((string botName, int deaths) in kills)
             {
-                string factionName = dataConfig.BotFaction.GetValueOrDefault(botName, "none");
+                string factionName = cacheService.BotFactions.GetValueOrDefault(botName, "none");
                 
                 if (!locationState.Contestants.ContainsKey(factionName))
                     continue;
@@ -341,18 +337,29 @@ public class BattleService(
         if (locationState.Contestants.ContainsKey(locationState.Holder))
             return;
 
-        double highestStrength = 0.0;
-        string strongestFaction = "none";
+        //find the strongest non-phantom faction and make them the holder
+        //if there is no non-phantom faction, clear it all out
+        //ideally phantom factions stick around until they kill all others and then vanish
+        Dictionary<string, double> factionByStrength = locationState.Contestants.OrderByDescending(x => x.Value).ToDictionary();
+        Queue<string> sortedFactions = new([.. factionByStrength.Keys]);
 
-        foreach ((string contestant, double strength) in locationState.Contestants)
+        string? strongest = null;
+        while (strongest == null && sortedFactions.Count > 0)
         {
-            if (!(strength > highestStrength)) continue;
-            
-            highestStrength = strength;
-            strongestFaction = contestant;
+            strongest = sortedFactions.Dequeue();
+
+            if (cacheService.PhantomFactions.Contains(strongest))
+                strongest = null;
         }
 
-        locationState.Holder = strongestFaction;
+        if (strongest == null)
+        {
+            locationState.Contestants.Clear();
+            locationState.Holder = "none";
+            return;
+        }
+        
+        locationState.Holder = strongest;
     }
 
     //null target gets all nearby not of the same faction
@@ -410,6 +417,7 @@ public class BattleService(
         foreach ((string factionName, Faction faction) in dataConfig.Factions)
         {
             if (factionName == "none" 
+                || faction.Deactivated
                 || faction.UprisingChance <= 0 
                 || locState.Contestants.ContainsKey(factionName))
                 continue;

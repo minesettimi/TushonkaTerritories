@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using EFT;
 using Newtonsoft.Json;
 using SPT.Common.Http;
 using TerritoryClient.Models;

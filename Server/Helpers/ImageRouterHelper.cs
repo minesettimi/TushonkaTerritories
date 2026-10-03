@@ -15,6 +15,9 @@ public class ImageRouterHelper(ImageRouter imageRouter, DataConfig dataConfig)
     {
         foreach ((string factionName, Faction faction) in dataConfig.Factions)
         {
+            if (faction.Deactivated)
+                continue;
+            
             string path = Path.Join(ImagePath, $"{factionName}.png");
 
             if (!File.Exists(path))

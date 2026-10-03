@@ -7,13 +7,13 @@ public class DataConfig
 {
     [JsonPropertyName("factions")] public Dictionary<string, Faction> Factions { get; set; } = [];
     [JsonPropertyName("defaultTerritory")] public LocationData<string> LocationTerritories { get; set; } = new();
-    [JsonPropertyName("botFactionTable")] public Dictionary<string, string> BotFaction { get; set; } = [];
     [JsonPropertyName("locationNeighbors")] public LocationData<List<string>> LocationNeighbors { get; set; } = new();
 }
 
 public class Faction
 {
-    [JsonPropertyName("color")] public string Color { get; set; } = "#000000";
+    [JsonIgnore] public bool Deactivated { get; set; } = false;
+    [JsonPropertyName("color")] public string Color { get; set; } = "#FFFFFF";
     [JsonPropertyName("base")] public string? Base { get; set; } = null;
     [JsonPropertyName("botNames")] public List<string> BotNames { get; set; } = [];
     [JsonPropertyName("mobileBosses")] public List<string> MobileBossNames { get; set; } = [];
@@ -21,14 +21,22 @@ public class Faction
     [JsonPropertyName("strength")] public double Strength { get; set; }
     [JsonPropertyName("defensiveness")] public double Defensiveness { get; set; }
     [JsonPropertyName("distanceReduction")] public double DistanceReduction { get; set; }
-    [JsonPropertyName("persistant")] public bool Persistant { get; set; }
+    [JsonPropertyName("persistant")] public bool Persistant { get; set; } = false;
+    [JsonPropertyName("phantom")] public bool Phantom { get; set; } = false;
     [JsonPropertyName("uprising")] public double UprisingChance { get; set; }
     [JsonPropertyName("defaultRepUsec")] public double DefaultRepUsec { get; set; }
     [JsonPropertyName("defaultRepBear")] public double DefaultRepBear { get; set; }
     [JsonPropertyName("defaultRepScav")] public double DefaultRepScav { get; set; }
     [JsonPropertyName("gainRep")] public bool RepEnabled { get; set; }
     [JsonPropertyName("associatedTrader")] public MongoId? Trader { get; set; }
+    [JsonPropertyName("modSupport")] public FactionModData? ModSupport { get; set; }
     [JsonPropertyName("factionAttitude")] public Dictionary<string, int> Attitudes { get; set; } = [];
+}
+
+public class FactionModData
+{
+    [JsonPropertyName("modGuid")] public string ModGuid { get; set; }
+    [JsonPropertyName("backupFaction")] public string BackupFaction { get; set; } = "none";
 }
 
 //Credit to acidphantasm for the base of this better strategy of mapping locations

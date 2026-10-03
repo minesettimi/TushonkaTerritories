@@ -1,11 +1,9 @@
-using System;
 using System.Linq;
 using EFT;
 using EFT.InventoryLogic;
 using EFT.UI;
 using TerritoryClient.Patches.UI;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace TerritoryClient.UI;
 

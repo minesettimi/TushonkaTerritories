@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using EFT;
-using EFT.Communications;
-using Newtonsoft.Json;
 using TerritoryClient.Models;
 using UnityEngine;
 using UnityEngine.UI;

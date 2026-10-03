@@ -3,7 +3,7 @@
   {
     "none":
     {
-      "color": "#000000",
+      "color": "#FFFFFF",
       "botNames": [],
       "mobileBosses": [],
       "staticBosses": [],
@@ -130,6 +130,7 @@
       "defensiveness": 0.00,
       "distanceReduction": 1.0,
       "persistant": true,
+      "phantom": true,
       "uprising": 5,
       "defaultRepUsec": 0,
       "defaultRepBear": 0,
@@ -142,6 +143,37 @@
         "scav": -1,
         "rogue": -1,
         "raider": -1
+      }
+    },
+    "blackdiv":
+    {
+      "color": "#000000",
+      "botNames": ["blackDivAssault", "blackDivSupport", "blackDivBreacher", "blackDivIb"],
+      "mobileBosses": ["bossWedge"],
+      "staticBosses": ["blackDivLead"],
+      "strength": 1.0,
+      "defensiveness": 0.50,
+      "distanceReduction": 1.0,
+      "persistant": true,
+      "phantom": true,
+      "uprising": 10,
+      "defaultRepUsec": 0,
+      "defaultRepBear": 0,
+      "defaultRepScav": 0,
+      "gainRep": false,
+      "associatedTrader": null,
+      "modSupport":
+      {
+        "modGuid": "com.blackdiv.tacticaltoaster",
+        "backupFaction": "none"
+      },
+      "factionAttitude":
+      {
+        "none": -1,
+        "scav": -1,
+        "rogue": -1,
+        "raider": -1,
+        "cultist": -1
       }
     }
   },
@@ -160,53 +192,6 @@
     "labyrinth": "none",
     "icebreaker": "none",
     "terminal": "none"
-  },
-  "botFactionTable":
-  {
-    "assault": "scav",
-    "bossBoar": "scav",
-    "bossBoarSniper": "scav",
-    "bossBully": "scav",
-    "bossGluhar": "scav",
-    "bossKilla": "scav",
-    "bossKillaAgro": "scav",
-    "bossKnight": "rogue",
-    "bossKojaniy": "scav",
-    "bossKolontay": "raider",
-    "bossPartisan": "none",
-    "bossSanitar": "scav",
-    "bossTagilla": "scav",
-    "bossTagillaAgro": "scav",
-    "bossZryachiy": "cultist",
-    "crazyAssaultEvent": "scav",
-    "exUsec": "rogue",
-    "followerBigPipe": "rogue",
-    "followerBirdEye": "rogue",
-    "followerBoar": "scav",
-    "followerBoarClose1": "scav",
-    "followerBoarClose2": "scav",
-    "followerBully": "scav",
-    "followerGluharAssault": "scav",
-    "followerGluharScout": "scav",
-    "followerGluharSecurity": "scav",
-    "followerKojaniy": "scav",
-    "followerSanitar": "scav",
-    "followerZryachiy": "cultist",
-    "followerKolontaySecurity": "raider",
-    "followerKolontayAssault": "raider",
-    "gifter": "none",
-    "marksman": "scav",
-    "pmcBEAR": "none",
-    "pmcBot": "raider",
-    "pmcUSEC": "none",
-    "ravangeZryachiyEvent": "cultist",
-    "sectantOni": "cultist",
-    "sectantPredvestnik": "cultist",
-    "sectantPriest": "cultist",
-    "sectantPrizrak": "cultist",
-    "sectantWarrior": "cultist",
-    "shooterBtr": "none",
-    "tagillaHelperAgro": "scav"
   },
   "locationNeighbors":
   {
@@ -230,6 +215,7 @@
     "laboratory":
     [
       "tarkovstreets",
+      "sandbox",
       "factory4_day"
     ],
     "lighthouse":
@@ -243,7 +229,8 @@
       "lighthouse",
       "bigmap",
       "woods",
-      "shoreline"
+      "shoreline",
+      "laboratory"
     ],
     "sandbox":
     [
@@ -266,8 +253,14 @@
       "rezervbase",
       "factory4_day"
     ],
-    "labyrinth": [],
-    "icebreaker": [],
+    "labyrinth": 
+    [
+      "shoreline"
+    ],
+    "icebreaker": 
+    [
+      "shoreline"
+    ],
     "terminal":
     [
       "shoreline"

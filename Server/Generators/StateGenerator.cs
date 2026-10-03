@@ -1,6 +1,7 @@
 using SPTarkov.Common.Models.Logging;
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.Models.Common;
+using SPTarkov.Server.Core.Models.Spt.Mod;
 using TerritoryServer.Helpers;
 using TerritoryServer.Models;
 using TerritoryServer.Services;
@@ -11,6 +12,7 @@ namespace TerritoryServer.Generators;
 public class StateGenerator(DataConfig dataConfig,
     LocationMapHelper mapHelper,
     ModConfig modConfig,
+    CacheService cacheService,
     ISptLogger<StateGenerator> logger)
 {
     public SaveState GenerateState()
@@ -24,7 +26,7 @@ public class StateGenerator(DataConfig dataConfig,
         
         foreach ((string factionName, Faction faction) in dataConfig.Factions)
         {
-            if (faction.Base == null || faction.Base == "none")
+            if (faction.Deactivated || faction.Base == null || faction.Base == "none")
                 continue;
 
             LocationState locationState = new()
@@ -49,6 +51,12 @@ public class StateGenerator(DataConfig dataConfig,
 
             string factionName = dataConfig.LocationTerritories[location];
             Faction faction = dataConfig.Factions[factionName];
+
+            if (faction.Deactivated)
+            {
+                factionName = faction.ModSupport?.BackupFaction ?? "none";
+                faction = dataConfig.Factions[factionName];
+            }
             
             int distance = mapHelper.GetDistance(location, baseLocations.GetValueOrDefault(factionName, location), false);
 

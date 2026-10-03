@@ -1,11 +1,9 @@
-using System.Text.Json;
 using SPTarkov.Common.Models.Logging;
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.Helpers.Profile;
 using SPTarkov.Server.Core.Models.Common;
 using SPTarkov.Server.Core.Models.Eft.Common;
 using TerritoryServer.Helpers;
-using TerritoryServer.Loaders;
 using TerritoryServer.Models;
 using TerritoryServer.Servers;
 using TerritoryServer.Services;
@@ -19,6 +17,7 @@ public class PostRaidController(ProfileHelper profileHelper,
     DataConfig dataConfig,
     BattleService battleService,
     ProfileStateHelper profileStateHelper,
+    CacheService cacheService,
     ISptLogger<PostRaidController> logger)
 {
     public void PostRaidSimulate(string location, Dictionary<string, int> kills)
@@ -69,10 +68,10 @@ public class PostRaidController(ProfileHelper profileHelper,
 
             foreach ((string botName, int amount) in playerKills)
             {
-                string botFaction = dataConfig.BotFaction.GetValueOrDefault(botName, "none");
+                string botFaction = cacheService.BotFactions.GetValueOrDefault(botName, "none");
                 Faction faction = dataConfig.Factions[botFaction];
             
-                if (!playerData.Unlocked[botFaction])
+                if (botName == "none" || !playerData.Unlocked[botFaction])
                     continue;
 
                 double repDecrease = factionConfig.KillReputationDecrease * amount;

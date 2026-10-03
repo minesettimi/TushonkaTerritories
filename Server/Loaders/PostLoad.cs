@@ -1,11 +1,6 @@
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.DI;
-using SPTarkov.Server.Core.Models.Common;
-using SPTarkov.Server.Core.Models.Eft.Common.Tables;
-using SPTarkov.Server.Core.Models.Enums;
 using SPTarkov.Server.Core.Models.Spt.Mod;
-using SPTarkov.Server.Core.Models.Spt.Tables;
-using SPTarkov.Server.Core.Utils.Json;
 using TerritoryServer.Helpers;
 using TerritoryServer.Services;
 

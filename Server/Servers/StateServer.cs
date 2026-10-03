@@ -8,6 +8,7 @@ using SPTarkov.Server.Core.Servers.Ws;
 using SPTarkov.Server.Core.Utils;
 using TerritoryServer.Models;
 using TerritoryServer.Models.Ws;
+using TerritoryServer.Services;
 
 namespace TerritoryServer.Servers;
 
@@ -15,6 +16,8 @@ namespace TerritoryServer.Servers;
 public class StateServer(JsonUtil jsonUtil,
     SptWebSocketConnectionHandler webSocketConnectionHandler,
     NotificationSendHelper notificationSendHelper,
+    CacheService cacheService,
+    ModConfig modConfig,
     ISptLogger<StateServer> logger)
 {
     public static readonly string ModPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
@@ -36,6 +39,7 @@ public class StateServer(JsonUtil jsonUtil,
 
         CurrentSave = tempSave;
         
+        ValidateState();
         SaveToDisk();
     }
 
@@ -61,6 +65,54 @@ public class StateServer(JsonUtil jsonUtil,
         else
         {
             notificationSendHelper.SendMessageAsync(sessionId.Value, message);
+        }
+    }
+
+    private void ValidateState()
+    {
+        foreach (string locationName in LocationService.MapList)
+        {
+            LocationState? locationState = CurrentSave.Locations[locationName];
+            if (locationState == null)
+            {
+                logger.Warning($"[TT] Location with id: {locationName} had no data! Generating.");
+                CurrentSave.Locations[locationName] = new LocationState
+                {
+                    Holder = "none",
+                    Base = false,
+                    Contestants = []
+                };
+                continue;
+            }
+
+            foreach ((string factionId, double strength) in locationState.Contestants)
+            {
+                if (cacheService.ValidFactions.Contains(factionId))
+                    continue;
+
+                locationState.Contestants.Remove(factionId);
+            }
+
+            if (!cacheService.ValidFactions.Contains(locationState.Holder))
+            {
+                if (locationState.Contestants.Count > 0)
+                {
+                    locationState.Holder = locationState.Contestants.First().Key;
+                }
+                else
+                {
+                    locationState.Holder = "none";
+                }
+            }
+
+            //if the holder doesn't have a contestant spot
+            if (locationState.Holder != "none")
+                locationState.Contestants.TryAdd(locationState.Holder, 0.01);
+
+            if (modConfig.Debug)
+            {
+                logger.Info("[TT] Finished sanitizing state file");
+            }
         }
     }
 }

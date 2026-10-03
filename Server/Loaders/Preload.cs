@@ -4,6 +4,7 @@ using SPTarkov.Server.Core.DI;
 using SPTarkov.Server.Core.Models.Spt.Config;
 using TerritoryServer.Generators;
 using TerritoryServer.Servers;
+using TerritoryServer.Services;
 
 namespace TerritoryServer.Loaders;
 
@@ -13,6 +14,7 @@ public class Preload(StateServer stateServer,
     LocationConfig locationConfig,
     PmcConfig pmcConfig,
     BotConfig botConfig,
+    CacheService cacheService,
     IEnumerable<IRuntimePatch> patches) : IOnLoad
 {
     public async Task OnLoadAsync(CancellationToken cancellationToken)
@@ -22,6 +24,7 @@ public class Preload(StateServer stateServer,
             patch.Enable();
         }
         
+        cacheService.Initialize();
         await stateServer.LoadSave();
 
         if (stateServer.NewSave)

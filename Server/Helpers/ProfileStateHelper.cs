@@ -49,6 +49,9 @@ public class ProfileStateHelper(
         
         foreach ((string factionName, Faction faction) in dataConfig.Factions)
         {
+            if (faction.Deactivated)
+                continue;
+            
             if (!currentRep.ContainsKey(factionName))
             {
                 double defaultRep;
@@ -90,7 +93,7 @@ public class ProfileStateHelper(
 
         foreach ((string factionName, Faction faction) in dataConfig.Factions)
         {
-            if (factionName == "none" || faction.Trader == null)
+            if (faction.Deactivated || factionName == "none" || faction.Trader == null)
                 continue;
 
             MongoId traderId = (MongoId)faction.Trader;
