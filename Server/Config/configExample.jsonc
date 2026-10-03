@@ -22,8 +22,11 @@
     "locationsPerSimulation": 4, //How many locations to be simulated per activated simulation. The number wraps so 2 * the number of locations will simulate all locations twice.
     "attackNeutralChance": 25, //0 - 100 / The chance that a faction will try to engage in battle with another faction considered neutral
     "damageMultiplier": 1.2, //Multiplier for damage dealt in a battle
-    "damageMinDistribution": -0.35, //Minimum rng change to a faction's damage in battle
-    "damageMaxDistribution": 0.35, //Maximum rng change
+    "damageDistribution": //Min and max rng change to a faction's damage in battle
+    {
+      "min": -0.35,
+      "max": 0.35
+    },
     "strengthBuildup": 0.05, //0.0 - 1.0 / How much strength for factions to build up if their location is uncontested
     "maxStrengthBuildup": 0.6, //0.0 - 1.0 / Maximum strenth that can be gained from strength buildup
     "spreadMinStrength": 0.45, //0.0 - 1.0 / Minimum strength to spread to another location
@@ -41,23 +44,35 @@
     "removeDefaultScavs": true, //Disable default scav spawn system
     "addFactionBosses": true, //Factions can spawn bosses in locations they have presence
     "factionBossMinStrength": 0.75, //0.0 - 1.0 / Minimum strength for a faction's boss spawns to be added to a location
-    "factionBossMinChance": 15, //0 - 100 / Chance for a boss to spawn when a faction's strength is at minimum (0.0)
-    "factionBossMaxChance": 45, //0 - 100 / Chance for a boss to spawn when a faction's strength is at maximum (100.0)
+    "factionBossChance":
+    {
+      "min": 15, //0 - 100 / Chance for a boss to spawn when a faction's strength is at minimum (0.0)
+      "max": 45 //0 - 100 / Chance for a boss to spawn when a faction's strength is at maximum (100.0)
+    },
     "allyRepRequirement": 3, //Minimum reputation with a faction to be friendly
     "warnRepRequirement": 1, //Minimum reputation with a faction to be neutral
     "attitudeChangesAllies": true, //If true a faction's attitude with another faction changes their vanilla hostilities
     "playerRepAttitude": true, //If true a player's reputation with a faction will affect the bot's hostility towards the player
     "neutralityMode": 1, //0 - warn if neutral, 1 - true neutral, 2 - chance to be enemies
     "enemyChance": 50, //0 - 100 / If neutrality mode is 2, this sets the chance.
-    "minStrengthWaveDelay": 320, //Delay at maximum strength (1.0) between wave spawns
-    "maxStrengthWaveDelay": 460, //Delay at minimum strength (0.0)
+    "strengthWaveDelay":
+    {
+      "min": 320, //Delay at maximum strength (1.0) between wave spawns
+      "max": 460 //Delay at minimum strength (0.0)
+    },
     "delayVariance": 5, //RNG min and max variance added/subtracted to the wave spawns
     "maxWaves": 12, //Maximum waves that the mod will create for bots. -1 to disable the cap. HAVING THIS HIGH WITH A HIGH LENGTH RAID WILL CAUSE A MASSIVE SPIKE IN RAM USAGE!
-    "minStrengthWaveSize": 3, //Bot spawns per wave at minimum strength (0.0)
-    "maxStrengthWaveSize": 6, //Bot spawns per wave at maximum strength (1.0)
+    "strengthWaveSize":
+    {
+      "min": 3, //Bot spawns per wave at minimum strength (0.0)
+      "max": 6 //Bot spawns per wave at maximum strength (1.0)
+    },
     "roundedBotCounts": false, //If false, bot groups will be cut off after hitting the bot count of the wave.
-    "minStrengthGroupSize": 2, //Minimum bot size at minimum strength (0.0) if a group is created.
-    "maxStrengthGroupSize": 4, //Maximum bot size at maximum strength (1.0)
+    "strengthGroupSize":
+    {
+      "min": 2, //Minimum bot size at minimum strength (0.0) if a group is created.
+      "max": 4 //Maximum bot size at maximum strength (1.0)
+    },
     "groupSizeVariance": 1, //Random variance above and below the group size
     "groupChance": 30, //Chance bots will spawn as a group
     "spawnEnd": 300, //Seconds before the end of a wave that spawning stops

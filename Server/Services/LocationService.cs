@@ -227,7 +227,7 @@ public class LocationService(DataConfig dataConfig,
             if (raidConfig.FactionBosses && strength >= raidConfig.MinBossStrength)
             {
                 int bossChance = Math.Clamp((int)Math.Round(mathUtil.MapToRange(strength, 0.0,
-                    1.0, raidConfig.MinBossChance, raidConfig.MaxBossChance)), 0, 100);
+                    1.0, raidConfig.BossChance.Min, raidConfig.BossChance.Max)), 0, 100);
                 
                 foreach (string bossName in currentFaction.MobileBossNames)
                 {
@@ -244,12 +244,12 @@ public class LocationService(DataConfig dataConfig,
             }
             
             int spawnDelay = (int)Math.Round(mathUtil.MapToRange(1 - strength, 0, 1,
-                raidConfig.MinWaveDelay, raidConfig.MaxWaveDelay));
+                raidConfig.WaveDelay.Min, raidConfig.WaveDelay.Max));
 
             int waves = (int)Math.Floor(trueTimeLimit / randomUtil.GetInt(spawnDelay - raidConfig.DelayVariance,
                 spawnDelay + raidConfig.DelayVariance));
             int baseBotCount = (int)Math.Round(mathUtil.MapToRange(strength, 0, 1,
-                raidConfig.MinWaveBotCount, raidConfig.MaxWaveBotCount));
+                raidConfig.WaveBotCount.Min, raidConfig.WaveBotCount.Max));
 
             if (modConfig.RaidConfig.MaxWaveCap >= 0)
                 waves = Math.Min(modConfig.RaidConfig.MaxWaveCap, waves);
@@ -275,7 +275,7 @@ public class LocationService(DataConfig dataConfig,
 
                     if (randomUtil.GetChance100(raidConfig.GroupChance))
                         groupSize = (int)Math.Round(mathUtil.MapToRange(strength, 0, 1,
-                            raidConfig.MinStrengthUnits, raidConfig.MaxStrengthUnits)) + 
+                            raidConfig.StrengthUnits.Min, raidConfig.StrengthUnits.Max)) + 
                                 randomUtil.RandInt(-raidConfig.VariedGroupSize, raidConfig.VariedGroupSize + 1);
                     else
                         groupSize = 1;

@@ -33,8 +33,12 @@ public record BattleConfig
     [JsonPropertyName("locationsPerSimulation")] public int SimulationLocations { get; set; } = 4;
     [JsonPropertyName("attackNeutralChance")] public double AttackNeutralChance { get; set; } = 25.0;
     [JsonPropertyName("damageMultiplier")] public double DamageMultiplier { get; set; } = 1.2;
-    [JsonPropertyName("damageMinDistribution")] public double DamageMinRng { get; set; } = -0.35;
-    [JsonPropertyName("damageMaxDistribution")] public double DamageMaxRng { get; set; } = 0.35;
+    [JsonPropertyName("damageDistribution")]
+    public MinMax<double> DamageRng { get; set; } = new()
+    {
+        Min = -0.35,
+        Max = 0.35
+    };
     [JsonPropertyName("strengthBuildup")] public double StrengthBuildup { get; set; } = 0.05;
     [JsonPropertyName("maxStrengthBuildup")] public double MaxStrengthBuildup { get; set; } = 0.6;
     [JsonPropertyName("spreadMinStrength")] public double SpreadMinStrength { get; set; } = 0.45;
@@ -53,23 +57,38 @@ public record RaidConfig
     [JsonPropertyName("removeDefaultScavs")] public bool OverrideWaves { get; set; } = true;
     [JsonPropertyName("addFactionBosses")] public bool FactionBosses { get; set; } = true;
     [JsonPropertyName("factionBossMinStrength")] public double MinBossStrength { get; set; } = 0.6;
-    [JsonPropertyName("factionBossMinChance")] public int MinBossChance { get; set; } = 15;
-    [JsonPropertyName("factionBossMaxChance")] public int MaxBossChance { get; set; } = 25;
+    [JsonPropertyName("factionBossChance")]
+    public MinMax<int> BossChance { get; set; } = new()
+    {
+        Min = 15,
+        Max = 25
+    };
     [JsonPropertyName("allyRepRequirement")] public double AllyRep { get; set; } = 3f;
     [JsonPropertyName("warnRepRequirement")] public double NeutralRep { get; set; } = 1f;
     [JsonPropertyName("attitudeChangesAllies")] public bool AttitudeEffect { get; set; } = true;
     [JsonPropertyName("playerRepAttitude")] public bool AttitudeEffectPlayer { get; set; } = true;
     [JsonPropertyName("neutralityMode")] public NeutralMode NeutralityMode { get; set; } = NeutralMode.Neutral;
     [JsonPropertyName("enemyChance")] public int EnemyChance { get; set; } = 50;
-    [JsonPropertyName("minStrengthWaveDelay")] public int MinWaveDelay { get; set; } = 320;
-    [JsonPropertyName("maxStrengthWaveDelay")] public int MaxWaveDelay { get; set; } = 460;
+    [JsonPropertyName("waveDelay")] public MinMax<int> WaveDelay = new()
+    {
+        Min = 320,
+        Max = 460
+    };
     [JsonPropertyName("delayVariance")] public int DelayVariance { get; set; } = 5;
     [JsonPropertyName("maxWaves")] public int MaxWaveCap { get; set; } = 12;
-    [JsonPropertyName("minStrengthWaveSize")] public int MinWaveBotCount { get; set; } = 3;
-    [JsonPropertyName("maxStrengthWaveSize")] public int MaxWaveBotCount { get; set; } = 6;
+    [JsonPropertyName("strengthWaveSize")]
+    public MinMax<int> WaveBotCount { get; set; } = new()
+    {
+        Min = 3,
+        Max = 6
+    };
     [JsonPropertyName("roundedBotCounts")] public bool RoundedBotCounts { get; set; } = false;
-    [JsonPropertyName("minStrengthGroupSize")] public int MinStrengthUnits { get; set; } = 2;
-    [JsonPropertyName("maxStrengthGroupSize")] public int MaxStrengthUnits { get; set; } = 4;
+    [JsonPropertyName("strengthUnits")]
+    public MinMax<int> StrengthUnits { get; set; } = new()
+    {
+        Min = 2,
+        Max = 4
+    };
     [JsonPropertyName("groupSizeVariance")] public int VariedGroupSize { get; set; } = 1;
     [JsonPropertyName("groupChance")] public int GroupChance { get; set; } = 30;
     [JsonPropertyName("spawnEnd")] public int SpawnEnd { get; set; } = 300;

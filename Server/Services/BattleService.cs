@@ -282,7 +282,7 @@ public class BattleService(
 
                 double damage = (updatedStrength / targets.Count) * modConfig.BattleConfig.DamageMultiplier;
 
-                damage += randomUtil.RandNum(modConfig.BattleConfig.DamageMinRng, modConfig.BattleConfig.DamageMaxRng);
+                damage += randomUtil.RandNum(modConfig.BattleConfig.DamageRng.Min, modConfig.BattleConfig.DamageRng.Max);
 
                 foreach (string target in targets)
                 {
