@@ -20,10 +20,10 @@ public class CacheService(DataConfig dataConfig,
     public void Initialize()
     {
         CacheModdedFactions(); //first
-        BuildBotFactionCache();
+        CacheFactions();
     }
 
-    private void BuildBotFactionCache()
+    private void CacheFactions()
     {
         foreach ((string factionName, Faction faction) in dataConfig.Factions)
         {

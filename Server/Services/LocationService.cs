@@ -5,6 +5,7 @@ using SPTarkov.Server.Core.Models.Spt.Config;
 using SPTarkov.Server.Core.Models.Spt.Tables;
 using SPTarkov.Server.Core.Utils;
 using SPTarkov.Server.Core.Utils.Cloners;
+using TerritoryServer.Loaders;
 using TerritoryServer.Models;
 using TerritoryServer.Servers;
 
@@ -19,6 +20,7 @@ public class LocationService(DataConfig dataConfig,
     MathUtil mathUtil,
     RandomUtil randomUtil,
     CacheService cacheService,
+    JsonUtil jsonUtil,
     ISptLogger<LocationService> logger,
     ICloner cloner)
 {
@@ -69,8 +71,13 @@ public class LocationService(DataConfig dataConfig,
     private Dictionary<string, IEnumerable<AdditionalHostilitySettings>> _hostilityBackup = [];
     private IEnumerable<AdditionalHostilitySettings> _hostilityCache = [];
 
+    private string BossDataPath = Path.Join(InjectConstruct.DataPath, "bosses.json");
+
     public void Initialize()
     {
+        _mobileBossData = jsonUtil.DeserializeFromFile<Dictionary<string, BossLocationSpawn>>(BossDataPath) ?? 
+                          new Dictionary<string, BossLocationSpawn>();
+        
         BackupLocationData();
         AdjustLocationSettings();
         BuildHostilityCache();
@@ -102,13 +109,6 @@ public class LocationService(DataConfig dataConfig,
                 if (!_mobileBossData.ContainsKey(clonedSpawn.BossName!) 
                     && bossesToRemove.Contains(bossSpawn.BossName!))
                 {
-                    clonedSpawn.TriggerId = "";
-                    clonedSpawn.TriggerName = "";
-                    clonedSpawn.BossZone = "";
-                    clonedSpawn.ShowOnTarkovMap = false;
-                    clonedSpawn.ShowOnTarkovMapPvE = false;
-                    
-                    _mobileBossData.Add(clonedSpawn.BossName!, clonedSpawn);
                     continue;
                 }
                 
@@ -231,10 +231,11 @@ public class LocationService(DataConfig dataConfig,
                 
                 foreach (string bossName in currentFaction.MobileBossNames)
                 {
-                    
-                    //TODO: Create new boss entries for unavailable bosses
                     if (!_mobileBossData.TryGetValue(bossName, out BossLocationSpawn? mobileBoss))
+                    {
+                        logger.Error($"[TT] Couldn't find mobile boss data for boss name: {bossName}");
                         continue;
+                    }
                     
                     BossLocationSpawn clonedSpawn = cloner.Clone(mobileBoss)!;
                     clonedSpawn.BossChance = bossChance;
