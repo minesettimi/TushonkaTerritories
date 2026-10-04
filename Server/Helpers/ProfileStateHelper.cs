@@ -14,7 +14,7 @@ namespace TerritoryServer.Helpers;
 public class ProfileStateHelper(
     StateServer stateServer,
     DataConfig dataConfig,
-    ModConfig modConfig,
+    TerritoryModConfig modConfig,
     ICloner cloner,
     ISptLogger<ProfileStateHelper> logger)
 {

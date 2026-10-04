@@ -7,7 +7,7 @@ using TerritoryServer.Servers;
 namespace TerritoryServer.Providers;
 
 [Injectable(InjectionType.Singleton)]
-public class TerritoriesEditorProvider(ModConfig modConfig,
+public class TerritoriesEditorProvider(TerritoryModConfig modConfig,
     StateServer stateServer) : IConfigEditorConfigProvider
 {
     public IEnumerable<ConfigEditorConfigRegistration> GetConfigs()
@@ -17,7 +17,7 @@ public class TerritoriesEditorProvider(ModConfig modConfig,
             Id = "com.minesettimi.territories",
             DisplayName = "Territory Config",
             RuntimeConfig = modConfig,
-            RuntimeType = typeof(ModConfig),
+            RuntimeType = typeof(TerritoryModConfig),
             FilePath = Path.Combine("user", "mods", "TushonkaTerritories", "Config", "config.jsonc"),
             OnAppliedToRuntimeAsync = (_, _) =>
             {

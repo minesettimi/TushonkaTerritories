@@ -9,7 +9,7 @@ namespace TerritoryServer.Services;
 
 [Injectable(InjectionType.Singleton)]
 public class CacheService(DataConfig dataConfig,
-    ModConfig modConfig,
+    TerritoryModConfig modConfig,
     IReadOnlyList<SptMod> modList,
     BotTable botTable,
     ISptLogger<CacheService> logger)

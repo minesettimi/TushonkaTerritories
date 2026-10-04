@@ -13,7 +13,7 @@ namespace TerritoryServer.Controllers;
 [Injectable(InjectionType.Singleton)]
 public class PostRaidController(ProfileHelper profileHelper,
     StateServer stateServer,
-    ModConfig modConfig,
+    TerritoryModConfig modConfig,
     DataConfig dataConfig,
     BattleService battleService,
     ProfileStateHelper profileStateHelper,

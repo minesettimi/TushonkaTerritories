@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace TerritoryServer.Models;
 
-public record ModConfig
+public record TerritoryModConfig
 {
     [JsonPropertyName("debug")] public bool Debug { get; set; } = false;
     [JsonPropertyName("initialSimulations")] public int InitialSimulations { get; set; } = 2;
@@ -68,6 +68,7 @@ public record RaidConfig
     [JsonPropertyName("attitudeChangesAllies")] public bool AttitudeEffect { get; set; } = true;
     [JsonPropertyName("playerRepAttitude")] public bool AttitudeEffectPlayer { get; set; } = true;
     [JsonPropertyName("neutralityMode")] public NeutralMode NeutralityMode { get; set; } = NeutralMode.Neutral;
+    [JsonPropertyName("overrideHostility")] public bool OverrideHostility { get; set; } = true;
     [JsonPropertyName("enemyChance")] public int EnemyChance { get; set; } = 50;
     [JsonPropertyName("waveDelay")] public MinMax<int> WaveDelay = new()
     {

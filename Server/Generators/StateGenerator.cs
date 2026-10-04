@@ -11,7 +11,7 @@ namespace TerritoryServer.Generators;
 [Injectable(InjectionType.Singleton)]
 public class StateGenerator(DataConfig dataConfig,
     LocationMapHelper mapHelper,
-    ModConfig modConfig,
+    TerritoryModConfig modConfig,
     ISptLogger<StateGenerator> logger)
 {
     public SaveState GenerateState()

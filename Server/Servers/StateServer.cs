@@ -17,7 +17,7 @@ public class StateServer(JsonUtil jsonUtil,
     SptWebSocketConnectionHandler webSocketConnectionHandler,
     NotificationSendHelper notificationSendHelper,
     CacheService cacheService,
-    ModConfig modConfig,
+    TerritoryModConfig modConfig,
     ISptLogger<StateServer> logger)
 {
     public static readonly string ModPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;

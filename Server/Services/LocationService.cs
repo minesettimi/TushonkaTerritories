@@ -14,7 +14,7 @@ namespace TerritoryServer.Services;
 [Injectable(InjectionType.Singleton)]
 public class LocationService(DataConfig dataConfig,
     LocationTable locationTable,
-    ModConfig modConfig,
+    TerritoryModConfig modConfig,
     StateServer stateServer,
     BotConfig botConfig,
     MathUtil mathUtil,

@@ -44,8 +44,8 @@ public class InjectConstruct : IOnDIConstruct
         }
         
         string configPath = Path.Join(ConfigPath, "config.jsonc");
-        ModConfig modConfig =
-            await LoadConfig<ModConfig>(configPath, cancellationToken) ?? new ModConfig();
+        TerritoryModConfig modConfig =
+            await LoadConfig<TerritoryModConfig>(configPath, cancellationToken) ?? new TerritoryModConfig();
 
         //always save to update values
         await File.WriteAllTextAsync(configPath,

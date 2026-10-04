@@ -50,7 +50,7 @@ public class TerritoryRouter(JsonUtil jsonUtil, TerritoryCallbacks territoryCall
 public class TerritoryCallbacks(HttpResponseUtil httpResponseUtil, 
     PostRaidController raidController,
     StateServer stateServer,
-    ModConfig modConfig,
+    TerritoryModConfig modConfig,
     DataConfig dataConfig,
     CacheService cacheService,
     ISptLogger<TerritoryCallbacks> logger)

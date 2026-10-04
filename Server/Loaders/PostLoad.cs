@@ -4,6 +4,7 @@ using SPTarkov.Server.Core.Models.Eft.Common.Tables;
 using SPTarkov.Server.Core.Models.Spt.Mod;
 using SPTarkov.Server.Core.Models.Spt.Tables;
 using TerritoryServer.Helpers;
+using TerritoryServer.Models;
 using TerritoryServer.Servers;
 using TerritoryServer.Services;
 
@@ -16,6 +17,7 @@ public class PostLoad(LocationService locationService, ReputationService reputat
     ClientEnumDefinitions clientEnumDefinitions,
     StateServer stateServer,
     BotTable botTable,
+    TerritoryModConfig modConfig,
     ImageRouterHelper imageRouterHelper) : IOnLoad
 {
     public async Task OnLoadAsync(CancellationToken cancellationToken)
@@ -60,7 +62,8 @@ public class PostLoad(LocationService locationService, ReputationService reputat
 
         stateServer.NewSave = false;
         
-        AdjustAllBots();
+        if (modConfig.RaidConfig.OverrideHostility)
+            AdjustAllBots();
     }
 
     private void AdjustAllBots()
@@ -69,8 +72,17 @@ public class PostLoad(LocationService locationService, ReputationService reputat
         {
             foreach ((string difficultyName, DifficultyCategories difficulty) in botType.BotDifficulty)
             {
+                //don't warn allies and don't leave shooting on warn up to chance
+                difficulty.Patrol.MaxYDistToStartWarnRequestAlly = 0;
                 difficulty.Boss.BossDistToShootAlly = 0;
                 difficulty.Boss.BossDistToShootSqrtAlly = 0;
+                difficulty.Boss.BossDistToWarningOutAlly = 0;
+                difficulty.Boss.BossDistToWarningOutSqrtAlly = 0;
+                difficulty.Boss.BossDistToWarningOutDeltaAlly = 0;
+                difficulty.Boss.BossDistToWarningBearAlly = 0;
+                difficulty.Boss.BossDistToWarningUsecAlly = 0;
+                difficulty.Boss.BossDistToWarningAlly = 0;
+                difficulty.Mind.ChanceShootWhenWarnPlayer100 = 0;
             }
         }
     }

@@ -54,6 +54,7 @@
     "attitudeChangesAllies": true, //If true a faction's attitude with another faction changes their vanilla hostilities
     "playerRepAttitude": true, //If true a player's reputation with a faction will affect the bot's hostility towards the player
     "neutralityMode": 1, //0 - warn if neutral, 1 - true neutral, 2 - chance to be enemies
+    "overrideHostility": true, //Edit bot settings to be friendlier to allies
     "enemyChance": 50, //0 - 100 / If neutrality mode is 2, this sets the chance.
     "strengthWaveDelay":
     {
