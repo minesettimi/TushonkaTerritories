@@ -12,5 +12,8 @@
   "FactionName scav": "Scavengers",
   "FactionName rogue": "Rogues",
   "FactionName raider": "Raiders",
-  "FactionName cultist": "The Cult"
+  "FactionName cultist": "The Cult",
+  "FactionName blackdiv": "Black Division",
+  "FactionName ruaf": "RUAF",
+  "FactionName untar": "UNTAR"
 }

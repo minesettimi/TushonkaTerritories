@@ -8,7 +8,7 @@ using TerritoryServer.Services;
 
 namespace TerritoryServer.Loaders;
 
-[Injectable(TypePriority = OnLoadOrder.Preload + 40)]
+[Injectable(TypePriority = OnLoadOrder.Preload + 80100)] //WTF MoreBots????
 public class Preload(StateServer stateServer,
     StateGenerator stateGenerator,
     LocationConfig locationConfig,

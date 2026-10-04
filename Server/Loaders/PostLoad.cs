@@ -1,6 +1,8 @@
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.DI;
+using SPTarkov.Server.Core.Models.Eft.Common.Tables;
 using SPTarkov.Server.Core.Models.Spt.Mod;
+using SPTarkov.Server.Core.Models.Spt.Tables;
 using TerritoryServer.Helpers;
 using TerritoryServer.Servers;
 using TerritoryServer.Services;
@@ -13,6 +15,7 @@ public class PostLoad(LocationService locationService, ReputationService reputat
     BattleService battleService,
     ClientEnumDefinitions clientEnumDefinitions,
     StateServer stateServer,
+    BotTable botTable,
     ImageRouterHelper imageRouterHelper) : IOnLoad
 {
     public async Task OnLoadAsync(CancellationToken cancellationToken)
@@ -56,5 +59,19 @@ public class PostLoad(LocationService locationService, ReputationService reputat
         imageRouterHelper.LoadFactionImages();
 
         stateServer.NewSave = false;
+        
+        AdjustAllBots();
+    }
+
+    private void AdjustAllBots()
+    {
+        foreach ((string botName, BotType? botType) in botTable.Types)
+        {
+            foreach ((string difficultyName, DifficultyCategories difficulty) in botType.BotDifficulty)
+            {
+                difficulty.Boss.BossDistToShootAlly = 0;
+                difficulty.Boss.BossDistToShootSqrtAlly = 0;
+            }
+        }
     }
 }

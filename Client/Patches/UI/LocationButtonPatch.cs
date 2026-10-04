@@ -24,8 +24,12 @@ public class LocationButtonPatch : ModulePatch
         if (locationState == null)
             return;
 
-        Color factionColor = TerritoryPlugin.StateManager.ServerData.Factions[locationState.Holder].Color;
-        
+        if (!TerritoryPlugin.StateManager.ServerData.Factions.TryGetValue(locationState.Holder, out FactionData? faction))
+        {
+            TerritoryPlugin.PluginLogger.LogError($"Failed to get color for faction: {locationState.Holder}");
+            return;
+        }
+        Color factionColor = faction.Color;
         
         __instance._defaultColor = factionColor;
         __instance._specialColor = factionColor;

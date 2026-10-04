@@ -19,6 +19,8 @@ public class LocationSelectionShowPatch : ModulePatch
     [PatchPostfix]
     public static void Postfix()
     {
+        TerritoryPlugin.PluginLogger.LogInfo("Test test test");
+        
         try
         {
             LocationSelectionAwakePatch.TerritoryRenderer.Show();

@@ -3,7 +3,7 @@
   {
     "none":
     {
-      "color": "#FFFFFF",
+      "color": "#444444",
       "botNames": [],
       "mobileBosses": [],
       "staticBosses": [],
@@ -163,9 +163,9 @@
     "blackdiv":
     {
       "color": "#000000",
-      "botNames": ["blackDivAssault", "blackDivSupport", "blackDivBreacher", "blackDivIb"],
+      "botNames": ["blackDivAssault", "blackDivIb"],
       "mobileBosses": ["bossWedge"],
-      "staticBosses": ["blackDivLead"],
+      "staticBosses": [],
       "strength": 1.0,
       "defensiveness": 0.50,
       "distanceReduction": 1.0,
@@ -242,13 +242,11 @@
       "botNames":
       [
         "followeruntar",
-        "followeruntarmarksman"
-      ],
-      "mobileBosses": 
-      [
+        "followeruntarmarksman",
         "bossuntarlead",
         "bossuntarofficer"
       ],
+      "mobileBosses": [],
       "staticBosses": [],
       "strength": 0.4,
       "defensiveness": 0.4,
