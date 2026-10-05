@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using EFT;
@@ -10,15 +11,16 @@ public class ServerData
 {
     [JsonProperty("factions")] public Dictionary<string, FactionData> Factions { get; set; } = null!;
     [JsonProperty("botFactionTable")] public Dictionary<string, string> BotFaction { get; set; } = [];
+    [JsonProperty("spawnSettings")] public SpawnSettings SpawnSettings { get; set; } = null!;
     [JsonProperty("attitudeEffect")] public bool AttitudeEffect { get; set; }
     [JsonProperty("allyRep")] public double AllyRep { get; set; }
     [JsonProperty("neutralRep")] public double NeutralRep { get; set; }
-
 }
 
 public class FactionData
 {
     [JsonProperty("color")] public string FactionColor { get; set; } = null!;
+    [JsonProperty("bots")] public WildSpawnType[] BotTypes { get; set; } = [];
     [JsonProperty("locked")] public bool Locked { get; set; }
 
     [JsonIgnore] private Color? _cachedColor;
@@ -79,6 +81,30 @@ public record PlayerState
 {
     [JsonProperty("reputation")] public Dictionary<string, double> Reputation = [];
     [JsonProperty("unlocked")] public Dictionary<string, bool> Unlocked = [];
+}
+
+public record SpawnSettings
+{
+    [JsonProperty("perBotLoadout")] public int PerBotLoadout { get; set; }
+    [JsonProperty("extraLoadouts")] public int ExtraLoadouts { get; set; }
+    [JsonProperty("difficultyWeights")] public Dictionary<double, Dictionary<BotDifficulty, int>>? DifficultyWeights { get; set; } = [];
+    [JsonProperty("strengthGroupSizeMin")] public MinMax<int> GroupSizeMin { get; set; } = null!;
+    [JsonProperty("strengthGroupSizeMax")] public MinMax<int> GroupSizeMax { get; set; } = null!;
+    [JsonProperty("strengthGroupChance")] public MinMax<int> GroupChance { get; set; } = null!;
+    [JsonProperty("spawnCooldown")] public MinMax<float> SpawnCooldown { get; set; } = null!;
+    [JsonProperty("startTime")] public int StartTime { get; set; }
+    [JsonProperty("startTime")] public int EndTime { get; set; }
+    [JsonProperty("softCapSpace")] public int SoftCapSpace { get; set; }
+    [JsonProperty("requiredCapSpace")] public int RequiredSpawnSpace { get; set; }
+    [JsonProperty("spawnOnWindow")] public MinMax<float> SpawnOnWindow { get; set; } = null!;
+    [JsonProperty("spawnOffWindow")] public MinMax<float> SpawnOffWindow { get; set; } = null!;
+    [JsonProperty("spawnCheckInterval")] public float SpawnCheck { get; set; }
+}
+
+public record MinMax<T> where T : IComparable
+{
+    [JsonProperty("min")] public T Min { get; set; }
+    [JsonProperty("max")] public T Max { get; set; }
 }
 
 //convert this back to generic at some point if needed

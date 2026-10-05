@@ -87,6 +87,7 @@ public class TerritoryCallbacks(HttpResponseUtil httpResponseUtil,
             dataResponse.Factions.Add(factionName, new FactionDataResponse
             {
                 FactionColor = faction.Color,
+                FactionBots = [.. faction.BotTypesCache], //only regularly spawned bots
                 Locked = !faction.RepEnabled
             });
         }

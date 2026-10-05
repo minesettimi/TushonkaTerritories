@@ -30,6 +30,16 @@ public class CacheService(DataConfig dataConfig,
         {
             if (faction.Deactivated)
                 continue;
+
+            foreach (string regularBot in faction.BotNames)
+            {
+                if (!Enum.TryParse(regularBot, out WildSpawnType wildSpawnType))
+                {
+                    throw new Exception($"[TT] Invalid bot WildSpawnType: {regularBot}");
+                }
+                
+                faction.BotTypesCache.Add(wildSpawnType);
+            }
             
             IEnumerable<string> botNames = faction.MobileBossNames.Concat(faction.BotNames).Concat(faction.BossNames);
             foreach (string botName in botNames)

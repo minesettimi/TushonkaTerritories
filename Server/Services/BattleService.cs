@@ -335,7 +335,21 @@ public class BattleService(
             }
         }
 
-        //figure out holder swapping
+        RecalculateContestants(locationState);
+    }
+
+    private void RecalculateContestants(string locationName)
+    {
+        RecalculateContestants(stateServer.CurrentSave.Locations[locationName]!);
+    }
+    
+    private void RecalculateContestants(LocationState locationState)
+    {
+        foreach ((string factionName, double strength) in locationState.Contestants)
+        {
+            if (strength <= 0)
+                locationState.Contestants.Remove(factionName);
+        }
         
         if (locationState.Contestants.Count == 0)
         {
@@ -417,6 +431,7 @@ public class BattleService(
         if (isolated)
         {
             locState.Contestants.Remove(faction);
+            RecalculateContestants(location);
         }
     }
 

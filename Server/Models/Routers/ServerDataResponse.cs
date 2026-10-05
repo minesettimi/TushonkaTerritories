@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using SPTarkov.Server.Core.Models.Eft.Common;
 
 namespace TerritoryServer.Models;
 
@@ -13,6 +14,7 @@ public class ServerDataResponse
 
 public class FactionDataResponse
 {
-    [JsonPropertyName("color")] public string FactionColor { get; set; } = null!;
-    [JsonPropertyName("locked")] public bool Locked { get; set; }
+    [JsonPropertyName("color")] public required string FactionColor { get; set; }
+    [JsonPropertyName("bots")] public required WildSpawnType[] FactionBots { get; set; } = [];
+    [JsonPropertyName("locked")] public required bool Locked { get; set; }
 }

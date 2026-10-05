@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using SPTarkov.Server.Core.Models.Common;
+using SPTarkov.Server.Core.Models.Eft.Common;
 
 namespace TerritoryServer.Models;
 
@@ -13,6 +14,8 @@ public class DataConfig
 public class Faction
 {
     [JsonIgnore] public bool Deactivated { get; set; } = false;
+    [JsonIgnore] public List<WildSpawnType> BotTypesCache { get; } = []; //only regular spawned bots
+    
     [JsonPropertyName("color")] public string Color { get; set; } = "#FFFFFF";
     [JsonPropertyName("base")] public string? Base { get; set; } = null;
     [JsonPropertyName("botNames")] public List<string> BotNames { get; set; } = [];
