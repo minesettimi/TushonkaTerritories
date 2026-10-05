@@ -5,8 +5,9 @@ namespace TerritoryServer.Models;
 
 public class ServerDataResponse
 {
-    [JsonPropertyName("factions")] public Dictionary<string, FactionDataResponse> Factions { get; set; } = null!;
-    [JsonPropertyName("botFactionTable")] public Dictionary<string, string> BotFaction { get; set; } = [];
+    [JsonPropertyName("factions")] public required Dictionary<string, FactionDataResponse> Factions { get; set; }
+    [JsonPropertyName("botFactionTable")] public required Dictionary<string, string> BotFaction { get; set; }
+    [JsonPropertyName("spawnSettings")] public required SpawnSettings SpawnSettings { get; set; }
     [JsonPropertyName("attitudeEffect")] public bool AttitudeEffect { get; set; }
     [JsonPropertyName("allyRep")] public double AllyRep { get; set; }
     [JsonPropertyName("neutralRep")] public double NeutralRep { get; set; }

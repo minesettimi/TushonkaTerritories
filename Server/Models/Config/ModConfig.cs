@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using SPTarkov.Server.Core.Models.Enums.RaidSettings;
 
 namespace TerritoryServer.Models;
 
@@ -9,6 +10,7 @@ public record TerritoryModConfig
     [JsonPropertyName("factionConfig")] public FactionConfig FactionConfig { get; set; } = new();
     [JsonPropertyName("battleConfig")] public BattleConfig BattleConfig { get; set; } = new();
     [JsonPropertyName("raidConfig")] public RaidConfig RaidConfig { get; set; } = new();
+    [JsonPropertyName("spawnSettings")] public SpawnSettings SpawnSettings { get; set; } = new();
 }
 
 public record FactionConfig
@@ -70,42 +72,7 @@ public record RaidConfig
     [JsonPropertyName("neutralityMode")] public NeutralMode NeutralityMode { get; set; } = NeutralMode.Neutral;
     [JsonPropertyName("overrideHostility")] public bool OverrideHostility { get; set; } = true;
     [JsonPropertyName("enemyChance")] public int EnemyChance { get; set; } = 50;
-    [JsonPropertyName("waveDelay")] public MinMax<int> WaveDelay = new()
-    {
-        Min = 320,
-        Max = 460
-    };
-    [JsonPropertyName("delayVariance")] public int DelayVariance { get; set; } = 5;
-    [JsonPropertyName("maxWaves")] public int MaxWaveCap { get; set; } = 12;
-    [JsonPropertyName("strengthWaveSize")]
-    public MinMax<int> WaveBotCount { get; set; } = new()
-    {
-        Min = 3,
-        Max = 6
-    };
-    [JsonPropertyName("roundedBotCounts")] public bool RoundedBotCounts { get; set; } = false;
-    [JsonPropertyName("strengthUnits")]
-    public MinMax<int> StrengthUnits { get; set; } = new()
-    {
-        Min = 2,
-        Max = 4
-    };
-    [JsonPropertyName("groupSizeVariance")] public int VariedGroupSize { get; set; } = 1;
-    [JsonPropertyName("groupChance")] public int GroupChance { get; set; } = 30;
-    [JsonPropertyName("spawnEnd")] public int SpawnEnd { get; set; } = 300;
-    [JsonPropertyName("initialBotMultiplier")] public double InitialBotMult { get; set; } = 1.5;
-    [JsonPropertyName("enforceBotSpawns")] public bool EnforceBotSpawns { get; set; } = false;
-    [JsonPropertyName("enforceInitialSpawns")] public bool EnforceFirstWave { get; set; } = false;
     [JsonPropertyName("enforcePmcSpawns")] public bool EnforcePmcSpawns { get; set; } = false;
-    
-    [JsonPropertyName("difficultyThresholds")]
-    public BotDifficulty DifficultyThresholds { get; set; } = new()
-    {
-        Impossible = 0.9,
-        Hard = 0.7,
-        Normal = 0.4
-    };
-    [JsonPropertyName("difficultyDecreaseChance")] public double DifficultyChance { get; set; } = 45.0f;
 }
 
 public enum NeutralMode
@@ -115,21 +82,92 @@ public enum NeutralMode
     ChancedEnemies
 }
 
-public record BotDifficulty
+public record SpawnSettings
 {
-    [JsonPropertyName("impossible")] public double Impossible { get; init; }
-    [JsonPropertyName("hard")] public double Hard { get; init; }
-    [JsonPropertyName("normal")] public double Normal { get; init; }
-    [JsonPropertyName("easy")] public double Easy { get; init; }
-
-    [JsonIgnore]
-    public double this[string key] =>
-        key.ToLower() switch
+    [JsonPropertyName("perBotLoadout")] public int PerBotLoadout { get; set; } = 2;
+    [JsonPropertyName("extraLoadouts")] public int ExtraLoadouts { get; set; } = 5;
+    [JsonPropertyName("difficultyWeights")]
+    public Dictionary<double, Dictionary<BotDifficulty, int>>?
+        DifficultyWeights { get; set; } = new()
+    {
         {
-            "impossible" => Impossible,
-            "hard" => Hard,
-            "normal" => Normal,
-            "easy" => Easy,
-            _ => throw new KeyNotFoundException($"No difficulty found: {key}")
-        };
+            0.9, new Dictionary<BotDifficulty, int>()
+            {
+                { BotDifficulty.Easy, 10 },
+                { BotDifficulty.Medium, 20 },
+                { BotDifficulty.Hard, 40 },
+                { BotDifficulty.Impossible, 30 }
+            }
+        },
+        {
+            0.6, new Dictionary<BotDifficulty, int>()
+            {
+                { BotDifficulty.Easy, 20 },
+                { BotDifficulty.Medium, 30 },
+                { BotDifficulty.Hard, 30 },
+                { BotDifficulty.Impossible, 20 }
+            }
+        },
+        {
+            0.3, new Dictionary<BotDifficulty, int>()
+            {
+                { BotDifficulty.Easy, 30 },
+                { BotDifficulty.Medium, 40 },
+                { BotDifficulty.Hard, 20 },
+                { BotDifficulty.Impossible, 10 }
+            }
+        },
+        {
+            0.0, new Dictionary<BotDifficulty, int>()
+            {
+                { BotDifficulty.Easy, 60 },
+                { BotDifficulty.Medium, 30 },
+                { BotDifficulty.Hard, 10 },
+                { BotDifficulty.Impossible, 0 }
+            }
+        }
+    };
+
+    [JsonPropertyName("strengthGroupSizeMin")]
+    public MinMax<int> GroupSizeMin { get; set; } = new()
+    {
+        Min = 2,
+        Max = 4
+    };
+
+    [JsonPropertyName("strengthGroupSizeMax")]
+    public MinMax<int> GroupSizeMax { get; set; } = new()
+    {
+        Min = 4,
+        Max = 6
+    };
+
+    [JsonPropertyName("strengthGroupChance")]
+    public MinMax<int> GroupChance { get; set; } = new()
+    {
+        Min = 0,
+        Max = 40
+    };
+
+    [JsonPropertyName("startTime")] public int StartTime { get; set; } = 0;
+    [JsonPropertyName("startTime")] public int EndTime { get; set; } = 200;
+    [JsonPropertyName("softCapSpace")] public int SoftCapSpace { get; set; } = 6;
+    [JsonPropertyName("requiredCapSpace")] public int RequiredSpawnSpace { get; set; } = 4;
+
+    [JsonPropertyName("spawnOnWindow")]
+    public MinMax<float> SpawnOnWindow { get; set; } = new()
+    {
+        Min = 260,
+        Max = 320
+    };
+
+    [JsonPropertyName("spawnOffWindow")]
+    public MinMax<float> SpawnOffWindow { get; set; } = new()
+    {
+        Min = 30,
+        Max = 20
+    };
+
+    [JsonPropertyName("spawnCheckInterval")]
+    public float SpawnCheck { get; set; } = 15f;
 }

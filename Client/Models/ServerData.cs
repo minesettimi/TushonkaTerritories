@@ -91,7 +91,6 @@ public record SpawnSettings
     [JsonProperty("strengthGroupSizeMin")] public MinMax<int> GroupSizeMin { get; set; } = null!;
     [JsonProperty("strengthGroupSizeMax")] public MinMax<int> GroupSizeMax { get; set; } = null!;
     [JsonProperty("strengthGroupChance")] public MinMax<int> GroupChance { get; set; } = null!;
-    [JsonProperty("spawnCooldown")] public MinMax<float> SpawnCooldown { get; set; } = null!;
     [JsonProperty("startTime")] public int StartTime { get; set; }
     [JsonProperty("startTime")] public int EndTime { get; set; }
     [JsonProperty("softCapSpace")] public int SoftCapSpace { get; set; }

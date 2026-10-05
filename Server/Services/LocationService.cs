@@ -215,11 +215,7 @@ public class LocationService(DataConfig dataConfig,
     {
         List<BossLocationSpawn> newSpawns = [];
         RaidConfig raidConfig = modConfig.RaidConfig;
-
-        double trueTimeLimit = (timeLimit * 60) - raidConfig.SpawnEnd;
-
-        //make equal space per faction
-        int maxBotsPerWave = maxBots / locationState.Contestants.Count;
+        
         
         foreach ((string factionName, double strength) in locationState.Contestants)
         {
@@ -243,96 +239,9 @@ public class LocationService(DataConfig dataConfig,
                     newSpawns.Add(clonedSpawn);
                 }
             }
-            
-            int spawnDelay = (int)Math.Round(mathUtil.MapToRange(1 - strength, 0, 1,
-                raidConfig.WaveDelay.Min, raidConfig.WaveDelay.Max));
-
-            int waves = (int)Math.Floor(trueTimeLimit / randomUtil.GetInt(spawnDelay - raidConfig.DelayVariance,
-                spawnDelay + raidConfig.DelayVariance));
-            int baseBotCount = (int)Math.Round(mathUtil.MapToRange(strength, 0, 1,
-                raidConfig.WaveBotCount.Min, raidConfig.WaveBotCount.Max));
-
-            if (modConfig.RaidConfig.MaxWaveCap >= 0)
-                waves = Math.Min(modConfig.RaidConfig.MaxWaveCap, waves);
-            
-            for (int i = 0; i <= waves; i++)
-            {
-                int remainingBots = baseBotCount;
-
-                if (i == 0)
-                {
-                    remainingBots = (int)Math.Round(remainingBots * raidConfig.InitialBotMult);
-                }
-
-                remainingBots = Math.Min(remainingBots, (int)Math.Round(maxBotsPerWave * strength));
-                
-                int currentDelay = 1 + (i * spawnDelay);
-
-                bool enforceWave = raidConfig.EnforceBotSpawns || (i == 0 && raidConfig.EnforceFirstWave);
-
-                while (remainingBots > 0)
-                {
-                    int groupSize;
-
-                    if (randomUtil.GetChance100(raidConfig.GroupChance))
-                        groupSize = (int)Math.Round(mathUtil.MapToRange(strength, 0, 1,
-                            raidConfig.StrengthUnits.Min, raidConfig.StrengthUnits.Max)) + 
-                                randomUtil.RandInt(-raidConfig.VariedGroupSize, raidConfig.VariedGroupSize + 1);
-                    else
-                        groupSize = 1;
-
-                    if (!raidConfig.RoundedBotCounts)
-                    {
-                        groupSize = Math.Min(groupSize, remainingBots);
-                    }
-
-                    remainingBots -= groupSize;
-
-                    BossLocationSpawn newBotSpawn = new()
-                    {
-                        BossChance = 100,
-                        Delay = 0,
-                        BossDifficulty = GetDifficultyFromStrength(strength),
-                        BossEscortDifficulty = GetDifficultyFromStrength(strength),
-                        BossName = randomUtil.GetRandomElement(currentFaction.BotNames),
-                        BossEscortType = randomUtil.GetRandomElement(currentFaction.BotNames),
-                        BossZone = "",
-                        IsBossPlayer = false,
-                        Time = currentDelay,
-                        BossEscortAmount = groupSize == 1 ? "0" : groupSize.ToString(),
-                        IgnoreMaxBots = false,
-                        ForceSpawn = enforceWave,
-                        IsRandomTimeSpawn = false,
-                        SpawnMode = ["pve", "regular"],
-                        TriggerId = "",
-                        TriggerName = "",
-                        ShowOnTarkovMap = false,
-                        ShowOnTarkovMapPvE = false
-                    };
-                    
-                    newSpawns.Add(newBotSpawn);
-
-                    if (i > 0)
-                        currentDelay += randomUtil.RandInt(0, 5);
-                }
-            }
         }
 
         return newSpawns;
-    }
-
-    private string GetDifficultyFromStrength(double strength)
-    {
-        foreach (string difficulty in Difficulties)
-        {
-            if (modConfig.RaidConfig.DifficultyThresholds[difficulty] <= strength && 
-                !randomUtil.GetChance100(modConfig.RaidConfig.DifficultyChance))
-            {
-                return difficulty;
-            }
-        }
-            
-        return "normal";
     }
     
     private void BuildHostilityCache()

@@ -15,7 +15,7 @@ public class TerritoriesSpawnScenario : MonoBehaviour
 {
     private AbstractGame _game = null!;
     private LocationSettings.Location _location = null!;
-    private BotsController? _botsController = null!;
+    private BotsController? _botsController;
     private LocationState _locationState = null!;
     private Dictionary<string, FactionData> _factions = null!;
     private SpawnSettings _spawnSettings = null!;
