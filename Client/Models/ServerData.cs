@@ -116,6 +116,8 @@ public record SpawnSettings
     [JsonProperty("strengthGroupSizeMin")] public MinMax<int> GroupSizeMin { get; set; } = null!;
     [JsonProperty("strengthGroupSizeMax")] public MinMax<int> GroupSizeMax { get; set; } = null!;
     [JsonProperty("strengthGroupChance")] public MinMax<int> GroupChance { get; set; } = null!;
+    [JsonProperty("nonGroupBotModifier")] public float NonGroupBotModifier { get; set; }
+    [JsonProperty("groupSpawnExclusive")] public bool GroupSpawnExclusive { get; set; }
     [JsonProperty("startTime")] public int StartTime { get; set; }
     [JsonProperty("stopTime")] public int EndTime { get; set; }
     [JsonProperty("softCapSpace")] public int SoftCapSpace { get; set; }
@@ -125,6 +127,8 @@ public record SpawnSettings
     [JsonProperty("spawnCheckInterval")] public float SpawnCheck { get; set; }
     [JsonProperty("spawnDelayAdjustmentMax")] public float SpawnDelayAdjustmentMax { get; set; }
     [JsonProperty("maxBotSpawnsPerInterval")] public int MaxIntervalSpawns { get; set; }
+    [JsonProperty("deadRaidThreshold")] public int DeadRaidBots { get; set; }
+    [JsonProperty("deadRaidTimer")] public float DeadRaidTime { get; set; }
 }
 
 public record MinMax<T> where T : IComparable

@@ -84,8 +84,8 @@ public enum NeutralMode
 
 public record SpawnSettings
 {
-    [JsonPropertyName("perBotLoadout")] public int PerBotLoadout { get; set; } = 2;
-    [JsonPropertyName("extraLoadouts")] public int ExtraLoadouts { get; set; } = 5;
+    [JsonPropertyName("perBotLoadout")] public int PerBotLoadout { get; set; } = 12;
+    [JsonPropertyName("extraLoadouts")] public int ExtraLoadouts { get; set; } = 8;
     [JsonPropertyName("difficultyWeights")]
     public Dictionary<double, Dictionary<BotDifficulty, int>>?
         DifficultyWeights { get; set; } = new()
@@ -145,35 +145,34 @@ public record SpawnSettings
     [JsonPropertyName("strengthGroupChance")]
     public MinMax<int> GroupChance { get; set; } = new()
     {
-        Min = 0,
-        Max = 40
+        Min = 20,
+        Max = 80
     };
 
+    [JsonPropertyName("nonGroupBotModifier")] public float NonGroupBotModifier { get; set; } = 0.75f;
+    [JsonPropertyName("groupSpawnExclusive")] public bool GroupSpawnExclusive { get; set; } = false;
     [JsonPropertyName("startTime")] public int StartTime { get; set; } = 1;
-    [JsonPropertyName("stopTime")] public int EndTime { get; set; } = 200; //after the end
-    [JsonPropertyName("softCapSpace")] public int SoftCapSpace { get; set; } = 3;
+    [JsonPropertyName("stopTime")] public int EndTime { get; set; } = 200; //time before the end of the raid
+    [JsonPropertyName("softCapSpace")] public int SoftCapSpace { get; set; } = 4;
     [JsonPropertyName("requiredCapSpace")] public int RequiredSpawnSpace { get; set; } = 4;
 
     [JsonPropertyName("spawnOnWindow")]
     public MinMax<float> SpawnOnWindow { get; set; } = new()
     {
-        Min = 260,
-        Max = 320
+        Min = 60,
+        Max = 100
     };
 
     [JsonPropertyName("spawnOffWindow")]
     public MinMax<float> SpawnOffWindow { get; set; } = new()
     {
-        Min = 30,
-        Max = 20
+        Min = 300,
+        Max = 380
     };
 
-    [JsonPropertyName("spawnCheckInterval")]
-    public float SpawnCheck { get; set; } = 15f;
-    
-    [JsonPropertyName("spawnDelayAdjustmentMax")]
-    public float SpawnDelayAdjustmentMax { get; set; } = 5;
-    
-    [JsonPropertyName("maxBotSpawnsPerInterval")]
-    public int MaxIntervalSpawns { get; set; } = 6;
+    [JsonPropertyName("spawnCheckInterval")] public float SpawnCheck { get; set; } = 20f;
+    [JsonPropertyName("spawnDelayAdjustmentMax")] public float SpawnDelayAdjustmentMax { get; set; } = 2;
+    [JsonPropertyName("maxBotSpawnsPerInterval")] public int MaxIntervalSpawns { get; set; } = 8;
+    [JsonPropertyName("deadRaidThreshold")] public int DeadRaidThreshold { get; set; } = 4;
+    [JsonPropertyName("deadRaidTimer")] public float DeadRaidTimer { get; set; } = 15f;
 }

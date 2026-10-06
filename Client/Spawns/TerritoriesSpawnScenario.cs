@@ -190,6 +190,13 @@ public class TerritoriesSpawnScenario : MonoBehaviour
                 MyExtensions.Random(_spawnSettings.SpawnOnWindow.Min, _spawnSettings.SpawnOnWindow.Max) : 
                 MyExtensions.Random(_spawnSettings.SpawnOffWindow.Min, _spawnSettings.SpawnOffWindow.Max));
         }
+        //revive dead raids by fast tracking off times
+        else if (!_spawnActive 
+                 && _botsController!.AliveAndLoadingBotsCount <= _spawnSettings.DeadRaidBots 
+                 && _nextWindow - _game.PastTime > _spawnSettings.DeadRaidTime)
+        {
+            _nextWindow = _game.PastTime + _spawnSettings.DeadRaidTime;
+        }
 
         if (!_spawnActive)
             return;
@@ -234,16 +241,17 @@ public class TerritoriesSpawnScenario : MonoBehaviour
 
         if (factionBotsRemaining >= spawnInfo.MinGroupSize)
         {
-            SpawnBotGroups(ref factionBotsRemaining, spawnInfo, factionData);
+            if (SpawnBotGroups(ref factionBotsRemaining, spawnInfo, factionData) && _spawnSettings.GroupSpawnExclusive)
+                return;
         }
 
-        for (int i = 0; i < factionBotsRemaining; i++)
-        {
+        int soloBots = Mathf.CeilToInt(factionBotsRemaining * _spawnSettings.NonGroupBotModifier);
+        
+        for (int i = 0; i < soloBots; i++)
             SpawnByWave(1, factionData, spawnInfo);
-        }
     }
 
-    private void SpawnBotGroups(ref int availableBots, ContestantSpawnInfo spawnInfo, FactionData factionData)
+    private bool SpawnBotGroups(ref int availableBots, ContestantSpawnInfo spawnInfo, FactionData factionData)
     {
         int groupChances = Mathf.Max(Mathf.FloorToInt(availableBots / (float)spawnInfo.MaxGroupSize), 1);
 
@@ -256,9 +264,13 @@ public class TerritoriesSpawnScenario : MonoBehaviour
             
             availableBots -= groupSize;
             SpawnByWave(groupSize, factionData, spawnInfo);
+            
+            TerritoryPlugin.PluginLogger.LogInfo($"Spawning bots by group size: {groupSize}.");
 
-            break;
+            return true;
         }
+
+        return false;
     }
 
     private void SpawnByWave(int count, FactionData factionData, ContestantSpawnInfo spawnInfo)
@@ -288,7 +300,7 @@ public class TerritoriesSpawnScenario : MonoBehaviour
             BotsCount = count,
             Side = playerSide,
             WildSpawnType = botType,
-            ChanceGroup = spawnInfo.GroupChance,
+            ChanceGroup = 0,
             SpawnAreaName = spawnZone.name,
             IsPlayers = false,
             WithCheckMinMax = false
