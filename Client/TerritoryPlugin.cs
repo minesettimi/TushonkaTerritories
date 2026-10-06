@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using BepInEx;
 using BepInEx.Bootstrap;
+using BepInEx.Configuration;
 using BepInEx.Logging;
 using SPT.Reflection.Patching;
 using TerritoryClient.Bundles;
@@ -21,6 +22,8 @@ namespace TerritoryClient
 
         public static bool IsFika;
 
+        public static ConfigEntry<bool> _debug;
+
         protected void Awake()
         {
             PluginLogger = Logger;
@@ -33,6 +36,8 @@ namespace TerritoryClient
             BundleLoader = new BundleLoader();
 
             IsFika = Chainloader.PluginInfos.Keys.Contains("com.fika.core");
+            _debug = Config.Bind("Debug", "Debug", false, 
+                "Enable bot spawn system and reputation debug printing.");
         }
     }
 }

@@ -16,6 +16,6 @@ public class ServerDataResponse
 public class FactionDataResponse
 {
     [JsonPropertyName("color")] public required string FactionColor { get; set; }
-    [JsonPropertyName("bots")] public required WildSpawnType[] FactionBots { get; set; } = [];
+    [JsonPropertyName("bots")] public required List<string> FactionBots { get; set; } = [];
     [JsonPropertyName("locked")] public required bool Locked { get; set; }
 }

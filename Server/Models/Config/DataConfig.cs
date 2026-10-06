@@ -14,13 +14,13 @@ public class DataConfig
 public class Faction
 {
     [JsonIgnore] public bool Deactivated { get; set; } = false;
-    [JsonIgnore] public List<WildSpawnType> BotTypesCache { get; } = []; //only regular spawned bots
     
     [JsonPropertyName("color")] public string Color { get; set; } = "#FFFFFF";
     [JsonPropertyName("base")] public string? Base { get; set; } = null;
     [JsonPropertyName("botNames")] public List<string> BotNames { get; set; } = [];
+    [JsonPropertyName("extraBotNames")] public List<string> ExtraBotNames { get; set; } = [];
     [JsonPropertyName("mobileBosses")] public List<string> MobileBossNames { get; set; } = [];
-    [JsonPropertyName("staticBosses")] public List<string> BossNames { get; set; } = [];
+    [JsonPropertyName("staticBosses")] public List<string> ExtraBossNames { get; set; } = [];
     [JsonPropertyName("strength")] public double Strength { get; set; }
     [JsonPropertyName("defensiveness")] public double Defensiveness { get; set; }
     [JsonPropertyName("distanceReduction")] public double DistanceReduction { get; set; }

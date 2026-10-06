@@ -11,7 +11,6 @@ namespace TerritoryServer.Services;
 public class CacheService(DataConfig dataConfig,
     TerritoryModConfig modConfig,
     IReadOnlyList<SptMod> modList,
-    BotTable botTable,
     ISptLogger<CacheService> logger)
 {
     public readonly Dictionary<string, string> BotFactions = [];
@@ -30,18 +29,10 @@ public class CacheService(DataConfig dataConfig,
         {
             if (faction.Deactivated)
                 continue;
-
-            foreach (string regularBot in faction.BotNames)
-            {
-                if (!Enum.TryParse(regularBot, out WildSpawnType wildSpawnType))
-                {
-                    throw new Exception($"[TT] Invalid bot WildSpawnType: {regularBot}");
-                }
-                
-                faction.BotTypesCache.Add(wildSpawnType);
-            }
             
-            IEnumerable<string> botNames = faction.MobileBossNames.Concat(faction.BotNames).Concat(faction.BossNames);
+            //there's a lot of separate bot lists but all are pretty necessary
+            IEnumerable<string> botNames = faction.MobileBossNames.Concat(faction.BotNames).Concat(faction.ExtraBotNames)
+                .Concat(faction.ExtraBossNames);
             foreach (string botName in botNames)
             {
                 if (!BotFactions.TryAdd(botName, factionName))

@@ -3,7 +3,7 @@ using EFT;
 
 namespace TerritoryClient.Extensions;
 
-public static class BotsListExtensions
+public static class BotExtensions
 {
     public static int GetBotCountByFaction(this BotsList botsList, string factionName)
     {
@@ -22,5 +22,19 @@ public static class BotsListExtensions
         }
 
         return botCount;
+    }
+
+    public static BotZone? GetRandomBotZoneExclusive(this BotSpawner botSpawner, bool sniper)
+    {
+        List<BotZone> zones = [];
+        foreach (BotZone zone in botSpawner._openedZones)
+        {
+            if (sniper ^ zone.SnipeZone)
+                continue;
+            
+            zones.Add(zone);
+        }
+
+        return zones.Count == 0 ? null : zones.RandomElement();
     }
 }

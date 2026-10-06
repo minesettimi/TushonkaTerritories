@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Threading.Tasks;
 using EFT;
 using HarmonyLib;
 using SPT.Reflection.Patching;
@@ -23,8 +24,10 @@ public class BotSetupPatch : ModulePatch
     }
 
     [PatchPostfix]
-    public static void Postfix(LocalGame __instance)
+    public static async void Postfix(LocalGame __instance, Task __result)
     {
+        await __result;
+        
         SpawnManager.LocalGameSpawnScenarios.TryGetValue(__instance, out TerritoriesSpawnScenario territoriesSpawnScenario);
         
         territoriesSpawnScenario.Run();

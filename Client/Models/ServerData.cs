@@ -20,7 +20,7 @@ public class ServerData
 public class FactionData
 {
     [JsonProperty("color")] public string FactionColor { get; set; } = null!;
-    [JsonProperty("bots")] public WildSpawnType[] BotTypes { get; set; } = [];
+    [JsonProperty("bots")] public List<string> BotNames { get; set; } = [];
     [JsonProperty("locked")] public bool Locked { get; set; }
 
     [JsonIgnore] private Color? _cachedColor;
@@ -48,6 +48,31 @@ public class FactionData
     {
         Sprite sprite = await Utils.LoadIconSprite(session, $"/files/factions/icon/{factionName}");
         Sprite = sprite;
+    }
+
+    [JsonIgnore]
+    public WildSpawnType[] BotTypes
+    {
+        get
+        {
+            if (field == null)
+            {
+                List<WildSpawnType> spawnTypes = [];
+                foreach (string botName in BotNames)
+                {
+                    if (!Enum.TryParse(botName, out WildSpawnType wildSpawnType))
+                    {
+                        throw new Exception($"[TT] Failed to parse bot type {botName}!");
+                    }
+                    
+                    spawnTypes.Add(wildSpawnType);
+                }
+                
+                field = [.. spawnTypes];
+            }
+            
+            return field;
+        }
     }
 }
 
@@ -92,12 +117,14 @@ public record SpawnSettings
     [JsonProperty("strengthGroupSizeMax")] public MinMax<int> GroupSizeMax { get; set; } = null!;
     [JsonProperty("strengthGroupChance")] public MinMax<int> GroupChance { get; set; } = null!;
     [JsonProperty("startTime")] public int StartTime { get; set; }
-    [JsonProperty("startTime")] public int EndTime { get; set; }
+    [JsonProperty("stopTime")] public int EndTime { get; set; }
     [JsonProperty("softCapSpace")] public int SoftCapSpace { get; set; }
     [JsonProperty("requiredCapSpace")] public int RequiredSpawnSpace { get; set; }
     [JsonProperty("spawnOnWindow")] public MinMax<float> SpawnOnWindow { get; set; } = null!;
     [JsonProperty("spawnOffWindow")] public MinMax<float> SpawnOffWindow { get; set; } = null!;
     [JsonProperty("spawnCheckInterval")] public float SpawnCheck { get; set; }
+    [JsonProperty("spawnDelayAdjustmentMax")] public float SpawnDelayAdjustmentMax { get; set; }
+    [JsonProperty("maxBotSpawnsPerInterval")] public int MaxIntervalSpawns { get; set; }
 }
 
 public record MinMax<T> where T : IComparable

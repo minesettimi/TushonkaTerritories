@@ -240,7 +240,7 @@ public class BattleService(
                     continue;
 
                 Faction faction = dataConfig.Factions[factionName];
-                bool boss = faction.MobileBossNames.Contains(botName) || faction.BossNames.Contains(botName);
+                bool boss = faction.MobileBossNames.Contains(botName) || faction.ExtraBossNames.Contains(botName);
                 
                 double enemyDamage = boss ? modConfig.BattleConfig.RaidBossStrengthLoss :
                     modConfig.BattleConfig.RaidStrengthLoss;

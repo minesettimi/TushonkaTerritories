@@ -104,8 +104,8 @@ public record SpawnSettings
             {
                 { BotDifficulty.Easy, 20 },
                 { BotDifficulty.Medium, 30 },
-                { BotDifficulty.Hard, 30 },
-                { BotDifficulty.Impossible, 20 }
+                { BotDifficulty.Hard, 40 },
+                { BotDifficulty.Impossible, 10 }
             }
         },
         {
@@ -149,9 +149,9 @@ public record SpawnSettings
         Max = 40
     };
 
-    [JsonPropertyName("startTime")] public int StartTime { get; set; } = 0;
-    [JsonPropertyName("startTime")] public int EndTime { get; set; } = 200;
-    [JsonPropertyName("softCapSpace")] public int SoftCapSpace { get; set; } = 6;
+    [JsonPropertyName("startTime")] public int StartTime { get; set; } = 1;
+    [JsonPropertyName("stopTime")] public int EndTime { get; set; } = 200; //after the end
+    [JsonPropertyName("softCapSpace")] public int SoftCapSpace { get; set; } = 3;
     [JsonPropertyName("requiredCapSpace")] public int RequiredSpawnSpace { get; set; } = 4;
 
     [JsonPropertyName("spawnOnWindow")]
@@ -170,4 +170,10 @@ public record SpawnSettings
 
     [JsonPropertyName("spawnCheckInterval")]
     public float SpawnCheck { get; set; } = 15f;
+    
+    [JsonPropertyName("spawnDelayAdjustmentMax")]
+    public float SpawnDelayAdjustmentMax { get; set; } = 5;
+    
+    [JsonPropertyName("maxBotSpawnsPerInterval")]
+    public int MaxIntervalSpawns { get; set; } = 6;
 }

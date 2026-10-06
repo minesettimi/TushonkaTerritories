@@ -32,18 +32,10 @@
     {
       "color": "#055e1e",
       "base": "interchange",
-      "botNames": ["assault"],
-      "mobileBosses": ["bossTagilla", "bossKilla"],
-      "staticBosses": 
+      "botNames": [ "assault", "marksman" ],
+      "extraBotNames": 
       [
-        "bossBoar",
         "bossBoarSniper",
-        "bossBully",
-        "bossGluhar",
-        "bossKillaAgro",
-        "bossKojaniy",
-        "bossSanitar",
-        "bossTagillaAgro",
         "crazyAssaultEvent",
         "followerBoar",
         "followerBoarClose1",
@@ -54,6 +46,17 @@
         "followerGluharSecurity",
         "followerKojaniy",
         "tagillaHelperAgro"
+      ],
+      "mobileBosses": ["bossTagilla", "bossKilla"],
+      "staticBosses": 
+      [
+        "bossBoar",
+        "bossBully",
+        "bossGluhar",
+        "bossKillaAgro",
+        "bossKojaniy",
+        "bossSanitar",
+        "bossTagillaAgro"
       ],
       "strength": 0.4,
       "defensiveness": 0.3,
@@ -80,7 +83,11 @@
     {
       "color": "#FA8014",
       "base": "laboratory",
-      "botNames": ["pmcBot", "followerKolontaySecurity", "followerKolontayAssault"],
+      "botNames": ["pmcBot"],
+      "extraBotNames": [
+        "followerKolontaySecurity", 
+        "followerKolontayAssault"
+      ],
       "mobileBosses": ["bossKolontay"],
       "staticBosses": [],
       "strength": 0.6,
@@ -135,7 +142,8 @@
     "cultist":
     {
       "color": "#7D04D6",
-      "botNames": ["sectantWarrior", "followerZryachiy"],
+      "botNames": ["sectantWarrior"],
+      "extraBotNames": ["followerZryachiy"],
       "mobileBosses": ["sectantPriest", "sectantOni"],
       "staticBosses": ["bossZryachiy", "sectantPredvestnik", "sectantPrizrak"],
       "strength": 0.5,

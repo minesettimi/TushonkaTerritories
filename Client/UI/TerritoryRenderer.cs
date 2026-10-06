@@ -27,8 +27,6 @@ public class TerritoryRenderer : MonoBehaviour
     public void Show()
     {
         LocationData locationData = TerritoryPlugin.StateManager.State.Locations;
-        TerritoryPlugin.PluginLogger.LogInfo($"Last state: {LastState}");
-        TerritoryPlugin.PluginLogger.LogInfo(TerritoryPlugin.StateManager.State.StateId);
         
         if (TerritoryPlugin.StateManager.State.StateId == LastState)
             return;
