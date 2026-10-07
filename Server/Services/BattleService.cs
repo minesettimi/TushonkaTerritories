@@ -133,13 +133,15 @@ public class BattleService(
             if (locState.Contestants.Count == 1 || locState.Base)
             {
                 string holder = locState.Holder;
+                Faction holderData =  dataConfig.Factions[holder];
                 double startingStrength = locState.Contestants[holder];
 
-                if (startingStrength > modConfig.BattleConfig.MaxStrengthBuildup)
+                double maxBuildup = Math.Min(modConfig.BattleConfig.MaxStrengthBuildup, holderData.MaxStrengthBuild);
+                if (startingStrength > maxBuildup)
                     continue;
 
                 locState.Contestants[holder] = Math.Clamp(startingStrength + modConfig.BattleConfig.StrengthBuildup, 0, 
-                    Math.Min(1, modConfig.BattleConfig.MaxStrengthBuildup));
+                    Math.Min(1, maxBuildup));
 
                 if (modConfig.Debug)
                 {
