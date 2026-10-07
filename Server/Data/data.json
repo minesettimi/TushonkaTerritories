@@ -147,77 +147,12 @@
         "untar": 0
       }
     },
-    "cultist":
-    {
-      "color": "#7D04D6",
-      "botNames": ["sectantWarrior"],
-      "extraBotNames": ["followerZryachiy"],
-      "mobileBosses": ["sectantPriest", "sectantOni"],
-      "staticBosses": ["bossZryachiy", "sectantPredvestnik", "sectantPrizrak"],
-      "strength": 0.5,
-      "defensiveness": 0.0,
-      "aggressiveness": 0.0,
-      "distanceReduction": 0.0,
-      "maxStrengthBuild": 0.2,
-      "persistant": true,
-      "phantom": true,
-      "uprising": 5,
-      "defaultRepUsec": 0,
-      "defaultRepBear": 0,
-      "defaultRepScav": 0,
-      "gainRep": false,
-      "associatedTrader": null,
-      "factionAttitude":
-      {
-        "none": -1,
-        "scav": -1,
-        "rogue": 0,
-        "raider": -1,
-        "blackdiv": -1,
-        "ruaf": -1,
-        "untar": -1
-      }
-    },
-    "blackdiv":
-    {
-      "color": "#000000",
-      "botNames": ["blackDivAssault", "blackDivIb"],
-      "mobileBosses": ["bossWedge"],
-      "staticBosses": [],
-      "strength": 1.0,
-      "defensiveness": 0.50,
-      "aggressiveness": 0.4,
-      "distanceReduction": 0.0,
-      "maxStrengthBuild": 0.7,
-      "persistant": true,
-      "phantom": true,
-      "uprising": 2,
-      "defaultRepUsec": 0,
-      "defaultRepBear": 0,
-      "defaultRepScav": 0,
-      "gainRep": false,
-      "associatedTrader": null,
-      "modSupport":
-      {
-        "modGuid": "com.blackdiv.tacticaltoaster",
-        "backupFaction": "none"
-      },
-      "factionAttitude":
-      {
-        "none": -1,
-        "scav": -1,
-        "rogue": -1,
-        "raider": -1,
-        "cultist": -1,
-        "ruaf": -1,
-        "untar": -1
-      }
-    },
+
     "ruaf":
     {
       "color": "#011e09",
       "base": "terminal",
-      "botNames": 
+      "botNames":
       [
         "ruafRifleman",
         "ruafRiflemanSenior",
@@ -296,6 +231,72 @@
         "cultist": -1,
         "blackdiv": -1,
         "ruaf": 1
+      }
+    },
+    "cultist":
+    {
+      "color": "#7D04D6",
+      "botNames": ["sectantWarrior"],
+      "extraBotNames": ["followerZryachiy"],
+      "mobileBosses": ["sectantPriest", "sectantOni"],
+      "staticBosses": ["bossZryachiy", "sectantPredvestnik", "sectantPrizrak"],
+      "strength": 0.5,
+      "defensiveness": 0.0,
+      "aggressiveness": 0.0,
+      "distanceReduction": 0.0,
+      "maxStrengthBuild": 0.2,
+      "persistant": true,
+      "phantom": true,
+      "uprising": 5,
+      "defaultRepUsec": 0,
+      "defaultRepBear": 0,
+      "defaultRepScav": 0,
+      "gainRep": false,
+      "associatedTrader": null,
+      "factionAttitude":
+      {
+        "none": -1,
+        "scav": -1,
+        "rogue": 0,
+        "raider": -1,
+        "blackdiv": -1,
+        "ruaf": -1,
+        "untar": -1
+      }
+    },
+    "blackdiv":
+    {
+      "color": "#000000",
+      "botNames": ["blackDivAssault", "blackDivIb"],
+      "mobileBosses": ["bossWedge"],
+      "staticBosses": [],
+      "strength": 1.0,
+      "defensiveness": 0.50,
+      "aggressiveness": 0.4,
+      "distanceReduction": 0.0,
+      "maxStrengthBuild": 0.7,
+      "persistant": true,
+      "phantom": true,
+      "uprising": 2,
+      "defaultRepUsec": 0,
+      "defaultRepBear": 0,
+      "defaultRepScav": 0,
+      "gainRep": false,
+      "associatedTrader": null,
+      "modSupport":
+      {
+        "modGuid": "com.blackdiv.tacticaltoaster",
+        "backupFaction": "none"
+      },
+      "factionAttitude":
+      {
+        "none": -1,
+        "scav": -1,
+        "rogue": -1,
+        "raider": -1,
+        "cultist": -1,
+        "ruaf": -1,
+        "untar": -1
       }
     }
   },
