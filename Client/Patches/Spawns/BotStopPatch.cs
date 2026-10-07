@@ -16,6 +16,9 @@ public class BotStopPatch : ModulePatch
     [PatchPrefix]
     public static void Prefix(LocalGame __instance)
     {
+        if (TerritoryPlugin.IsFika)
+            return;
+        
         SpawnManager.LocalGameSpawnScenarios.TryGetValue(__instance, out TerritoriesSpawnScenario territoriesSpawnScenario);
         
         territoriesSpawnScenario.Stop();

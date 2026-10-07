@@ -17,6 +17,9 @@ public class BotSetupPatch : ModulePatch
     [PatchPrefix]
     public static void Prefix(LocalGame __instance, NonWavesSpawnScenario ____nonWavesSpawnScenario)
     {
+        if (TerritoryPlugin.IsFika)
+            return;
+        
         SpawnManager.LocalGameSpawnScenarios.TryGetValue(__instance, out TerritoriesSpawnScenario territoriesSpawnScenario);
 
         ____nonWavesSpawnScenario.NonWaves =
@@ -26,6 +29,9 @@ public class BotSetupPatch : ModulePatch
     [PatchPostfix]
     public static async void Postfix(LocalGame __instance, Task __result)
     {
+        if (TerritoryPlugin.IsFika)
+            return;
+        
         await __result;
         
         SpawnManager.LocalGameSpawnScenarios.TryGetValue(__instance, out TerritoriesSpawnScenario territoriesSpawnScenario);

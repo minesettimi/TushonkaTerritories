@@ -1,5 +1,8 @@
 ﻿using System.Reflection;
+using System.Threading.Tasks;
 using BepInEx;
+using EFT;
+using Fika.Core.Main.GameMode;
 using Fika.Core.Main.Utils;
 using Fika.Core.Modding;
 using Fika.Core.Modding.Events;
@@ -7,6 +10,7 @@ using HarmonyLib;
 using SPT.Reflection.Patching;
 using TerritoryClient;
 using TerritoryClient.Services;
+using TerritoryClient.Spawns;
 
 namespace Fika
 {
@@ -45,6 +49,49 @@ namespace Fika
         public static bool Prefix()
         {
             return FikaBackendUtils.IsServer;
+        }
+    }
+    
+    public class FikaInitializeBotsPatch : ModulePatch
+    {
+        protected override MethodBase GetTargetMethod()
+        {
+            return AccessTools.Method(typeof(HostGameController), nameof(HostGameController.InitializeBotsSystem));
+        }
+
+        [PatchPrefix]
+        public static void Prefix(AbstractGame ____abstractGame, NonWavesSpawnScenario ____nonWavesSpawnScenario)
+        {
+            SpawnManager.LocalGameSpawnScenarios.TryGetValue(____abstractGame, out TerritoriesSpawnScenario territoriesSpawnScenario);
+
+            ____nonWavesSpawnScenario.NonWaves =
+                ____nonWavesSpawnScenario.NonWaves.AddRangeToArray(territoriesSpawnScenario.BotData);
+        }
+
+        [PatchPostfix]
+        public static async void Postfix(AbstractGame ____abstractGame, Task __result)
+        {
+            await __result;
+            
+            SpawnManager.LocalGameSpawnScenarios.TryGetValue(____abstractGame, out TerritoriesSpawnScenario territoriesSpawnScenario);
+        
+            territoriesSpawnScenario.Run();
+        }
+    }
+    
+    public class FikaStopBotsPatch : ModulePatch
+    {
+        protected override MethodBase GetTargetMethod()
+        {
+            return AccessTools.Method(typeof(HostGameController), nameof(HostGameController.StopBotsSystem));
+        }
+
+        [PatchPostfix]
+        public static void Postfix(AbstractGame ____abstractGame)
+        {
+            SpawnManager.LocalGameSpawnScenarios.TryGetValue(____abstractGame, out TerritoriesSpawnScenario territoriesSpawnScenario);
+        
+            territoriesSpawnScenario.Stop();
         }
     }
 }
