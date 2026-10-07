@@ -14,8 +14,8 @@ using TerritoryClient.Spawns;
 
 namespace Fika
 {
-    [BepInPlugin("com.minesettimi.territoriesfika", "Tushonka Territories Fika", "1.0.3")]
-    [BepInDependency("com.minesettimi.territories", "1.3.3")]
+    [BepInPlugin("com.minesettimi.territoriesfika", "Tushonka Territories Fika", "1.1.0")]
+    [BepInDependency("com.minesettimi.territories", "2.0.0")]
     [BepInDependency("com.fika.core", "2.4.2")]
     public class FikaPlugin : BaseUnityPlugin
     {
