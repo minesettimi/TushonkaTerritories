@@ -80,7 +80,7 @@ public class ServerState
 {
     [JsonProperty("stateId")] public MongoID StateId { get; set; }
     [JsonProperty("lastSimulatedLoc")] public int LastLoc { get; set; } = 0;
-    [JsonProperty("locations")] public LocationData Locations { get; set; } = null!;
+    [JsonProperty("locations")] public LocationData<LocationState> Locations { get; set; } = null!;
     [JsonProperty("playerState")] public Dictionary<MongoID, PlayerState> PlayerState { get; set; } = null!;
 
     public double GetPlayerRep(MongoID player, string faction)
@@ -120,15 +120,21 @@ public record SpawnSettings
     [JsonProperty("groupSpawnExclusive")] public bool GroupSpawnExclusive { get; set; }
     [JsonProperty("startTime")] public int StartTime { get; set; }
     [JsonProperty("stopTime")] public int EndTime { get; set; }
-    [JsonProperty("softCapSpace")] public int SoftCapSpace { get; set; }
     [JsonProperty("requiredCapSpace")] public int RequiredSpawnSpace { get; set; }
-    [JsonProperty("spawnOnWindow")] public MinMax<float> SpawnOnWindow { get; set; } = null!;
-    [JsonProperty("spawnOffWindow")] public MinMax<float> SpawnOffWindow { get; set; } = null!;
+    [JsonProperty("softCapSpace")] public int SoftCapSpace { get; set; }
+    [JsonProperty("mapSettings")] public LocationData<LocationSpawnSettings> MapSettings { get; set; } = new();
     [JsonProperty("spawnCheckInterval")] public float SpawnCheck { get; set; }
     [JsonProperty("spawnDelayAdjustmentMax")] public float SpawnDelayAdjustmentMax { get; set; }
     [JsonProperty("maxBotSpawnsPerInterval")] public int MaxIntervalSpawns { get; set; }
     [JsonProperty("deadRaidThreshold")] public int DeadRaidBots { get; set; }
     [JsonProperty("deadRaidTimer")] public float DeadRaidTime { get; set; }
+}
+
+public record LocationSpawnSettings
+{
+    [JsonProperty("maxBots")] public int MaxBots { get; set; }
+    [JsonProperty("spawnOnWindow")] public MinMax<float> SpawnOnWindow { get; set; } = null!;
+    [JsonProperty("spawnOffWindow")] public MinMax<float> SpawnOffWindow { get; set; } = null!;
 }
 
 public record MinMax<T> where T : IComparable
@@ -138,24 +144,24 @@ public record MinMax<T> where T : IComparable
 }
 
 //convert this back to generic at some point if needed
-public class LocationData
+public class LocationData<T>
 {
-    [JsonProperty("bigmap")] public LocationState Customs { get; set; }
-    [JsonProperty("factory4_day")] public LocationState Factory { get; set; }
-    [JsonProperty("interchange")] public LocationState Interchange { get; set; }
-    [JsonProperty("laboratory")] public LocationState Laboratory { get; set; }
-    [JsonProperty("lighthouse")] public LocationState Lighthouse { get; set; }
-    [JsonProperty("rezervbase")] public LocationState Reserve { get; set; }
-    [JsonProperty("sandbox")] public LocationState GroundZero { get; set; }
-    [JsonProperty("shoreline")] public LocationState Shoreline { get; set; }
-    [JsonProperty("tarkovstreets")] public LocationState Streets { get; set; }
-    [JsonProperty("woods")] public LocationState Woods { get; set; }
-    [JsonProperty("labyrinth")] public LocationState Labyrinth { get; set; }
-    [JsonProperty("icebreaker")] public LocationState Icebreaker { get; set; }
-    [JsonProperty("terminal")] public LocationState Terminal { get; set; }
+    [JsonProperty("bigmap")] public T Customs { get; set; }
+    [JsonProperty("factory4_day")] public T Factory { get; set; }
+    [JsonProperty("interchange")] public T Interchange { get; set; }
+    [JsonProperty("laboratory")] public T Laboratory { get; set; }
+    [JsonProperty("lighthouse")] public T Lighthouse { get; set; }
+    [JsonProperty("rezervbase")] public T Reserve { get; set; }
+    [JsonProperty("sandbox")] public T GroundZero { get; set; }
+    [JsonProperty("shoreline")] public T Shoreline { get; set; }
+    [JsonProperty("tarkovstreets")] public T Streets { get; set; }
+    [JsonProperty("woods")] public T Woods { get; set; }
+    [JsonProperty("labyrinth")] public T Labyrinth { get; set; }
+    [JsonProperty("icebreaker")] public T Icebreaker { get; set; }
+    [JsonProperty("terminal")] public T Terminal { get; set; }
 
     [JsonIgnore]
-    public LocationState? this[string key] =>
+    public T? this[string key] =>
         key.ToLowerInvariant() switch
         {
             "bigmap" => Customs,
@@ -173,9 +179,12 @@ public class LocationData
             "labyrinth" => Labyrinth,
             "icebreaker" => Icebreaker,
             "terminal" => Terminal,
-            _ => null
+            _ => throw new ArgumentOutOfRangeException()
         };
+}
 
+public static class LocationInfo
+{
     //I hate to make more hardcoded map strings but its still a quick fix and way better than a more serious system
     public static readonly string[] ValidMaps = 
     [

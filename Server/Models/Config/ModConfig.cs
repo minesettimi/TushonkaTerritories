@@ -91,7 +91,7 @@ public record SpawnSettings
         DifficultyWeights { get; set; } = new()
     {
         {
-            0.9, new Dictionary<BotDifficulty, int>()
+            0.9, new Dictionary<BotDifficulty, int>
             {
                 { BotDifficulty.Easy, 10 },
                 { BotDifficulty.Medium, 20 },
@@ -100,7 +100,7 @@ public record SpawnSettings
             }
         },
         {
-            0.6, new Dictionary<BotDifficulty, int>()
+            0.6, new Dictionary<BotDifficulty, int>
             {
                 { BotDifficulty.Easy, 20 },
                 { BotDifficulty.Medium, 30 },
@@ -109,7 +109,7 @@ public record SpawnSettings
             }
         },
         {
-            0.3, new Dictionary<BotDifficulty, int>()
+            0.3, new Dictionary<BotDifficulty, int>
             {
                 { BotDifficulty.Easy, 30 },
                 { BotDifficulty.Medium, 40 },
@@ -118,7 +118,7 @@ public record SpawnSettings
             }
         },
         {
-            0.0, new Dictionary<BotDifficulty, int>()
+            0.0, new Dictionary<BotDifficulty, int>
             {
                 { BotDifficulty.Easy, 60 },
                 { BotDifficulty.Medium, 30 },
@@ -153,9 +153,118 @@ public record SpawnSettings
     [JsonPropertyName("groupSpawnExclusive")] public bool GroupSpawnExclusive { get; set; } = false;
     [JsonPropertyName("startTime")] public int StartTime { get; set; } = 1;
     [JsonPropertyName("stopTime")] public int EndTime { get; set; } = 200; //time before the end of the raid
-    [JsonPropertyName("softCapSpace")] public int SoftCapSpace { get; set; } = 4;
     [JsonPropertyName("requiredCapSpace")] public int RequiredSpawnSpace { get; set; } = 4;
 
+    [JsonPropertyName("mapSettings")]
+    public LocationData<LocationSpawnSettings> MapSettings { get; set; } = new()
+    {
+        Factory = new LocationSpawnSettings
+        {
+            MaxBots = 12
+        },
+        GroundZero = new LocationSpawnSettings
+        {
+            MaxBots = 14
+        },
+        Reserve = new LocationSpawnSettings
+        {
+            MaxBots = 20
+        },
+        Customs = new LocationSpawnSettings
+        {
+            MaxBots = 21,
+            SpawnOnWindow = new MinMax<float>
+            {
+                Min = 80f,
+                Max = 120f
+            }
+        },
+        Woods = new LocationSpawnSettings
+        {
+            MaxBots  = 20,
+            SpawnOnWindow = new MinMax<float>
+            {
+                Min = 40f,
+                Max = 80f
+            }
+        },
+        Interchange = new LocationSpawnSettings
+        {
+            MaxBots = 20,
+            SpawnOnWindow = new MinMax<float>
+            {
+                Min = 60f,
+                Max = 80f
+            },
+            SpawnOffWindow = new MinMax<float>
+            {
+                Min = 280f,
+                Max = 360f
+            }
+        },
+        Streets = new LocationSpawnSettings
+        {
+            MaxBots = 23,
+            SpawnOnWindow = new MinMax<float>
+            {
+                Min = 60f,
+                Max = 120f
+            },
+            SpawnOffWindow = new MinMax<float>
+            {
+                Min = 280f,
+                Max = 360f
+            }
+        },
+        Lighthouse = new LocationSpawnSettings
+        {
+            MaxBots = 20,
+            SpawnOnWindow = new MinMax<float>
+            {
+                Min = 80f,
+                Max = 120f
+            }
+        },
+        Shoreline = new LocationSpawnSettings
+        {
+            MaxBots = 21,
+            SpawnOnWindow = new MinMax<float>
+            {
+                Min = 80f,
+                Max = 120f
+            }
+        },
+        Laboratory = new LocationSpawnSettings
+        {
+            MaxBots = 15
+        },
+        Terminal = new LocationSpawnSettings
+        {
+            MaxBots = 18
+        },
+        Icebreaker = new LocationSpawnSettings
+        {
+            MaxBots = 18
+        },
+        Labyrinth = new LocationSpawnSettings
+        {
+            MaxBots = 10
+        }
+    };
+
+    [JsonPropertyName("softCapSpace")] public int SoftCapSpace { get; set; } = 4;
+    [JsonPropertyName("spawnCheckInterval")] public float SpawnCheck { get; set; } = 20f;
+    [JsonPropertyName("spawnDelayAdjustmentMax")] public float SpawnDelayAdjustmentMax { get; set; } = 2;
+    [JsonPropertyName("maxBotSpawnsPerInterval")] public int MaxIntervalSpawns { get; set; } = 8;
+    [JsonPropertyName("deadRaidThreshold")] public int DeadRaidThreshold { get; set; } = 4;
+    [JsonPropertyName("deadRaidTimer")] public float DeadRaidTimer { get; set; } = 15f;
+}
+
+public record LocationSpawnSettings
+{
+    [JsonPropertyName("maxBots")]
+    public int MaxBots { get; set; } = 20;
+    
     [JsonPropertyName("spawnOnWindow")]
     public MinMax<float> SpawnOnWindow { get; set; } = new()
     {
@@ -169,10 +278,4 @@ public record SpawnSettings
         Min = 300,
         Max = 380
     };
-
-    [JsonPropertyName("spawnCheckInterval")] public float SpawnCheck { get; set; } = 20f;
-    [JsonPropertyName("spawnDelayAdjustmentMax")] public float SpawnDelayAdjustmentMax { get; set; } = 2;
-    [JsonPropertyName("maxBotSpawnsPerInterval")] public int MaxIntervalSpawns { get; set; } = 8;
-    [JsonPropertyName("deadRaidThreshold")] public int DeadRaidThreshold { get; set; } = 4;
-    [JsonPropertyName("deadRaidTimer")] public float DeadRaidTimer { get; set; } = 15f;
 }

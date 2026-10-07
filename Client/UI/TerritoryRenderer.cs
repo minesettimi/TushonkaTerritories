@@ -5,6 +5,7 @@ using TerritoryClient.Models;
 using UnityEngine;
 using UnityEngine.UI;
 using VoronatorSharp;
+using LocationInfo = TerritoryClient.Models.LocationInfo;
 using Vector2 = UnityEngine.Vector2;
 
 namespace TerritoryClient.UI;
@@ -26,7 +27,7 @@ public class TerritoryRenderer : MonoBehaviour
 
     public void Show()
     {
-        LocationData locationData = TerritoryPlugin.StateManager.State.Locations;
+        LocationData<LocationState> locationData = TerritoryPlugin.StateManager.State.Locations;
         
         if (TerritoryPlugin.StateManager.State.StateId == LastState)
             return;
@@ -39,7 +40,7 @@ public class TerritoryRenderer : MonoBehaviour
         Texture2D newMap = new((int)Math.Ceiling(MapTransform.rect.width),
             (int)Math.Ceiling(MapTransform.rect.height), TextureFormat.RGBA32, true);
         
-        foreach (string location in LocationData.ValidMaps)
+        foreach (string location in LocationInfo.ValidMaps)
         {
             if (location == "factory4_night" || location == "sandbox_high")
                 continue;
