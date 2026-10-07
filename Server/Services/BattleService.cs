@@ -15,6 +15,7 @@ public class BattleService(
     RandomUtil randomUtil,
     LocationService locationService,
     CacheService cacheService,
+    MathUtil mathUtil,
     ISptLogger<BattleService> logger)
 {
     private Timer _battleTimer = null!;
@@ -121,7 +122,7 @@ public class BattleService(
             
             SpreadNearby(currentLocation, locState);
 
-            if (locState.Contestants.Count == 1)
+            if (!modConfig.BattleConfig.SpreadDuringFight && locState.Contestants.Count == 1)
             {
                 SpreadNearby(currentLocation, locState, false);
             }
@@ -160,6 +161,14 @@ public class BattleService(
         string faction = locState.Holder;
         Faction factionData = dataConfig.Factions[faction];
         BattleConfig battleConfig = modConfig.BattleConfig;
+
+        if (!noneOnly)
+        {
+            double spreadChance = mathUtil.MapToRange(factionData.Aggressiveness, 0, 1,
+                modConfig.BattleConfig.SpreadChance.Min, modConfig.BattleConfig.SpreadChance.Max);
+            if (!randomUtil.GetChance100(spreadChance))
+                return;
+        }
         
         double distanceReduction = battleConfig.StrengthDecrease > 0
             ? battleConfig.StrengthDecrease
@@ -274,14 +283,7 @@ public class BattleService(
                     targets.Add(other);
                 }
 
-                double updatedStrength = strength;
-                if (contestant == locationState.Holder)
-                {
-                    updatedStrength += factionData.Defensiveness * locationState.Contestants[locationState.Holder];
-                }
-
-                double damage = (updatedStrength / targets.Count) * modConfig.BattleConfig.DamageMultiplier;
-
+                double damage = (strength / targets.Count) * modConfig.BattleConfig.DamageMultiplier;
                 damage += randomUtil.RandNum(modConfig.BattleConfig.DamageRng.Min, modConfig.BattleConfig.DamageRng.Max);
 
                 foreach (string target in targets)

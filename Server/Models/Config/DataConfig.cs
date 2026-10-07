@@ -23,6 +23,7 @@ public class Faction
     [JsonPropertyName("staticBosses")] public List<string> ExtraBossNames { get; set; } = [];
     [JsonPropertyName("strength")] public double Strength { get; set; }
     [JsonPropertyName("defensiveness")] public double Defensiveness { get; set; }
+    [JsonPropertyName("aggressiveness")] public double Aggressiveness { get; set; }
     [JsonPropertyName("distanceReduction")] public double DistanceReduction { get; set; }
     [JsonPropertyName("persistant")] public bool Persistant { get; set; } = false;
     [JsonPropertyName("phantom")] public bool Phantom { get; set; } = false;

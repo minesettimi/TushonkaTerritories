@@ -38,14 +38,23 @@ public record BattleConfig
     [JsonPropertyName("damageDistribution")]
     public MinMax<double> DamageRng { get; set; } = new()
     {
-        Min = -0.35,
-        Max = 0.35
+        Min = -0.25,
+        Max = 0.25
     };
+
+    [JsonPropertyName("aggressivenessSpreadChance")]
+    public MinMax<int> SpreadChance = new()
+    {
+        Min = 30,
+        Max = 100
+    };
+    
+    [JsonPropertyName("spreadWhileFighting")] public bool SpreadDuringFight { get; set; } = true;
     [JsonPropertyName("strengthBuildup")] public double StrengthBuildup { get; set; } = 0.05;
     [JsonPropertyName("maxStrengthBuildup")] public double MaxStrengthBuildup { get; set; } = 0.6;
-    [JsonPropertyName("spreadMinStrength")] public double SpreadMinStrength { get; set; } = 0.45;
-    [JsonPropertyName("spreadDecreaseMult")] public double SpreadMult { get; set; } = 0.25;
-    [JsonPropertyName("spreadBonusStrength")] public double SpreadBonus { get; set; } = 0.05;
+    [JsonPropertyName("spreadMinStrength")] public double SpreadMinStrength { get; set; } = 0.25;
+    [JsonPropertyName("spreadDecreaseMult")] public double SpreadMult { get; set; } = 0.15;
+    [JsonPropertyName("spreadBonusStrength")] public double SpreadBonus { get; set; } = 0.15;
     [JsonPropertyName("uprising")] public bool Uprising { get; set; } = true;
     [JsonPropertyName("uprisingStrengthMult")] public double UprisingMult { get; set; } = 0.35;
 }
