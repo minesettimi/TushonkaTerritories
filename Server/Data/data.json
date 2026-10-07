@@ -185,7 +185,7 @@
       "distanceReduction": 0.0,
       "persistant": true,
       "phantom": true,
-      "uprising": 10,
+      "uprising": 2,
       "defaultRepUsec": 0,
       "defaultRepBear": 0,
       "defaultRepScav": 0,
@@ -286,25 +286,68 @@
         "raider": 0,
         "rogue": 0,
         "cultist": -1,
-        "blackdiv": -1
+        "blackdiv": -1,
+        "ruaf": 1
       }
     }
   },
   "defaultTerritory":
   {
-    "bigmap": "untar",
-    "factory4_day": "scav",
-    "interchange": "scav",
-    "laboratory": "raider",
-    "lighthouse": "rogue",
-    "rezervbase": "raider",
-    "sandbox": "scav",
-    "shoreline": "ruaf",
-    "tarkovstreets": "scav",
-    "woods": "scav",
-    "labyrinth": "none",
-    "icebreaker": "none",
-    "terminal": "ruaf"
+    "bigmap": 
+    {
+      "holder": "untar"
+    },
+    "factory4_day": 
+    {
+      "holder": "scav"
+    },
+    "interchange": 
+    {
+      "holder": "scav"
+    },
+    "laboratory": 
+    {
+      "holder": "raider"
+    },
+    "lighthouse": 
+    {
+      "holder": "rogue"
+    },
+    "rezervbase": 
+    {
+      "holder": "raider"
+    },
+    "sandbox": 
+    {
+      "holder": "scav"
+    },
+    "shoreline": 
+    {
+      "holder": "ruaf"
+    },
+    "tarkovstreets": 
+    {
+      "holder": "scav"
+    },
+    "woods": 
+    {
+      "holder": "scav"
+    },
+    "labyrinth": 
+    {
+      "holder": "none",
+      "locked": true
+    },
+    "icebreaker": 
+    {
+      "holder": "blackdiv",
+      "modLockGuid": "com.manimal.icebreaker"
+    },
+    "terminal": 
+    {
+      "holder": "ruaf",
+      "modLockGuid": "com.ruafcomehome.tacticaltoaster"
+    }
   },
   "locationNeighbors":
   {
@@ -352,7 +395,10 @@
     "shoreline":
     [
       "lighthouse",
-      "rezervbase"
+      "rezervbase",
+      "labyrinth",
+      "icebreaker",
+      "terminal"
     ],
     "tarkovstreets":
     [

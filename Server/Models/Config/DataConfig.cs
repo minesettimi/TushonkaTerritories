@@ -7,7 +7,7 @@ namespace TerritoryServer.Models;
 public class DataConfig
 {
     [JsonPropertyName("factions")] public Dictionary<string, Faction> Factions { get; set; } = [];
-    [JsonPropertyName("defaultTerritory")] public LocationData<string> LocationTerritories { get; set; } = new();
+    [JsonPropertyName("defaultTerritory")] public LocationData<LocationInitialState> LocationTerritories { get; set; } = new();
     [JsonPropertyName("locationNeighbors")] public LocationData<List<string>> LocationNeighbors { get; set; } = new();
 }
 
@@ -37,9 +37,16 @@ public class Faction
     [JsonPropertyName("factionAttitude")] public Dictionary<string, int> Attitudes { get; set; } = [];
 }
 
+public class LocationInitialState
+{
+    [JsonPropertyName("holder")] public string Holder { get; set; } = "none";
+    [JsonPropertyName("locked")] public bool Locked { get; set; } = false;
+    [JsonPropertyName("modLockGuid")] public string? ModLock { get; set; }
+}
+
 public class FactionModData
 {
-    [JsonPropertyName("modGuid")] public string ModGuid { get; set; }
+    [JsonPropertyName("modGuid")] public required string ModGuid { get; set; }
     [JsonPropertyName("backupFaction")] public string BackupFaction { get; set; } = "none";
 }
 

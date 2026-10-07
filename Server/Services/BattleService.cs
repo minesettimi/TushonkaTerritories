@@ -114,7 +114,7 @@ public class BattleService(
             
             LocationState locState = stateServer.CurrentSave.Locations[currentLocation]!;
             
-            if (locState.Holder == "none")
+            if (locState.Locked || locState.Holder == "none")
             {
                 i--;
                 continue;
@@ -122,11 +122,12 @@ public class BattleService(
             
             SpreadNearby(currentLocation, locState);
 
-            if (!modConfig.BattleConfig.SpreadDuringFight && locState.Contestants.Count == 1)
+            if ((!modConfig.BattleConfig.SpreadDuringFight && locState.Contestants.Count == 1) || 
+                modConfig.BattleConfig.SpreadDuringFight)
             {
                 SpreadNearby(currentLocation, locState, false);
             }
-            
+
             CalculateBattle(currentLocation, locState, raidLocation == currentLocation ? raidKills : null);
 
             if (locState.Contestants.Count == 1 || locState.Base)
@@ -275,8 +276,9 @@ public class BattleService(
                     if (contestant == other)
                         continue;
 
-                    if (factionData.Attitudes[other] == 1 || 
-                        (factionData.Attitudes[other] == 0 && 
+                    int attitude = factionData.Attitudes.GetValueOrDefault(other, -1);
+                    if (attitude == 1 || 
+                        (attitude == 0 && 
                          !randomUtil.GetChance100(modConfig.BattleConfig.AttackNeutralChance)))
                         continue;
                 
@@ -397,7 +399,11 @@ public class BattleService(
         List<string> neighbors = dataConfig.LocationNeighbors[start]!;
         foreach (string neighborLocation in neighbors)
         {
-            string otherHolder = stateServer.CurrentSave.Locations[neighborLocation]!.Holder;
+            LocationState otherLoc = stateServer.CurrentSave.Locations[neighborLocation]!;
+            if (otherLoc.Locked)
+                continue;
+            
+            string otherHolder = otherLoc.Holder;
 
             if ((targetFaction == null && currentLoc.Holder != otherHolder) ||
                 otherHolder == targetFaction)

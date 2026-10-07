@@ -24,7 +24,7 @@ public record FactionConfig
 public record BattleConfig
 {
     [JsonPropertyName("enableBattles")] public bool BattlesEnabled { get; set; } = true;
-    [JsonPropertyName("allowBaseTaking")] public bool BaseTakingEnabled { get; set; } = false;
+    [JsonPropertyName("allowBaseTaking")] public bool BaseTakingEnabled { get; set; } = true;
     [JsonPropertyName("strengthDecreaseOverride")] public double StrengthDecrease { get; set; } = -1f;
     [JsonPropertyName("simulateAfterRaid")] public bool RaidBattle { get; set; } = true;
     [JsonPropertyName("raidsChangeOutcome")] public bool RaidChangesBattle { get; set; } = true;
@@ -32,9 +32,9 @@ public record BattleConfig
     [JsonPropertyName("strengthLossPerBossDeath")] public double RaidBossStrengthLoss { get; set; } = 0.2;
     [JsonPropertyName("offlineSimulationTime")] public int SimulationInterval { get; set; } = -1;
     [JsonPropertyName("actionsPerSimulation")] public int SimulationActions { get; set; } = 2;
-    [JsonPropertyName("locationsPerSimulation")] public int SimulationLocations { get; set; } = 4;
+    [JsonPropertyName("locationsPerSimulation")] public int SimulationLocations { get; set; } = 6;
     [JsonPropertyName("attackNeutralChance")] public double AttackNeutralChance { get; set; } = 25.0;
-    [JsonPropertyName("damageMultiplier")] public double DamageMultiplier { get; set; } = 1.2;
+    [JsonPropertyName("damageMultiplier")] public double DamageMultiplier { get; set; } = 0.6;
     [JsonPropertyName("damageDistribution")]
     public MinMax<double> DamageRng { get; set; } = new()
     {
@@ -43,7 +43,7 @@ public record BattleConfig
     };
 
     [JsonPropertyName("aggressivenessSpreadChance")]
-    public MinMax<int> SpreadChance = new()
+    public MinMax<int> SpreadChance { get; set; } = new()
     {
         Min = 30,
         Max = 100

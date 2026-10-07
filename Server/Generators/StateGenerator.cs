@@ -12,6 +12,7 @@ namespace TerritoryServer.Generators;
 public class StateGenerator(DataConfig dataConfig,
     LocationMapHelper mapHelper,
     TerritoryModConfig modConfig,
+    IReadOnlyList<SptMod> modList,
     ISptLogger<StateGenerator> logger)
 {
     public SaveState GenerateState()
@@ -27,20 +28,8 @@ public class StateGenerator(DataConfig dataConfig,
         {
             if (faction.Deactivated || faction.Base == null || faction.Base == "none")
                 continue;
-
-            LocationState locationState = new()
-            {
-                Holder = factionName,
-                Base = true,
-                Contestants =
-                {
-                    [factionName] = faction.Strength
-                }
-            };
-
+            
             baseLocations[factionName] = faction.Base;
-
-            newState.Locations[faction.Base] = locationState;
         }
         
         foreach (string location in LocationService.MapList)
@@ -48,7 +37,9 @@ public class StateGenerator(DataConfig dataConfig,
             if (newState.Locations[location] != null)
                 continue;
 
-            string factionName = dataConfig.LocationTerritories[location];
+            LocationInitialState initialState = dataConfig.LocationTerritories[location];
+            string factionName = initialState.Holder;
+            
             Faction faction = dataConfig.Factions[factionName];
 
             if (faction.Deactivated)
@@ -72,10 +63,17 @@ public class StateGenerator(DataConfig dataConfig,
             if (newStrength < distanceReduction)
                 newStrength = distanceReduction;
 
+            bool locked = initialState.Locked;
+            if (initialState.ModLock != null)
+            {
+                locked = modList.All(mod => mod.ModMetadata.ModGuid != initialState.ModLock);
+            }
+
             LocationState locationState = new()
             {
                 Holder = factionName,
-                Base = false,
+                Base = baseLocations.ContainsKey(factionName),
+                Locked = locked,
                 Contestants =
                 {
                     [factionName] = newStrength
