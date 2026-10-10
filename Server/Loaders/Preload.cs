@@ -12,7 +12,6 @@ namespace TerritoryServer.Loaders;
 public class Preload(StateServer stateServer,
     StateGenerator stateGenerator,
     LocationConfig locationConfig,
-    PmcConfig pmcConfig,
     BotConfig botConfig,
     CacheService cacheService,
     IEnumerable<IRuntimePatch> patches) : IOnLoad
@@ -43,6 +42,5 @@ public class Preload(StateServer stateServer,
         locationConfig.AddOpenZonesToAllMaps = false;
         locationConfig.RogueLighthouseSpawnTimeSettings.Enabled = false;
         botConfig.WeeklyBoss.Enabled = false;
-        pmcConfig.CustomPmcWaves.Clear();
     }
 }
