@@ -433,5 +433,10 @@
     [
       "shoreline"
     ]
-  }
+  },
+  "savedQuestRewards":
+  [
+    151,
+    152
+  ]
 }

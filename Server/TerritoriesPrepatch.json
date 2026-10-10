@@ -10,6 +10,11 @@
     "constantValue": 151
   },
   {
+    "enumType": "SPTarkov.Server.Core.Models.Enums.RewardType",
+    "constantName": "LocationLock",
+    "constantValue": 152
+  },
+  {
     "enumType": "SPTarkov.Server.Core.Models.Eft.Ws.NotificationEventType",
     "constantName": "TerritoryUpdate",
     "constantValue": 100

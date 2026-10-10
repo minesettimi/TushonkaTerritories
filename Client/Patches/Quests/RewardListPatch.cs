@@ -44,6 +44,12 @@ public class RewardListPatch : ModulePatch
                     __state.Add(questReward);
                     continue;
                 }
+                case (ERewardType)152:
+                {
+                    tempRewards.RemoveAt(i--);
+                    __state.Add(questReward);
+                    continue;
+                }
                 default:
                     continue;
             }

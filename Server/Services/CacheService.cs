@@ -8,7 +8,7 @@ using TerritoryServer.Models;
 namespace TerritoryServer.Services;
 
 [Injectable(InjectionType.Singleton)]
-public class CacheService(DataConfig dataConfig,
+public class CacheService(TerritoryDataConfig dataConfig,
     TerritoryModConfig modConfig,
     IReadOnlyList<SptMod> modList,
     ISptLogger<CacheService> logger)

@@ -6,7 +6,10 @@ namespace TerritoryServer.Models;
 public record TerritoryModConfig
 {
     [JsonPropertyName("debug")] public bool Debug { get; set; } = false;
+    [JsonPropertyName("allowExpansionEdits")] public bool AllowExpansionEdits { get; set; } = true;
+    [JsonPropertyName("oneTimeQuestRewards")] public bool OneTimeQuestRewards { get; set; } = true;
     [JsonPropertyName("initialSimulations")] public int InitialSimulations { get; set; } = 2;
+    
     [JsonPropertyName("factionConfig")] public FactionConfig FactionConfig { get; set; } = new();
     [JsonPropertyName("battleConfig")] public BattleConfig BattleConfig { get; set; } = new();
     [JsonPropertyName("raidConfig")] public RaidConfig RaidConfig { get; set; } = new();

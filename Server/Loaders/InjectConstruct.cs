@@ -25,16 +25,16 @@ public class InjectConstruct : IOnDIConstruct
 
     public static async Task OnDIConstructAsync(IServiceCollection serviceCollection, CancellationToken cancellationToken)
     {
-        DataConfig dataConfig;
+        TerritoryDataConfig dataConfig;
 
         if (File.Exists(Path.Join(DataPath, "data_override.json")))
         {
-            dataConfig = await LoadConfig<DataConfig>(Path.Join(DataPath, "data_override.json"), cancellationToken) ??
+            dataConfig = await LoadConfig<TerritoryDataConfig>(Path.Join(DataPath, "data_override.json"), cancellationToken) ??
                 throw new Exception("[TT] Failed to load override mod data.");
         }
         else
         {
-            dataConfig = await LoadConfig<DataConfig>(Path.Join(DataPath, "data.json"), cancellationToken) ??
+            dataConfig = await LoadConfig<TerritoryDataConfig>(Path.Join(DataPath, "data.json"), cancellationToken) ??
                          throw new Exception("[TT] Failed to load mod data.");
         }
         

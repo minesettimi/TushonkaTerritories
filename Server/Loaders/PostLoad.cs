@@ -1,6 +1,7 @@
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.DI;
 using SPTarkov.Server.Core.Models.Eft.Common.Tables;
+using SPTarkov.Server.Core.Models.Enums;
 using SPTarkov.Server.Core.Models.Spt.Mod;
 using SPTarkov.Server.Core.Models.Spt.Tables;
 using TerritoryServer.Helpers;
@@ -18,6 +19,7 @@ public class PostLoad(LocationService locationService, ReputationService reputat
     StateServer stateServer,
     BotTable botTable,
     TerritoryModConfig modConfig,
+    TemplateTable templateTable,
     ImageRouterHelper imageRouterHelper) : IOnLoad
 {
     public async Task OnLoadAsync(CancellationToken cancellationToken)
@@ -51,6 +53,12 @@ public class PostLoad(LocationService locationService, ReputationService reputat
                 },
                 new EnumEntryDefinition
                 {
+                    EnumType = "EFT.Quests.ERewardType",
+                    ConstantName = "LocationLock",
+                    ConstantValue = 152
+                },
+                new EnumEntryDefinition
+                {
                     EnumType = "EFT.Communications.ENotificationType",
                     ConstantName = "TerritoryUpdate",
                     ConstantValue = 100
@@ -64,6 +72,15 @@ public class PostLoad(LocationService locationService, ReputationService reputat
         
         if (modConfig.RaidConfig.OverrideHostility)
             AdjustAllBots();
+        
+        //TODO: Remove debug
+        templateTable.Quests["5a27b9de86f77464e5044585"].Rewards["Success"].Add(new Reward()
+        {
+            Id = "6ac9b474db73aa3201503dd9",
+            Type = (RewardType)152,
+            Target = "terminal",
+            Value = 0
+        });
     }
 
     private void AdjustAllBots()

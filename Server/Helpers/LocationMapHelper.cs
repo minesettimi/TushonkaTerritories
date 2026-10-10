@@ -6,7 +6,7 @@ using TerritoryServer.Servers;
 namespace TerritoryServer.Helpers;
 
 [Injectable(InjectionType.Singleton)]
-public class LocationMapHelper(DataConfig gameData, StateServer stateServer)
+public class LocationMapHelper(TerritoryDataConfig gameData, StateServer stateServer)
 {
     public bool CanReach(string start, string end, bool factionOnly)
     {

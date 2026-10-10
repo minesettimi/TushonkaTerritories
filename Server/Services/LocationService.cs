@@ -12,7 +12,7 @@ using TerritoryServer.Servers;
 namespace TerritoryServer.Services;
 
 [Injectable(InjectionType.Singleton)]
-public class LocationService(DataConfig dataConfig,
+public class LocationService(TerritoryDataConfig dataConfig,
     LocationTable locationTable,
     TerritoryModConfig modConfig,
     StateServer stateServer,

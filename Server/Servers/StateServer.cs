@@ -18,6 +18,7 @@ public class StateServer(JsonUtil jsonUtil,
     NotificationSendHelper notificationSendHelper,
     CacheService cacheService,
     TerritoryModConfig modConfig,
+    TerritoryDataConfig dataConfig,
     ISptLogger<StateServer> logger)
 {
     public static readonly string ModPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
@@ -87,12 +88,18 @@ public class StateServer(JsonUtil jsonUtil,
                 continue;
             }
 
-            foreach ((string factionId, double strength) in locationState.Contestants)
+            foreach ((string factionId, double strength) in locationState.Contestants.ToList())
             {
                 if (cacheService.ValidFactions.Contains(factionId))
                     continue;
 
+                string replacement = dataConfig.Factions[locationState.Holder].ModSupport?.BackupFaction ?? "none";
                 locationState.Contestants.Remove(factionId);
+                
+                if (replacement == "none")
+                    continue;
+                
+                locationState.Contestants.TryAdd(replacement, strength);
             }
 
             if (!cacheService.ValidFactions.Contains(locationState.Holder))
@@ -103,7 +110,8 @@ public class StateServer(JsonUtil jsonUtil,
                 }
                 else
                 {
-                    locationState.Holder = "none";
+                    locationState.Holder = dataConfig.Factions[locationState.Holder].ModSupport?.BackupFaction 
+                                           ?? "none";
                 }
                 
                 locationState.Base = false;

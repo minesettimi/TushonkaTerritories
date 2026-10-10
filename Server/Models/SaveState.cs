@@ -11,6 +11,7 @@ public record SaveState
 
     [Obsolete, JsonPropertyName("playerRep")] public Dictionary<MongoId, Dictionary<string, double>>? PlayerRep { get; set; }
     [JsonPropertyName("playerState")] public Dictionary<MongoId, PlayerState> PlayerState { get; set; } = [];
+    [JsonPropertyName("questsCompleted")] public HashSet<MongoId> QuestsCompleted { get; set; } = []; //only territories reward related quests
 }
 
 public record LocationState

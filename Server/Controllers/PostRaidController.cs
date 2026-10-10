@@ -14,7 +14,7 @@ namespace TerritoryServer.Controllers;
 public class PostRaidController(ProfileHelper profileHelper,
     StateServer stateServer,
     TerritoryModConfig modConfig,
-    DataConfig dataConfig,
+    TerritoryDataConfig dataConfig,
     BattleService battleService,
     ProfileStateHelper profileStateHelper,
     CacheService cacheService,

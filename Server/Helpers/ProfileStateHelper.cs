@@ -13,7 +13,7 @@ namespace TerritoryServer.Helpers;
 [Injectable(InjectionType.Singleton)]
 public class ProfileStateHelper(
     StateServer stateServer,
-    DataConfig dataConfig,
+    TerritoryDataConfig dataConfig,
     TerritoryModConfig modConfig,
     ICloner cloner,
     ISptLogger<ProfileStateHelper> logger)

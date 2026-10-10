@@ -9,7 +9,7 @@ using TerritoryServer.Services;
 namespace TerritoryServer.Generators;
 
 [Injectable(InjectionType.Singleton)]
-public class StateGenerator(DataConfig dataConfig,
+public class StateGenerator(TerritoryDataConfig dataConfig,
     LocationMapHelper mapHelper,
     TerritoryModConfig modConfig,
     IReadOnlyList<SptMod> modList,

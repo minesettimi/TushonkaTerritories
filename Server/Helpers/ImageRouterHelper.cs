@@ -6,7 +6,7 @@ using TerritoryServer.Servers;
 namespace TerritoryServer.Helpers;
 
 [Injectable(InjectionType.Singleton)]
-public class ImageRouterHelper(ImageRouter imageRouter, DataConfig dataConfig)
+public class ImageRouterHelper(ImageRouter imageRouter, TerritoryDataConfig dataConfig)
 {
     public static readonly string ImagePath = Path.Join(StateServer.ModPath, "Assets", "Images");
     public static readonly string DefaultImage = Path.Join(ImagePath, "default_faction.png");

@@ -10,7 +10,7 @@ namespace TerritoryServer.Services;
 [Injectable(InjectionType.Singleton)]
 public class BattleService(
     TerritoryModConfig modConfig,
-    DataConfig dataConfig,
+    TerritoryDataConfig dataConfig,
     StateServer stateServer,
     RandomUtil randomUtil,
     LocationService locationService,

@@ -51,7 +51,7 @@ public class TerritoryCallbacks(HttpResponseUtil httpResponseUtil,
     PostRaidController raidController,
     StateServer stateServer,
     TerritoryModConfig modConfig,
-    DataConfig dataConfig,
+    TerritoryDataConfig dataConfig,
     CacheService cacheService,
     ISptLogger<TerritoryCallbacks> logger)
 {
