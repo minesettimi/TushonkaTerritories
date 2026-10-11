@@ -1,5 +1,7 @@
 {
   "debug": false, //Debug printing
+  "allowExpansionEdits": true, //Allow expansion mods to make config changes
+  "oneTimeQuestRewards": true, //Don't give territories based quest rewards after the first completion. DOESN'T AFFECT REGULAR REWARDS, ONLY ONES FROM THIS MOD!
   "initialSimulations": 2, //How many battle simulations to run on a new save
   "factionConfig": 
   {
@@ -11,27 +13,33 @@
   "battleConfig": 
   {
     "enableBattles": true, //Should the mod simulate battles? Turning this off will make the map static. 
-    "allowBaseTaking": false, //If enabled, faction's home map is takeable which makes a faction getting wiped out possible
+    "allowBaseTaking": true, //If enabled, faction's home map is takeable which makes a faction getting wiped out possible
     "strengthDecreaseOverride": -1, //0.0 - 1.0 / Overrides the decrease of a faction's strength when moving locations. -1 for per faction configuration.
-    "simulateAfterRaid": true, //If enabled, a battle simulation will trigger after a raid has completed. This guarentees the location will be simulated.
+    "simulateAfterRaid": true, //If enabled, a battle simulation will trigger after a raid has completed. This guarantees the location will be simulated.
     "raidsChangeOutcome": true, //If enabled, the deaths of bots will contribute to damage taken during the simulated battle for the location
     "strengthLossPerDeath": 0.05, //0.0 - 1.0 / The damage that will be dealt to a faction per death in raid.
     "strengthLossPerBossDeath": 0.2, //0.0 - 1.0 / The damage that will be dealt to a faction per boss death in raid.
     "offlineSimulationTime": -1, //The delay between simulations in minutes. -1 to disable timed simulations.
     "actionsPerSimulation": 2, //How many actions can be taken per location i.e how many nearby locations can be taken.
-    "locationsPerSimulation": 4, //How many locations to be simulated per activated simulation. The number wraps so 2 * the number of locations will simulate all locations twice.
+    "locationsPerSimulation": 6, //How many locations to be simulated per activated simulation. The number wraps so 2 * the number of locations will simulate all locations twice.
     "attackNeutralChance": 25, //0 - 100 / The chance that a faction will try to engage in battle with another faction considered neutral
-    "damageMultiplier": 1.2, //Multiplier for damage dealt in a battle
-    "damageDistribution": //Min and max rng change to a faction's damage in battle
-    {
-      "min": -0.35,
-      "max": 0.35
+    "damageMultiplier": 0.6, //Multiplier for damage dealt in a battle
+    "damageDistribution": 
+    { //Min and max rng change to a faction's damage in battle
+      "min": -0.25,
+      "max": 0.25
     },
-    "strengthBuildup": 0.05, //0.0 - 1.0 / How much strength for factions to build up if their location is uncontested
-    "maxStrengthBuildup": 0.6, //0.0 - 1.0 / Maximum strenth that can be gained from strength buildup
-    "spreadMinStrength": 0.45, //0.0 - 1.0 / Minimum strength to spread to another location
-    "spreadDecreaseMult": 0.25, //Multiplier to the strength decrease for moving locations to be applied to the original location
-    "spreadBonusStrength": 0.05, //0.0 - 1.0 / Bonus strength given to new faction presence created by spreading.
+    "aggressivenessSpreadChance": 
+    { //Chance a faction will spread and attack a new location based on its aggressiveness value. 
+      "min": 30,
+      "max": 100
+    },
+    "spreadWhileFighting": true, //Allows factions to spread and attack nearby locations without being the only contestant.
+    "strengthBuildup": 0.05, //0.0 - 1.0 / How much strength for factions to build up if their location is uncontested, this values is capped by a faction's set value.
+    "maxStrengthBuildup": 0.6, //0.0 - 1.0 / Maximum strength that can be gained from strength buildup
+    "spreadMinStrength": 0.25, //0.0 - 1.0 / Minimum strength to spread to another location
+    "spreadDecreaseMult": 0.15, //Multiplier to the strength decrease for moving locations to be applied to the original location
+    "spreadBonusStrength": 0.15, //0.0 - 1.0 / Bonus strength given to new faction presence created by spreading.
     "uprising": true, //If enabled, certain factions have a chance of fighting at any location.
     "uprisingStrengthMult": 0.35 //Multiplier of a faction's base strength to grant for uprising appearances.
   },
@@ -43,11 +51,11 @@
     "overrideTriggeredSpawns": false, //Remove all spawns that require a trigger to activate. i.e spawning raiders when opening the garage in labs
     "removeDefaultScavs": true, //Disable default scav spawn system
     "addFactionBosses": true, //Factions can spawn bosses in locations they have presence
-    "factionBossMinStrength": 0.75, //0.0 - 1.0 / Minimum strength for a faction's boss spawns to be added to a location
-    "factionBossChance":
+    "factionBossMinStrength": 0.6, //0.0 - 1.0 / Minimum strength for a faction's boss spawns to be added to a location
+    "factionBossChance": 
     {
       "min": 15, //0 - 100 / Chance for a boss to spawn when a faction's strength is at minimum (0.0)
-      "max": 45 //0 - 100 / Chance for a boss to spawn when a faction's strength is at maximum (100.0)
+      "max": 25 //0 - 100 / Chance for a boss to spawn when a faction's strength is at maximum (100.0)
     },
     "allyRepRequirement": 3, //Minimum reputation with a faction to be friendly
     "warnRepRequirement": 1, //Minimum reputation with a faction to be neutral
@@ -56,38 +64,252 @@
     "neutralityMode": 1, //0 - warn if neutral, 1 - true neutral, 2 - chance to be enemies
     "overrideHostility": true, //Edit bot settings to be friendlier to allies
     "enemyChance": 50, //0 - 100 / If neutrality mode is 2, this sets the chance.
-    "strengthWaveDelay":
+    "enforcePmcSpawns": false //If enabled, the mod tries to guarantee the PMC bot spawns of vanilla game. Doesn't guarantee faction PMCs and doesn't do anything if PMCs are overriden.
+  },
+  "spawnSettings": 
+  {
+    "perBotLoadout": 12, //How many loadouts to generate per expected bot spawns.
+    "extraLoadouts": 8, //How many extra loadouts per bot type.
+    "difficultyWeights": //Chances for a bot to be at a specific difficulty for a set difficulty threshold
     {
-      "min": 320, //Delay at maximum strength (1.0) between wave spawns
-      "max": 460 //Delay at minimum strength (0.0)
+      "0.9": 
+      {
+        "Easy": 10,
+        "Medium": 20,
+        "Hard": 40,
+        "Impossible": 30
+      },
+      "0.6": 
+      {
+        "Easy": 20,
+        "Medium": 30,
+        "Hard": 40,
+        "Impossible": 10
+      },
+      "0.3": 
+      {
+        "Easy": 30,
+        "Medium": 40,
+        "Hard": 20,
+        "Impossible": 10
+      },
+      "0": 
+      {
+        "Easy": 60,
+        "Medium": 30,
+        "Hard": 10,
+        "Impossible": 0
+      }
     },
-    "delayVariance": 5, //RNG min and max variance added/subtracted to the wave spawns
-    "maxWaves": 12, //Maximum waves that the mod will create for bots. -1 to disable the cap. HAVING THIS HIGH WITH A HIGH LENGTH RAID WILL CAUSE A MASSIVE SPIKE IN RAM USAGE!
-    "strengthWaveSize":
+    "strengthGroupSizeMin": //Min group size based on the faction's strength for the location.
     {
-      "min": 3, //Bot spawns per wave at minimum strength (0.0)
-      "max": 6 //Bot spawns per wave at maximum strength (1.0)
+      "min": 2,
+      "max": 4
     },
-    "roundedBotCounts": false, //If false, bot groups will be cut off after hitting the bot count of the wave.
-    "strengthGroupSize":
+    "strengthGroupSizeMax": //Max group size based on the faction's strength for the location.
     {
-      "min": 2, //Minimum bot size at minimum strength (0.0) if a group is created.
-      "max": 4 //Maximum bot size at maximum strength (1.0)
+      "min": 4,
+      "max": 6
     },
-    "groupSizeVariance": 1, //Random variance above and below the group size
-    "groupChance": 30, //Chance bots will spawn as a group
-    "spawnEnd": 300, //Seconds before the end of a wave that spawning stops
-    "initialBotMultiplier": 1.5, //Multiplier to wave bot count at the beginning of a raid
-    "enforceBotSpawns": false, //If enabled, the mod tries to guarantee bot spawns. WARNING THIS CAN GET LAGGY QUICK
-    "enforceInitialSpawns": false, //If enabled, the mod tries to guarantee the bot spawns of the first wave only, doesn't change anything when the above option is true.
-    "enforcePmcSpawns": false, //If enabled, the mod tries to guarantee the PMC bot spawns of vanilla game. Doesn't guarantee faction PMCs and doesn't do anything if PMCs are overriden.
-    "difficultyThresholds": //0.0 - 1.0 / Minimum strength for each bot difficulty
+    "strengthGroupChance": //Chance a group will spawn based on the faction's strength for the location.
     {
-      "impossible": 0.9,
-      "hard": 0.7,
-      "normal": 0.4,
-      "easy": 0
+      "min": 20,
+      "max": 80
     },
-    "difficultyDecreaseChance": 45 //0 - 100 / Chance that a bot gets a lower difficulty than their strength level
+    "nonGroupBotModifier": 0.75, //Reduction modifier to bots waiting to spawn if it fails to form a group.
+    "groupSpawnExclusive": false, //Should spawning a group not spawn some individual bots around the map in the same wave.
+    "startTime": 1, //Time after the map starts to start spawning. Will still have a delay regardless.
+    "stopTime": 200, //Time before the map ends to stop spawning.
+    "requiredCapSpace": 4, //How many bots available beneath a faction's cap before spawning starts.
+    "mapSettings": //Spawning settings per location 
+    {
+      "bigmap": 
+      {
+        "maxBots": 21, //Max territories-based bots
+        "spawnOnWindow":  //Rng min and max length of the bot spawn windows in seconds.
+        {
+          "min": 80,
+          "max": 120
+        },
+        "spawnOffWindow": //Rng min and max length of the time between bot spawn windows in seconds.
+        {
+          "min": 300,
+          "max": 380
+        }
+      },
+      "factory4_day": 
+      {
+        "maxBots": 12,
+        "spawnOnWindow": 
+        {
+          "min": 60,
+          "max": 100
+        },
+        "spawnOffWindow": 
+        {
+          "min": 300,
+          "max": 380
+        }
+      },
+      "interchange": 
+      {
+        "maxBots": 20,
+        "spawnOnWindow": 
+        {
+          "min": 60,
+          "max": 80
+        },
+        "spawnOffWindow": 
+        {
+          "min": 280,
+          "max": 360
+        }
+      },
+      "laboratory": 
+      {
+        "maxBots": 15,
+        "spawnOnWindow": 
+        {
+          "min": 60,
+          "max": 100
+        },
+        "spawnOffWindow": 
+        {
+          "min": 300,
+          "max": 380
+        }
+      },
+      "lighthouse": 
+      {
+        "maxBots": 20,
+        "spawnOnWindow": 
+        {
+          "min": 80,
+          "max": 120
+        },
+        "spawnOffWindow": 
+        {
+          "min": 300,
+          "max": 380
+        }
+      },
+      "rezervbase": 
+      {
+        "maxBots": 20,
+        "spawnOnWindow": 
+        {
+          "min": 60,
+          "max": 100
+        },
+        "spawnOffWindow": 
+        {
+          "min": 300,
+          "max": 380
+        }
+      },
+      "sandbox": 
+      {
+        "maxBots": 14,
+        "spawnOnWindow": 
+        {
+          "min": 60,
+          "max": 100
+        },
+        "spawnOffWindow": 
+        {
+          "min": 300,
+          "max": 380
+        }
+      },
+      "shoreline": {
+        "maxBots": 21,
+        "spawnOnWindow": 
+        {
+          "min": 80,
+          "max": 120
+        },
+        "spawnOffWindow": 
+        {
+          "min": 300,
+          "max": 380
+        }
+      },
+      "tarkovstreets": 
+      {
+        "maxBots": 23,
+        "spawnOnWindow": 
+        {
+          "min": 60,
+          "max": 120
+        },
+        "spawnOffWindow": 
+        {
+          "min": 280,
+          "max": 360
+        }
+      },
+      "woods": 
+      {
+        "maxBots": 20,
+        "spawnOnWindow": 
+        {
+          "min": 40,
+          "max": 80
+        },
+        "spawnOffWindow": 
+        {
+          "min": 300,
+          "max": 380
+        }
+      },
+      "labyrinth": 
+      {
+        "maxBots": 10,
+        "spawnOnWindow": 
+        {
+          "min": 60,
+          "max": 100
+        },
+        "spawnOffWindow": 
+        {
+          "min": 300,
+          "max": 380
+        }
+      },
+      "icebreaker": 
+      {
+        "maxBots": 18,
+        "spawnOnWindow": 
+        {
+          "min": 60,
+          "max": 100
+        },
+        "spawnOffWindow": 
+        {
+          "min": 300,
+          "max": 380
+        }
+      },
+      "terminal": 
+      {
+        "maxBots": 18,
+        "spawnOnWindow": 
+        {
+          "min": 60,
+          "max": 100
+        },
+        "spawnOffWindow": 
+        {
+          "min": 300,
+          "max": 380
+        }
+      }
+    },
+    "softCapSpace": 4, //Cap below the total max bot count to stop spawning bots.
+    "spawnCheckInterval": 20, //Interval between trying to spawn bots. Lower numbers means more bots and lag, be careful.
+    "spawnDelayAdjustmentMax": 2, //Max rng time to add to the bot to delay their spawn.
+    "maxBotSpawnsPerInterval": 8, //Cap of bots to spawn per spawn interval
+    "deadRaidThreshold": 4, //How many bots in the raid to be considered dead
+    "deadRaidTimer": 15 //Overrides the spawn window off time to this time when the raid is considered dead
   }
 }

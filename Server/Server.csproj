@@ -40,6 +40,9 @@
         <None Update="Config/**">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
+        <None Update="Config\configExampleOld.jsonc">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
 
     <Target  Name="PostBuild" AfterTargets="PostBuildEvent">
