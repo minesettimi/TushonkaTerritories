@@ -73,15 +73,12 @@ public class ProfileStateHelper(
         playerStates[safeId].Unlocked = currentUnlocked;
         stateServer.CurrentSave.PlayerState = playerStates;
 
-        if (modConfig.FactionConfig.TraderReputation)
-        {
-            UpdateTraderRep(pmcData);
-        }
+        UpdateTraderRep(pmcData);
     }
 
     public void UpdateTraderRep(PmcData? pmcData)
     {
-        if (pmcData?.TradersInfo == null)
+        if (pmcData?.TradersInfo == null || !modConfig.FactionConfig.TraderReputation)
             return;
 
         Dictionary<string, double>? playerRep = GetState(pmcData)?.Reputation;

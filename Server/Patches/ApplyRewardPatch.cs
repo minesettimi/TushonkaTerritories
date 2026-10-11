@@ -61,41 +61,46 @@ public class ApplyRewardPatch : AbstractPatch
 
             bool savableReward = _modConfig.OneTimeQuestRewards && _dataConfig.SavedQuestRewards.Contains((RewardType)reward.Type);
             bool custom = true;
-            if (savableReward && !removeSaved)
+            if (savableReward)
             {
                 saved = true;
-                switch (reward.Type)
+                if (removeSaved)
                 {
-                    case (RewardType)150:
-                        _profileStateHelper.AddRepToProfile(pmcData, reward.Target!, reward.Value!.Value);
-                        tempRewards.RemoveAt(i--);
-                        _stateServer.SendStateUpdate(fullProfile.ProfileInfo!.ProfileId!);
-                        break;
-                
-                    case (RewardType)151:
-                        PmcData? scavData = fullProfile.CharacterData?.ScavData;
-                    
-                        _profileStateHelper.SetFactionLock(pmcData, reward.Target!);
-                        _profileStateHelper.SetFactionLock(scavData, reward.Target!);
-                        tempRewards.RemoveAt(i--);
-                        _stateServer.SendStateUpdate(fullProfile.ProfileInfo!.ProfileId!);
-                        break;
-                
-                    case (RewardType)152:
-                        LocationState? locationState = _stateServer.CurrentSave.Locations[reward.Target!];
-                    
-                        if (locationState == null)
-                        {
-                            _logger.Error($"[TT] Tried to change lock on invalid map: {reward.Target}!");
-                            break;
-                        }
-
-                        locationState.Locked = reward.Value < 1;
-                        break;
-                    default:
-                        custom = false;
-                        break;
+                    continue;
                 }
+            }
+            
+            switch (reward.Type)
+            {
+                case (RewardType)150:
+                    _profileStateHelper.AddRepToProfile(pmcData, reward.Target!, reward.Value!.Value);
+                    tempRewards.RemoveAt(i--);
+                    _stateServer.SendStateUpdate(fullProfile.ProfileInfo!.ProfileId!);
+                    break;
+                
+                case (RewardType)151:
+                    PmcData? scavData = fullProfile.CharacterData?.ScavData;
+                    
+                    _profileStateHelper.SetFactionLock(pmcData, reward.Target!);
+                    _profileStateHelper.SetFactionLock(scavData, reward.Target!);
+                    tempRewards.RemoveAt(i--);
+                    _stateServer.SendStateUpdate(fullProfile.ProfileInfo!.ProfileId!);
+                    break;
+                
+                case (RewardType)152:
+                    LocationState? locationState = _stateServer.CurrentSave.Locations[reward.Target!];
+                    
+                    if (locationState == null)
+                    {
+                        _logger.Error($"[TT] Tried to change lock on invalid map: {reward.Target}!");
+                        break;
+                    }
+
+                    locationState.Locked = reward.Value < 1;
+                    break;
+                default:
+                    custom = false;
+                    break;
             }
 
             if (custom)

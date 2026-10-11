@@ -9,7 +9,7 @@ using TerritoryClient.Services;
 
 namespace TerritoryClient
 {
-    [BepInPlugin("com.minesettimi.territories", "Tushonka Territories", "2.0.1")]
+    [BepInPlugin("com.minesettimi.territories", "Tushonka Territories", "2.0.2")]
     [BepInDependency("com.fika.core", BepInDependency.DependencyFlags.SoftDependency)]
     public class TerritoryPlugin : BaseUnityPlugin
     {
