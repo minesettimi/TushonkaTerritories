@@ -267,7 +267,8 @@
     "blackdiv":
     {
       "color": "#000000",
-      "botNames": ["blackDivAssault", "blackDivIb"],
+      "botNames": ["blackDivAssault"],
+      "extraBotNames": ["blackDivIb"],
       "mobileBosses": ["bossWedge"],
       "staticBosses": [],
       "strength": 1.0,

@@ -30,6 +30,7 @@ public class ReputationList : UIElement
             }
         }
         
+        UI.Dispose();
         ShowGameObject();
         UI.AddViewList(factions,
             repTemplate,
