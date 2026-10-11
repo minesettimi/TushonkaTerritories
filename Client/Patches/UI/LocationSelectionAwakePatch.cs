@@ -26,7 +26,7 @@ public class LocationSelectionAwakePatch : ModulePatch
     {
         GameObject? territoryMap = TerritoryPlugin.BundleLoader.Bundle.LoadAsset<GameObject>("TerritoryMap.prefab");
 
-        if (territoryMap == null)
+        if (territoryMap is null)
         {
             TerritoryPlugin.PluginLogger.LogError("Failed to load bundle.");
             NotificationManager.DisplayMessageNotification("Error loading territory map from bundle.");
@@ -44,7 +44,7 @@ public class LocationSelectionAwakePatch : ModulePatch
 
         GameObject? descriptionAsset = TerritoryPlugin.BundleLoader.Bundle.LoadAsset<GameObject>("TerritoryInfo.prefab");
 
-        if (descriptionAsset == null)
+        if (descriptionAsset is null)
         {
             TerritoryPlugin.PluginLogger.LogError("Failed to load bundle.");
             NotificationManager.DisplayMessageNotification("Error loading territory description from bundle.");

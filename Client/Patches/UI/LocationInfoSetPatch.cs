@@ -18,7 +18,7 @@ public class LocationInfoSetPatch : ModulePatch
     }
 
     [PatchPrefix]
-    public static void Set(LocationInfoPanel __instance, LocationSettings.Location? location, IEftSession session)
+    public static void Prefix(LocationInfoPanel __instance, LocationSettings.Location? location, IEftSession session)
     {
         if (location == null)
             return;

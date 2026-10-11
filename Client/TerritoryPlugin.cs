@@ -9,7 +9,7 @@ using TerritoryClient.Services;
 
 namespace TerritoryClient
 {
-    [BepInPlugin("com.minesettimi.territories", "Tushonka Territories", "2.0.0")]
+    [BepInPlugin("com.minesettimi.territories", "Tushonka Territories", "2.0.1")]
     [BepInDependency("com.fika.core", BepInDependency.DependencyFlags.SoftDependency)]
     public class TerritoryPlugin : BaseUnityPlugin
     {
@@ -27,6 +27,8 @@ namespace TerritoryClient
         protected void Awake()
         {
             PluginLogger = Logger;
+            _debug = Config.Bind("Debug", "Debug", false, 
+                "Enable bot spawn system and reputation debug printing.");
             
             _patchManager = new PatchManager(this, true);
             _patchManager.EnablePatches();
@@ -36,8 +38,6 @@ namespace TerritoryClient
             BundleLoader = new BundleLoader();
 
             IsFika = Chainloader.PluginInfos.Keys.Contains("com.fika.core");
-            _debug = Config.Bind("Debug", "Debug", false, 
-                "Enable bot spawn system and reputation debug printing.");
         }
     }
 }
