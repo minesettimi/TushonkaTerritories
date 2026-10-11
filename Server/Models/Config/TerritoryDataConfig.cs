@@ -10,6 +10,7 @@ public class TerritoryDataConfig
     [JsonPropertyName("factions")] public Dictionary<string, Faction> Factions { get; set; } = [];
     [JsonPropertyName("defaultTerritory")] public LocationData<LocationInitialState> LocationTerritories { get; set; } = new();
     [JsonPropertyName("locationNeighbors")] public LocationData<List<string>> LocationNeighbors { get; set; } = new();
+    [JsonPropertyName("repPresets")] public Dictionary<string, RepPresetTable> RepPresets { get; set; } = new();
     
     //can't do strings because its a list and I don't feel like making my own converter
     [JsonPropertyName("savedQuestRewards")]
@@ -54,4 +55,11 @@ public class FactionModData
 {
     [JsonPropertyName("modGuid")] public required string ModGuid { get; set; }
     [JsonPropertyName("backupFaction")] public string BackupFaction { get; set; } = "none";
+}
+
+public class RepPresetTable
+{
+    [JsonPropertyName("bear")] public Dictionary<string, int> Bear { get; set; } = new();
+    [JsonPropertyName("usec")] public Dictionary<string, int> Usec { get; set; } = new();
+    [JsonPropertyName("scav")] public Dictionary<string, int> Scav { get; set; } = new();
 }

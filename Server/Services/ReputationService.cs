@@ -27,8 +27,6 @@ public class ReputationService(StateServer stateServer,
             profileStateHelper.CheckProfileData(profile.CharacterData?.ScavData, true);
         }
         
-        stateServer.CurrentSave.PlayerRep = null;
-        
         stateServer.SaveToDisk();
     }
 

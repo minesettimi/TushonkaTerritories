@@ -2,6 +2,7 @@ using System.Text.Json;
 using SPTarkov.Common.Models.Logging;
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.DI;
+using SPTarkov.Server.Core.Models.Common;
 using SPTarkov.Server.Core.Models.Eft.Common;
 using SPTarkov.Server.Core.Utils;
 using TerritoryServer.Controllers;
@@ -42,6 +43,16 @@ public class TerritoryRouter(JsonUtil jsonUtil, TerritoryCallbacks territoryCall
             output,
             cancellationToken
         ) => await territoryCallbacks.HandleStateRetrieval()
+    ),
+    new RouteAction<FactionSelectRequest>(
+        "/tt/client/faction",
+        async (
+            url,
+            info,
+            sessionId,
+            output,
+            cancellationToken
+        ) => await territoryCallbacks.HandleFactionSelection(info, sessionId)
     )
 ])
 { }
@@ -99,5 +110,12 @@ public class TerritoryCallbacks(HttpResponseUtil httpResponseUtil,
     public ValueTask<string> HandleStateRetrieval()
     {
         return new ValueTask<string>(httpResponseUtil.NoBody(stateServer.CurrentSave));
+    }
+
+    public ValueTask<string> HandleFactionSelection(FactionSelectRequest request, MongoId sessionId)
+    {
+        
+        
+        return new ValueTask<string>(httpResponseUtil.NullResponse());   
     }
 }

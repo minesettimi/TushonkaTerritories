@@ -8,8 +8,6 @@ public record SaveState
     [JsonPropertyName("stateId")] public MongoId StateId { get; set; }
     [JsonPropertyName("lastSimulatedLoc")] public int LastLoc { get; set; } = 0;
     [JsonPropertyName("locations")] public LocationData<LocationState?> Locations { get; set; } = new();
-
-    [Obsolete, JsonPropertyName("playerRep")] public Dictionary<MongoId, Dictionary<string, double>>? PlayerRep { get; set; }
     [JsonPropertyName("playerState")] public Dictionary<MongoId, PlayerState> PlayerState { get; set; } = [];
     [JsonPropertyName("questsCompleted")] public HashSet<MongoId> QuestsCompleted { get; set; } = []; //only territories reward related quests
 }
@@ -26,4 +24,5 @@ public record PlayerState
 {
     [JsonPropertyName("reputation")] public Dictionary<string, double> Reputation { get; set; } = [];
     [JsonPropertyName("unlocked")] public Dictionary<string, bool> Unlocked { get; set; } = [];
+    [JsonPropertyName("selectedFaction")] public string? SelectedFaction { get; set; }
 }

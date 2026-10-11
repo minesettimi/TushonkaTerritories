@@ -1,8 +1,10 @@
 using SPTarkov.Common.Models.Logging;
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.Constants;
+using SPTarkov.Server.Core.Helpers.Profile;
 using SPTarkov.Server.Core.Models.Common;
 using SPTarkov.Server.Core.Models.Eft.Common;
+using SPTarkov.Server.Core.Models.Eft.Profile;
 using SPTarkov.Server.Core.Utils.Cloners;
 using TerritoryServer.Models;
 using TerritoryServer.Servers;
@@ -15,6 +17,7 @@ public class ProfileStateHelper(
     StateServer stateServer,
     TerritoryDataConfig dataConfig,
     TerritoryModConfig modConfig,
+    ProfileHelper profileHelper,
     ICloner cloner,
     ISptLogger<ProfileStateHelper> logger)
 {
@@ -33,19 +36,14 @@ public class ProfileStateHelper(
                 Unlocked = [],
                 Reputation = []
             };
-
-            //migrate data
-            if (stateServer.CurrentSave.PlayerRep != null &&
-                stateServer.CurrentSave.PlayerRep.TryGetValue(safeId, out Dictionary<string, double>? reputation))
-            {
-                newState.Reputation = cloner.Clone(reputation)!;
-            }
             
             playerStates.TryAdd(safeId, newState);
         }
 
         Dictionary<string, double> currentRep = playerStates[safeId].Reputation;
         Dictionary<string, bool> currentUnlocked = playerStates[safeId].Unlocked;
+
+        bool bear = pmcData.Info?.Side is Sides.Bear;
         
         foreach ((string factionName, Faction faction) in dataConfig.Factions)
         {
@@ -57,7 +55,7 @@ public class ProfileStateHelper(
                 double defaultRep;
                 if (scav)
                     defaultRep = faction.DefaultRepScav;
-                else if (pmcData.Info?.Side is Sides.Bear)
+                else if (bear)
                     defaultRep = faction.DefaultRepBear;
                 else
                     defaultRep = faction.DefaultRepUsec;
