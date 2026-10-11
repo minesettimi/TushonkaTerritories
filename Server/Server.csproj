@@ -51,12 +51,12 @@
             <CopyFiles Include="$(TargetDir)/**/*.*"/>
             <CopyFiles Remove="$(TargetDir)\TerritoriesPrepatch.json" />
         </ItemGroup>
-        <Copy SourceFiles="@(CopyFiles)" DestinationFolder="$(SolutionDir)../../SPT_Runtime/user/mods/$(AssemblyName)\%(RecursiveDir)" />
+        <Copy SourceFiles="@(CopyFiles)" DestinationFolder="$(SolutionDir)../../SPT_Runtime/user/mods/$(SolutionName)\%(RecursiveDir)" />
         <Copy SourceFiles="$(TargetDir)\TerritoriesPrepatch.json" DestinationFolder="$(SolutionDir)../../SPT_Runtime/user/patchers/com.minesettimi.territories" />
     </Target>
 
     <Target Name="PostBuildCopy" AfterTargets="PostBuild" Condition="$(Configuration) == Release">
-        <Copy SourceFiles="@(CopyFiles)" DestinationFolder="$(SolutionDir)release/SPT_Runtime/user/mods/$(AssemblyName)\%(RecursiveDir)"/>
+        <Copy SourceFiles="@(CopyFiles)" DestinationFolder="$(SolutionDir)release/SPT_Runtime/user/mods/$(SolutionName)\%(RecursiveDir)"/>
         <Copy SourceFiles="$(TargetDir)\TerritoriesPrepatch.json" DestinationFolder="$(SolutionDir)release/SPT_Runtime/user/patchers/com.minesettimi.territories" />
     </Target>
 
