@@ -10,7 +10,7 @@
         <Version>2.0.0</Version>
         <RootNamespace>TerritoryClient</RootNamespace>
 
-        <AssemblyName>TushonkaTerritories</AssemblyName>
+        <AssemblyName>TushonkaTerritoriesClient</AssemblyName>
         <OutputPath>bin\$(Configuration)\$(SolutionName)\$(AssemblyName)\</OutputPath>
         <GamePath>$(SolutionDir)../../BepInEx/plugins/$(SolutionName)/</GamePath>
         <RewardPath>$(SolutionDir)release/BepInEx/plugins/$(SolutionName)/</RewardPath>
