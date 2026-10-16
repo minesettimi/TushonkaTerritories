@@ -22,7 +22,7 @@ namespace TerritoryClient
 
         public static bool IsFika;
 
-        public static ConfigEntry<bool> _debug;
+        public static ConfigEntry<bool> _debug = null!;
 
         protected void Awake()
         {

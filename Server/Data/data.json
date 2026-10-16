@@ -206,7 +206,7 @@
       "mobileBosses": [],
       "staticBosses": [],
       "strength": 0.4,
-      "defensiveness": 0.4,
+      "defensiveness": 0.8,
       "aggressiveness": 1.0,
       "maxStrengthBuild": 0.5,
       "distanceReduction": 0.0,

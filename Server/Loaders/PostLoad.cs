@@ -1,3 +1,4 @@
+using SPTarkov.Common.Models.Logging;
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.DI;
 using SPTarkov.Server.Core.Models.Eft.Common.Tables;
@@ -77,6 +78,9 @@ public class PostLoad(LocationService locationService, ReputationService reputat
     {
         foreach ((string botName, BotType? botType) in botTable.Types)
         {
+            if (botType == null)
+                continue;
+            
             foreach ((string difficultyName, DifficultyCategories difficulty) in botType.BotDifficulty)
             {
                 //don't warn allies and don't leave shooting on warn up to chance

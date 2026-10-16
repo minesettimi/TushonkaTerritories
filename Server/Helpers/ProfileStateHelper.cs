@@ -17,8 +17,6 @@ public class ProfileStateHelper(
     StateServer stateServer,
     TerritoryDataConfig dataConfig,
     TerritoryModConfig modConfig,
-    ProfileHelper profileHelper,
-    ICloner cloner,
     ISptLogger<ProfileStateHelper> logger)
 {
     public void CheckProfileData(PmcData? pmcData, bool scav = false)
@@ -47,9 +45,6 @@ public class ProfileStateHelper(
         
         foreach ((string factionName, Faction faction) in dataConfig.Factions)
         {
-            if (faction.Deactivated)
-                continue;
-            
             if (!currentRep.ContainsKey(factionName))
             {
                 double defaultRep;

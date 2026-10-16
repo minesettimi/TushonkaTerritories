@@ -71,7 +71,7 @@ public class PostRaidController(ProfileHelper profileHelper,
                 string botFaction = cacheService.BotFactions.GetValueOrDefault(botName, "none");
                 Faction faction = dataConfig.Factions[botFaction];
             
-                if (botName == "none" || !playerData.Unlocked[botFaction])
+                if (botName == "none" || !playerData.Unlocked.TryGetValue(botFaction, out bool unlocked) || !unlocked)
                     continue;
 
                 double repDecrease = factionConfig.KillReputationDecrease * amount;
@@ -85,9 +85,9 @@ public class PostRaidController(ProfileHelper profileHelper,
                 
                     Faction otherFactionData =  dataConfig.Factions[otherFaction];
 
-                    if (!otherFactionData.RepEnabled)
+                    if (otherFactionData.Deactivated || !otherFactionData.RepEnabled)
                         continue;
-
+                    
                     playerData.Reputation[otherFaction] += repIncrease;
                 }
             }
