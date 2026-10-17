@@ -22,12 +22,12 @@ namespace TerritoryClient
 
         public static bool IsFika;
 
-        public static ConfigEntry<bool> _debug = null!;
+        public static ConfigEntry<bool> Debug = null!;
 
         protected void Awake()
         {
             PluginLogger = Logger;
-            _debug = Config.Bind("Debug", "Debug", false, 
+            Debug = Config.Bind("Debug", "Debug", false, 
                 "Enable bot spawn system and reputation debug printing.");
             
             _patchManager = new PatchManager(this, true);

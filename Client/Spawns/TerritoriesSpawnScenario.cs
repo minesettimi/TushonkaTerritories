@@ -46,7 +46,7 @@ public class TerritoriesSpawnScenario : MonoBehaviour
         if (tempState == null)
             return;
 
-        if (TerritoryPlugin._debug.Value)
+        if (TerritoryPlugin.Debug.Value)
         {
             TerritoryPlugin.PluginLogger.LogInfo("Initializing spawn scenario!");
         }
@@ -133,7 +133,7 @@ public class TerritoriesSpawnScenario : MonoBehaviour
             float partition = contestantInfo.Strength / _totalStrength;
             contestantInfo.MaxCap = Mathf.RoundToInt(maxBots * partition);
 
-            if (TerritoryPlugin._debug.Value)
+            if (TerritoryPlugin.Debug.Value)
             {
                 TerritoryPlugin.PluginLogger.LogInfo(
                     $"Faction: {factionName} has partition: {partition} of maxbots: {maxBots}, maxcount: {_botsController!._maxCount}");
@@ -170,7 +170,7 @@ public class TerritoriesSpawnScenario : MonoBehaviour
     {
         if (_enabled && _botsController != null)
         {
-            if (TerritoryPlugin._debug.Value)
+            if (TerritoryPlugin.Debug.Value)
             {
                 TerritoryPlugin.PluginLogger.LogInfo("Starting spawn scenario!");
             }
@@ -182,7 +182,7 @@ public class TerritoriesSpawnScenario : MonoBehaviour
 
     public void Stop()
     {
-        if (TerritoryPlugin._debug.Value)
+        if (TerritoryPlugin.Debug.Value)
         {
             TerritoryPlugin.PluginLogger.LogInfo("Stopping spawn scenario!");
         }
@@ -243,7 +243,7 @@ public class TerritoriesSpawnScenario : MonoBehaviour
         string spawnFaction = _factionIndex[_currentContestant];
         _currentContestant = (_currentContestant + 1) % _factionIndex.Count;
 
-        if (TerritoryPlugin._debug.Value)
+        if (TerritoryPlugin.Debug.Value)
         {
             TerritoryPlugin.PluginLogger.LogInfo($"Faction spawning: {spawnFaction}");
         }
@@ -253,13 +253,13 @@ public class TerritoriesSpawnScenario : MonoBehaviour
         
         int currentFactionBots = _botsController!.Bots.GetBotCountByFaction(spawnFaction); //probably expensive, oh well!
 
-        if (TerritoryPlugin._debug.Value)
+        if (TerritoryPlugin.Debug.Value)
         {
             TerritoryPlugin.PluginLogger.LogInfo($"Current bots: {currentFactionBots}");
         }
         int factionBotsRemaining = Math.Min(Math.Min(botCountRemaining, spawnInfo.MaxCap - currentFactionBots), _spawnSettings.MaxIntervalSpawns);
 
-        if (TerritoryPlugin._debug.Value)
+        if (TerritoryPlugin.Debug.Value)
         {
             TerritoryPlugin.PluginLogger.LogInfo(
                 $"Faction bot slots: {factionBotsRemaining} out of {spawnInfo.MaxCap}.");
@@ -294,7 +294,7 @@ public class TerritoriesSpawnScenario : MonoBehaviour
             availableBots -= groupSize;
             SpawnByWave(groupSize, factionData, spawnInfo);
 
-            if (TerritoryPlugin._debug.Value)
+            if (TerritoryPlugin.Debug.Value)
             {
                 TerritoryPlugin.PluginLogger.LogInfo($"Spawning bots by group size: {groupSize}.");
             }

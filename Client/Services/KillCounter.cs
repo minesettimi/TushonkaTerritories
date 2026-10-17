@@ -36,7 +36,7 @@ public class KillCounter
         _killCounter.TryAdd(botType, 0);
         _killCounter[botType]++;
 
-        if (TerritoryPlugin._debug.Value)
+        if (TerritoryPlugin.Debug.Value)
         {
             TerritoryPlugin.PluginLogger.LogInfo($"Bot: {botType} killed by player: {player}");
         }
