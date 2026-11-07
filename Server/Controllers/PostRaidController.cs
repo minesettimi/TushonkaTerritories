@@ -33,13 +33,20 @@ public class PostRaidController(ProfileHelper profileHelper,
             battleService.Simulate(location, kills);
     }
     
-    public void UpdateRaidReputation(Dictionary<string, Dictionary<string, int>> kills)
+    public void UpdateRaidReputation(string location, Dictionary<string, Dictionary<string, int>> kills)
     {
         if (!modConfig.FactionConfig.RepChange)
             return;
-        
-        FactionConfig factionConfig = modConfig.FactionConfig;
 
+        LocationState? locationData = stateServer.CurrentSave.Locations[location];
+        if (locationData == null)
+        {
+            logger.Error("Failed to get location data for reputation changes at location id: " + location);
+            return;
+        }
+        
+        Dictionary<string, double> presentFactions = locationData.Contestants;
+        FactionConfig factionConfig = modConfig.FactionConfig;
         foreach ((string player, Dictionary<string, int> playerKills) in kills)
         {
             PmcData? characterData;
@@ -71,7 +78,10 @@ public class PostRaidController(ProfileHelper profileHelper,
                 string botFaction = cacheService.BotFactions.GetValueOrDefault(botName, "none");
                 Faction faction = dataConfig.Factions[botFaction];
             
-                if (botName == "none" || !playerData.Unlocked.TryGetValue(botFaction, out bool unlocked) || !unlocked)
+                if (botName == "none" 
+                    || !playerData.Unlocked.TryGetValue(botFaction, out bool unlocked) 
+                    || !unlocked
+                    || !(factionConfig.StaticRepGain && presentFactions.ContainsKey(botFaction)))
                     continue;
 
                 double repDecrease = factionConfig.KillReputationDecrease * amount;
@@ -84,8 +94,9 @@ public class PostRaidController(ProfileHelper profileHelper,
                         continue;
                 
                     Faction otherFactionData =  dataConfig.Factions[otherFaction];
-
-                    if (otherFactionData.Deactivated || !otherFactionData.RepEnabled)
+                    if (otherFactionData.Deactivated 
+                        || !otherFactionData.RepEnabled
+                        || !(factionConfig.NonContestantRepGain && presentFactions.ContainsKey(otherFaction)))
                         continue;
                     
                     playerData.Reputation[otherFaction] += repIncrease;

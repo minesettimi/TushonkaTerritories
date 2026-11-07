@@ -8,6 +8,8 @@
     "killChangesRep": true, //If true, killing bots changes your rep
     "killRepDecrease": 0.005, //How much rep to lose from a faction for killing one of its members
     "killEnemyRep": 0.05, //How much rep to gain for killing a member of a rival faction
+    "nonFactionRepAllowed": true, //Allows bots from a faction not present at a location (i.e hermetic door raiders on reserve) to apply reputation changes.
+    "nonContestantRepAllowed": true, //Allows reputation increases to be given to factions not present at a location.
     "overrideTraderRep": false //Should a faction's reputation change a player's standing with traders based on faction configuration
   },
   "battleConfig": 

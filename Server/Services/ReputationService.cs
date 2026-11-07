@@ -23,8 +23,7 @@ public class ReputationService(StateServer stateServer,
 
         foreach (SptProfile profile in profiles.Values)
         {
-            profileStateHelper.CheckProfileData(profile.CharacterData?.PmcData);
-            profileStateHelper.CheckProfileData(profile.CharacterData?.ScavData, true);
+            CheckProfile(profile);
         }
         
         stateServer.SaveToDisk();
@@ -33,10 +32,14 @@ public class ReputationService(StateServer stateServer,
     public void CheckRepForSession(MongoId sessionId)
     {
         SptProfile profile = profileHelper.GetFullProfile(sessionId);
-        
-        profileStateHelper.CheckProfileData(profile.CharacterData?.PmcData);
-        profileStateHelper.CheckProfileData(profile.CharacterData?.ScavData, true);
+        CheckProfile(profile);
         
         stateServer.SaveToDisk();
+    }
+
+    private void CheckProfile(SptProfile profile)
+    {
+        profileStateHelper.CheckProfileData(profile.CharacterData?.PmcData);
+        profileStateHelper.CheckProfileData(profile.CharacterData?.ScavData, true);
     }
 }

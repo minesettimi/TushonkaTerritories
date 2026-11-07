@@ -11,9 +11,9 @@ namespace TerritoryClient.Patches.UI;
 
 public class LocationSelectionAwakePatch : ModulePatch
 {
-    public static TerritoryRenderer TerritoryRenderer;
-    public static TextMeshProUGUI TerritoryControlled;
-    public static TextMeshProUGUI TerritoryContested;
+    public static TerritoryRenderer TerritoryRenderer = null!;
+    public static TextMeshProUGUI TerritoryControlled = null!;
+    public static TextMeshProUGUI TerritoryContested = null!;
     
     protected override MethodBase GetTargetMethod()
     {

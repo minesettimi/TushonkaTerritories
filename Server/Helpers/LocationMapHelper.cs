@@ -32,8 +32,8 @@ public class LocationMapHelper(TerritoryDataConfig gameData, StateServer stateSe
             return new NavCell(start, 0);
         }
         
-        if (gameData.LocationNeighbors[start]!.Count == 0 || 
-            gameData.LocationNeighbors[end]!.Count == 0)
+        if (gameData.LocationNeighbors[start].Count == 0 || 
+            gameData.LocationNeighbors[end].Count == 0)
         {
             return null;
         }

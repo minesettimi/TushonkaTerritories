@@ -73,7 +73,7 @@ public class TerritoryCallbacks(HttpResponseUtil httpResponseUtil,
             logger.Info($"[TT] Raid stat output: {JsonSerializer.Serialize(statRequest)}");
         }
         
-        raidController.UpdateRaidReputation(statRequest.PlayerKills);
+        raidController.UpdateRaidReputation(statRequest.Location, statRequest.PlayerKills); //this checks locations, run first!
         raidController.PostRaidSimulate(statRequest.Location, statRequest.Kills);
         
         return new ValueTask<string>(httpResponseUtil.NullResponse());
