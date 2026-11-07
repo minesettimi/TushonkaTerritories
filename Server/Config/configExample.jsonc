@@ -21,7 +21,7 @@
     "strengthLossPerBossDeath": 0.2, //0.0 - 1.0 / The damage that will be dealt to a faction per boss death in raid.
     "offlineSimulationTime": -1, //The delay between simulations in minutes. -1 to disable timed simulations.
     "actionsPerSimulation": 2, //How many actions can be taken per location i.e how many nearby locations can be taken.
-    "locationsPerSimulation": 6, //How many locations to be simulated per activated simulation. The number wraps so 2 * the number of locations will simulate all locations twice.
+    "locationsPerSimulation": 3, //How many locations to be simulated per activated simulation. The number wraps so 2 * the number of locations will simulate all locations twice.
     "attackNeutralChance": 25, //0 - 100 / The chance that a faction will try to engage in battle with another faction considered neutral
     "damageMultiplier": 0.6, //Multiplier for damage dealt in a battle
     "damageDistribution": 
@@ -61,9 +61,9 @@
     "warnRepRequirement": 1, //Minimum reputation with a faction to be neutral
     "attitudeChangesAllies": true, //If true a faction's attitude with another faction changes their vanilla hostilities
     "playerRepAttitude": true, //If true a player's reputation with a faction will affect the bot's hostility towards the player
-    "neutralityMode": 1, //0 - warn if neutral, 1 - true neutral, 2 - chance to be enemies
+    "neutralityMode": "Neutral", //Warn - warn if neutral, Neutral - true neutral, ChancedEnemies - chance to be enemies
+    "enemyChance": 50, //0 - 100 / If neutrality mode is Neutral, this sets the chance.
     "overrideHostility": true, //Edit bot settings to be friendlier to allies
-    "enemyChance": 50, //0 - 100 / If neutrality mode is 2, this sets the chance.
     "enforcePmcSpawns": false //If enabled, the mod tries to guarantee the PMC bot spawns of vanilla game. Doesn't guarantee faction PMCs and doesn't do anything if PMCs are overriden.
   },
   "spawnSettings": 

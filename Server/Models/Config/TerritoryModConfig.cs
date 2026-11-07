@@ -35,7 +35,7 @@ public record BattleConfig
     [JsonPropertyName("strengthLossPerBossDeath")] public double RaidBossStrengthLoss { get; set; } = 0.2;
     [JsonPropertyName("offlineSimulationTime")] public int SimulationInterval { get; set; } = -1;
     [JsonPropertyName("actionsPerSimulation")] public int SimulationActions { get; set; } = 2;
-    [JsonPropertyName("locationsPerSimulation")] public int SimulationLocations { get; set; } = 6;
+    [JsonPropertyName("locationsPerSimulation")] public int SimulationLocations { get; set; } = 3;
     [JsonPropertyName("attackNeutralChance")] public double AttackNeutralChance { get; set; } = 25.0;
     [JsonPropertyName("damageMultiplier")] public double DamageMultiplier { get; set; } = 0.6;
     [JsonPropertyName("damageDistribution")]
@@ -82,11 +82,12 @@ public record RaidConfig
     [JsonPropertyName("attitudeChangesAllies")] public bool AttitudeEffect { get; set; } = true;
     [JsonPropertyName("playerRepAttitude")] public bool AttitudeEffectPlayer { get; set; } = true;
     [JsonPropertyName("neutralityMode")] public NeutralMode NeutralityMode { get; set; } = NeutralMode.Neutral;
-    [JsonPropertyName("overrideHostility")] public bool OverrideHostility { get; set; } = true;
     [JsonPropertyName("enemyChance")] public int EnemyChance { get; set; } = 50;
+    [JsonPropertyName("overrideHostility")] public bool OverrideHostility { get; set; } = true;
     [JsonPropertyName("enforcePmcSpawns")] public bool EnforcePmcSpawns { get; set; } = false;
 }
 
+[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum NeutralMode
 {
     Warn,

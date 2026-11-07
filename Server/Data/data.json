@@ -27,7 +27,7 @@
         "cultist": -1,
         "blackdiv": -1,
         "ruaf": 0,
-        "untar": 0
+        "untar": -1
       }
     },
     "scav":
@@ -95,10 +95,10 @@
       "mobileBosses": ["bossKolontay"],
       "staticBosses": [],
       "strength": 0.6,
-      "defensiveness": 0.3,
-      "aggressiveness": 0.5,
+      "defensiveness": 0.2,
+      "aggressiveness": 0.45,
       "distanceReduction": 0.1,
-      "maxStrengthBuild": 0.7,
+      "maxStrengthBuild": 0.5,
       "persistant": false,
       "uprising": 0,
       "defaultRepUsec": 0,
@@ -125,7 +125,7 @@
       "mobileBosses": ["bossKnight"],
       "staticBosses": ["followerBigPipe", "followerBirdEye"],
       "strength": 0.8,
-      "defensiveness": 0.5,
+      "defensiveness": 0.9,
       "distanceReduction": 0.1,
       "aggressiveness": 0.2,
       "maxStrengthBuild": 0.9,
@@ -205,8 +205,8 @@
       ],
       "mobileBosses": [],
       "staticBosses": [],
-      "strength": 0.4,
-      "defensiveness": 0.8,
+      "strength": 0.6,
+      "defensiveness": 1.0,
       "aggressiveness": 1.0,
       "maxStrengthBuild": 0.5,
       "distanceReduction": 0.0,
