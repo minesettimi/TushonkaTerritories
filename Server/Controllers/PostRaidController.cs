@@ -81,7 +81,7 @@ public class PostRaidController(ProfileHelper profileHelper,
                 if (botName == "none" 
                     || !playerData.Unlocked.TryGetValue(botFaction, out bool unlocked) 
                     || !unlocked
-                    || !(factionConfig.StaticRepGain && presentFactions.ContainsKey(botFaction)))
+                    || (factionConfig.StaticRepGain && !presentFactions.ContainsKey(botFaction)))
                     continue;
 
                 double repDecrease = factionConfig.KillReputationDecrease * amount;
@@ -96,7 +96,7 @@ public class PostRaidController(ProfileHelper profileHelper,
                     Faction otherFactionData =  dataConfig.Factions[otherFaction];
                     if (otherFactionData.Deactivated 
                         || !otherFactionData.RepEnabled
-                        || !(factionConfig.NonContestantRepGain && presentFactions.ContainsKey(otherFaction)))
+                        || (factionConfig.NonContestantRepGain && !presentFactions.ContainsKey(otherFaction)))
                         continue;
                     
                     playerData.Reputation[otherFaction] += repIncrease;
