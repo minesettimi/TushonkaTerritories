@@ -160,7 +160,7 @@ public class LocationService(TerritoryDataConfig dataConfig,
             if (location == null)
                 continue;
             
-            LocationState locationState = stateServer.CurrentSave.Locations[locationName]!;
+            LocationState locationState = stateServer.CurrentLocationSave.Locations[locationName]!;
 
             //re-uses previous configuration if there's no faction, change if not desired
             if (locationState.Holder == "none")

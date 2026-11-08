@@ -68,7 +68,7 @@ public class PostLoad(LocationService locationService, ReputationService reputat
         
         imageRouterHelper.LoadFactionImages();
 
-        stateServer.NewSave = false;
+        stateServer.NewLocationSave = false;
         
         if (modConfig.RaidConfig.OverrideHostility)
             AdjustAllBots();

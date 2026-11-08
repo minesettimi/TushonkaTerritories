@@ -79,7 +79,6 @@ public class FactionData
 public class ServerState
 {
     [JsonProperty("stateId")] public MongoID StateId { get; set; }
-    [JsonProperty("lastSimulatedLoc")] public int LastLoc { get; set; } = 0;
     [JsonProperty("locations")] public LocationData<LocationState> Locations { get; set; } = null!;
     [JsonProperty("playerState")] public Dictionary<MongoID, PlayerState> PlayerState { get; set; } = null!;
 
@@ -106,6 +105,7 @@ public record PlayerState
 {
     [JsonProperty("reputation")] public Dictionary<string, double> Reputation = [];
     [JsonProperty("unlocked")] public Dictionary<string, bool> Unlocked = [];
+    [JsonProperty("selectedFaction")] public string? SelectedFaction { get; set; }
 }
 
 public record SpawnSettings

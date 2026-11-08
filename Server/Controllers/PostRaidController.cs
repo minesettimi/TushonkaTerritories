@@ -38,7 +38,7 @@ public class PostRaidController(ProfileHelper profileHelper,
         if (!modConfig.FactionConfig.RepChange)
             return;
 
-        LocationState? locationData = stateServer.CurrentSave.Locations[location];
+        LocationState? locationData = stateServer.CurrentLocationSave.Locations[location];
         if (locationData == null)
         {
             logger.Error("Failed to get location data for reputation changes at location id: " + location);
@@ -67,7 +67,7 @@ public class PostRaidController(ProfileHelper profileHelper,
             }
 
             MongoId characterId = (MongoId)characterData.Id;
-            if (!stateServer.CurrentSave.PlayerState.TryGetValue(characterId, out PlayerState? playerData))
+            if (!stateServer.CurrentPlayerSave.PlayerState.TryGetValue(characterId, out PlayerState? playerData))
             {
                 logger.Error("[TT] Received raid completed request but profile doesn't have reputation data!");
                 return;
@@ -103,7 +103,7 @@ public class PostRaidController(ProfileHelper profileHelper,
                 }
             }
 
-            stateServer.CurrentSave.PlayerState[characterId] = playerData;
+            stateServer.CurrentPlayerSave.PlayerState[characterId] = playerData;
 
             profileStateHelper.UpdateTraderRep(characterData);
         }

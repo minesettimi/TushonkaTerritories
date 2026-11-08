@@ -3,11 +3,15 @@ using SPTarkov.Server.Core.Models.Common;
 
 namespace TerritoryServer.Models;
 
-public record SaveState
+public record LocationSaveState
 {
     [JsonPropertyName("stateId")] public MongoId StateId { get; set; }
     [JsonPropertyName("lastSimulatedLoc")] public int LastLoc { get; set; } = 0;
     [JsonPropertyName("locations")] public LocationData<LocationState?> Locations { get; set; } = new();
+}
+
+public record PlayerSaveState
+{
     [JsonPropertyName("playerState")] public Dictionary<MongoId, PlayerState> PlayerState { get; set; } = [];
     [JsonPropertyName("questsCompleted")] public HashSet<MongoId> QuestsCompleted { get; set; } = []; //only territories reward related quests
 }
@@ -16,7 +20,7 @@ public record LocationState
 {
     [JsonPropertyName("holder")] public string Holder { get; set; } = "none";
     [JsonPropertyName("contestants")] public Dictionary<string, double> Contestants { get; set; } = []; //faction to strength
-    [JsonPropertyName("base")] public bool Base { get; set; } = false;
+    [JsonPropertyName("baseHolder")] public string BaseHolder { get; set; } = "none";
     [JsonPropertyName("locked")] public bool Locked { get; set; } = false;
 }
 

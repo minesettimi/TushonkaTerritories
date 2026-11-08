@@ -109,7 +109,14 @@ public class TerritoryCallbacks(HttpResponseUtil httpResponseUtil,
     
     public ValueTask<string> HandleStateRetrieval()
     {
-        return new ValueTask<string>(httpResponseUtil.NoBody(stateServer.CurrentSave));
+        ServerStateResponse serverStateResponse = new()
+        {
+            StateId = stateServer.CurrentLocationSave.StateId,
+            Locations = stateServer.CurrentLocationSave.Locations,
+            PlayerState = stateServer.CurrentPlayerSave.PlayerState
+        };
+        
+        return new ValueTask<string>(httpResponseUtil.NoBody(serverStateResponse));
     }
 
     public ValueTask<string> HandleFactionSelection(FactionSelectRequest request, MongoId sessionId)

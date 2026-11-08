@@ -210,6 +210,7 @@ public class TerritoriesSpawnScenario : MonoBehaviour
         }
         //revive dead raids by fast tracking off times
         else if (!_spawnActive 
+                 && _spawnSettings.DeadRaidBots > -1
                  && _botsController!.AliveAndLoadingBotsCount <= _spawnSettings.DeadRaidBots 
                  && _nextWindow - _game.PastTime > _spawnSettings.DeadRaidTime)
         {

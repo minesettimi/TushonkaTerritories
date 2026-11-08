@@ -41,7 +41,7 @@ public class LocationMapHelper(TerritoryDataConfig gameData, StateServer stateSe
         List<NavCell> openList = [new(start, 0)];
         HashSet<string> closedList = [];
 
-        LocationData<LocationState?> currentLocations = stateServer.CurrentSave.Locations;
+        LocationData<LocationState?> currentLocations = stateServer.CurrentLocationSave.Locations;
         string faction = currentLocations[start]?.Holder ?? "none";
         
         while (openList.Count > 0)

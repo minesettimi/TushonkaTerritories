@@ -15,13 +15,14 @@ public class StateGenerator(TerritoryDataConfig dataConfig,
     IReadOnlyList<SptMod> modList,
     ISptLogger<StateGenerator> logger)
 {
-    public SaveState GenerateState()
+    public LocationSaveState GenerateLocationState()
     {
-        SaveState newState = new()
+        LocationSaveState newState = new()
         {
             StateId = new MongoId()
         };
 
+        Dictionary<string, string> factionBases = [];
         Dictionary<string, string> baseLocations = [];
         
         foreach ((string factionName, Faction faction) in dataConfig.Factions)
@@ -29,7 +30,8 @@ public class StateGenerator(TerritoryDataConfig dataConfig,
             if (faction.Deactivated || faction.Base == null || faction.Base == "none")
                 continue;
             
-            baseLocations[factionName] = faction.Base;
+            factionBases[factionName] = faction.Base;
+            baseLocations[faction.Base] = factionName;
         }
         
         foreach (string location in LocationService.MapList)
@@ -48,7 +50,7 @@ public class StateGenerator(TerritoryDataConfig dataConfig,
                 faction = dataConfig.Factions[factionName];
             }
             
-            int distance = mapHelper.GetDistance(location, baseLocations.GetValueOrDefault(factionName, location), false);
+            int distance = mapHelper.GetDistance(location, factionBases.GetValueOrDefault(factionName, location), false);
 
             if (distance == -1)
                 distance = 1;
@@ -68,11 +70,11 @@ public class StateGenerator(TerritoryDataConfig dataConfig,
             {
                 locked = modList.All(mod => mod.ModMetadata.ModGuid != initialState.ModLock);
             }
-
+            
             LocationState locationState = new()
             {
                 Holder = factionName,
-                Base = baseLocations.ContainsKey(factionName),
+                BaseHolder = baseLocations.GetValueOrDefault(location, "none"),
                 Locked = locked,
                 Contestants =
                 {

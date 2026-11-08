@@ -15,7 +15,10 @@
   "battleConfig": 
   {
     "enableBattles": true, //Should the mod simulate battles? Turning this off will make the map static. 
-    "allowBaseTaking": true, //If enabled, faction's home map is takeable which makes a faction getting wiped out possible
+    "baseMode": "Comeback", //Determines how a faction's home base system works. "Disabled" will make them function like any location. "Untakable" will prevent the faction from being removed from their home base. "Comeback" will allow them to be taken but they have a chance to come back to their home base.
+    "baseUntakableMinStrength": 0.2, //Lowest strength a factions strength go when at their home base. Only works if baseMode is "Untakable".
+    "baseComebackChance": 60, //Chance out of 100 that a faction will come back to its home base after being removed. Only works if baseMode is "Comeback".
+    "baseComebackStrengthMult": 0.8, //Multiplier to the base strength of a faction when it makes its comeback. Only works if baseMode is "Comeback".
     "strengthDecreaseOverride": -1, //0.0 - 1.0 / Overrides the decrease of a faction's strength when moving locations. -1 for per faction configuration.
     "simulateAfterRaid": true, //If enabled, a battle simulation will trigger after a raid has completed. This guarantees the location will be simulated.
     "raidsChangeOutcome": true, //If enabled, the deaths of bots will contribute to damage taken during the simulated battle for the location
@@ -130,8 +133,8 @@
         "maxBots": 21, //Max territories-based bots
         "spawnOnWindow":  //Rng min and max length of the bot spawn windows in seconds.
         {
-          "min": 80,
-          "max": 120
+          "min": 40,
+          "max": 60
         },
         "spawnOffWindow": //Rng min and max length of the time between bot spawn windows in seconds.
         {
@@ -144,8 +147,8 @@
         "maxBots": 12,
         "spawnOnWindow": 
         {
-          "min": 60,
-          "max": 100
+          "min": 30,
+          "max": 50
         },
         "spawnOffWindow": 
         {
@@ -158,8 +161,8 @@
         "maxBots": 20,
         "spawnOnWindow": 
         {
-          "min": 60,
-          "max": 80
+          "min": 30,
+          "max": 40
         },
         "spawnOffWindow": 
         {
@@ -172,8 +175,8 @@
         "maxBots": 15,
         "spawnOnWindow": 
         {
-          "min": 60,
-          "max": 100
+          "min": 30,
+          "max": 50
         },
         "spawnOffWindow": 
         {
@@ -186,8 +189,8 @@
         "maxBots": 20,
         "spawnOnWindow": 
         {
-          "min": 80,
-          "max": 120
+          "min": 40,
+          "max": 60
         },
         "spawnOffWindow": 
         {
@@ -200,8 +203,8 @@
         "maxBots": 20,
         "spawnOnWindow": 
         {
-          "min": 60,
-          "max": 100
+          "min": 30,
+          "max": 50
         },
         "spawnOffWindow": 
         {
@@ -214,8 +217,8 @@
         "maxBots": 14,
         "spawnOnWindow": 
         {
-          "min": 60,
-          "max": 100
+          "min": 30,
+          "max": 50
         },
         "spawnOffWindow": 
         {
@@ -227,8 +230,8 @@
         "maxBots": 21,
         "spawnOnWindow": 
         {
-          "min": 80,
-          "max": 120
+          "min": 40,
+          "max": 60
         },
         "spawnOffWindow": 
         {
@@ -241,8 +244,8 @@
         "maxBots": 23,
         "spawnOnWindow": 
         {
-          "min": 60,
-          "max": 120
+          "min": 30,
+          "max": 60
         },
         "spawnOffWindow": 
         {
@@ -255,8 +258,8 @@
         "maxBots": 20,
         "spawnOnWindow": 
         {
-          "min": 40,
-          "max": 80
+          "min": 20,
+          "max": 40
         },
         "spawnOffWindow": 
         {
@@ -269,8 +272,8 @@
         "maxBots": 10,
         "spawnOnWindow": 
         {
-          "min": 60,
-          "max": 100
+          "min": 30,
+          "max": 50
         },
         "spawnOffWindow": 
         {
@@ -283,8 +286,8 @@
         "maxBots": 18,
         "spawnOnWindow": 
         {
-          "min": 60,
-          "max": 100
+          "min": 30,
+          "max": 50
         },
         "spawnOffWindow": 
         {
@@ -297,8 +300,8 @@
         "maxBots": 18,
         "spawnOnWindow": 
         {
-          "min": 60,
-          "max": 100
+          "min": 30,
+          "max": 50
         },
         "spawnOffWindow": 
         {
@@ -308,10 +311,10 @@
       }
     },
     "softCapSpace": 4, //Cap below the total max bot count to stop spawning bots.
-    "spawnCheckInterval": 20, //Interval between trying to spawn bots. Lower numbers means more bots and lag, be careful.
+    "spawnCheckInterval": 25, //Interval between trying to spawn bots. Lower numbers means more bots and lag, be careful.
     "spawnDelayAdjustmentMax": 2, //Max rng time to add to the bot to delay their spawn.
-    "maxBotSpawnsPerInterval": 8, //Cap of bots to spawn per spawn interval
-    "deadRaidThreshold": 4, //How many bots in the raid to be considered dead
-    "deadRaidTimer": 15 //Overrides the spawn window off time to this time when the raid is considered dead
+    "maxBotSpawnsPerInterval": 8, //Cap of bots to spawn per spawn interval.
+    "deadRaidThreshold": -1, //How many bots in the raid to be considered dead. -1 to disable.
+    "deadRaidTimer": 15 //Overrides the spawn window off time to this time when the raid is considered dead.
   }
 }

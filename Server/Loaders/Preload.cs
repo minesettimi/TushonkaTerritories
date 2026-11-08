@@ -29,9 +29,9 @@ public class Preload(StateServer stateServer,
         cacheService.Initialize();
         await stateServer.LoadSave();
 
-        if (stateServer.NewSave)
+        if (stateServer.NewLocationSave)
         {
-            stateServer.CurrentSave = stateGenerator.GenerateState();
+            stateServer.CurrentLocationSave = stateGenerator.GenerateLocationState();
             stateServer.SaveToDisk();
         }
         

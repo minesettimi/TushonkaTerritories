@@ -195,7 +195,7 @@
     "untar":
     {
       "color": "#5b92e5",
-      "base": "shoreline",
+      "base": "bigmap",
       "botNames":
       [
         "followeruntar",

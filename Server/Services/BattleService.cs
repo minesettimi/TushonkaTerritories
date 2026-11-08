@@ -39,7 +39,7 @@ public class BattleService(
             }, null, interval, interval);   
         }
 
-        if (stateServer.NewSave)
+        if (stateServer.NewLocationSave)
         {
             //won't run at 0 anyway, no need for a check
             for (int i = 0; i < modConfig.InitialSimulations; i++)
@@ -53,16 +53,18 @@ public class BattleService(
      * Operate in stages:
      * 1. Spread to x nearby "none" locations next to current positions
      * 2. Start contesting x nearby enemy locations if currently uncontested
-     * 3. Run battle calculations if there's a battle
-     * 4. Build up strength if uncontested
-     * 5. Roll for uprising faction presence
-     * Run these 3 stages per location
+     * 3. Run comeback checks
+     * 4. Run battle calculations if there's a battle
+     * 5. Build up strength if uncontested
+     * 6. Roll for uprising faction presence
+     * Run these stages per location
      * Uncap these if configured to
      * Run the configured number of locations (x) per simulation
      */
     public void Simulate(string? raidLocation = null, Dictionary<string, int>? raidKills = null)
     {
-        if (!modConfig.BattleConfig.BattlesEnabled)
+        BattleConfig battleConfig = modConfig.BattleConfig;
+        if (!battleConfig.BattlesEnabled)
             return;
         
         if (modConfig.Debug)
@@ -71,7 +73,7 @@ public class BattleService(
         }
 
         RaidBattleState currentState = raidLocation == null ? RaidBattleState.Complete : RaidBattleState.Waiting;
-        for (int i = 0; i < modConfig.BattleConfig.SimulationLocations; i++)
+        for (int i = 0; i < battleConfig.SimulationLocations; i++)
         {
             /*
              * If there was a raid:
@@ -83,14 +85,14 @@ public class BattleService(
             if (currentState == RaidBattleState.Waiting && raidLocation != null)
             {
                 currentLocation = raidLocation;
-                stateServer.CurrentSave.LastLoc--; //don't skip the current location
+                stateServer.CurrentLocationSave.LastLoc--; //don't skip the current location
                 currentState = RaidBattleState.Blocking;
             }
             else
             {
-                stateServer.CurrentSave.LastLoc = TerritoryMath.Wrap(stateServer.CurrentSave.LastLoc + 1, 0,
+                stateServer.CurrentLocationSave.LastLoc = TerritoryMath.Wrap(stateServer.CurrentLocationSave.LastLoc + 1, 0,
                     LocationService.MapList.Count);
-                currentLocation = LocationService.MapList[stateServer.CurrentSave.LastLoc];
+                currentLocation = LocationService.MapList[stateServer.CurrentLocationSave.LastLoc];
                 
                 if (currentState == RaidBattleState.Blocking && currentLocation == raidLocation)
                 {
@@ -112,7 +114,7 @@ public class BattleService(
                 logger.Info($"[TT] Simulating location: {currentLocation}");
             }
             
-            LocationState locState = stateServer.CurrentSave.Locations[currentLocation]!;
+            LocationState locState = stateServer.CurrentLocationSave.Locations[currentLocation]!;
             
             if (locState.Locked || locState.Holder == "none")
             {
@@ -122,25 +124,39 @@ public class BattleService(
             
             SpreadNearby(currentLocation, locState);
 
-            if ((!modConfig.BattleConfig.SpreadDuringFight && locState.Contestants.Count == 1) || 
-                modConfig.BattleConfig.SpreadDuringFight)
+            if ((!battleConfig.SpreadDuringFight && locState.Contestants.Count == 1) || 
+                battleConfig.SpreadDuringFight)
             {
                 SpreadNearby(currentLocation, locState, false);
+            }
+            
+            if (battleConfig.BaseMode == BaseMode.Comeback 
+                && locState.BaseHolder != "none"
+                && !locState.Contestants.ContainsKey(locState.BaseHolder)
+                && randomUtil.GetChance100(battleConfig.ComebackChance))
+            {
+                Faction holderData = dataConfig.Factions[locState.BaseHolder];
+                double comebackStrength = Math.Clamp(holderData.Strength * battleConfig.ComebackStrength, 0.0, 1.0);
+                
+                locState.Contestants.Add(locState.BaseHolder, comebackStrength);
+
+                if (locState.Holder == "none")
+                    locState.Holder = locState.BaseHolder;
             }
 
             CalculateBattle(currentLocation, locState, raidLocation == currentLocation ? raidKills : null);
 
-            if (locState.Contestants.Count == 1 || locState.Base)
+            if (locState.Contestants.Count == 1 || locState.BaseHolder == locState.Holder)
             {
                 string holder = locState.Holder;
-                Faction holderData =  dataConfig.Factions[holder];
+                Faction holderData = dataConfig.Factions[holder];
                 double startingStrength = locState.Contestants[holder];
 
-                double maxBuildup = Math.Min(modConfig.BattleConfig.MaxStrengthBuildup, holderData.MaxStrengthBuild);
+                double maxBuildup = Math.Min(battleConfig.MaxStrengthBuildup, holderData.MaxStrengthBuild);
                 if (startingStrength > maxBuildup)
                     continue;
 
-                locState.Contestants[holder] = Math.Clamp(startingStrength + modConfig.BattleConfig.StrengthBuildup, 0, 
+                locState.Contestants[holder] = Math.Clamp(startingStrength + battleConfig.StrengthBuildup, 0, 
                     Math.Min(1, maxBuildup));
 
                 if (modConfig.Debug)
@@ -149,7 +165,7 @@ public class BattleService(
                 }
             }
 
-            if (modConfig.BattleConfig.Uprising)
+            if (battleConfig.Uprising)
             {
                 CheckUprisings(locState, currentLocation);
             }
@@ -218,7 +234,7 @@ public class BattleService(
                 logger.Info($"[TT] Faction {faction} is spreading from location: {location} to: {neighbor}.");
             }
             
-            LocationState newState = stateServer.CurrentSave.Locations[neighbor]!;
+            LocationState newState = stateServer.CurrentLocationSave.Locations[neighbor]!;
 
             if (noneOnly)
                 newState.Holder = faction;
@@ -306,17 +322,19 @@ public class BattleService(
                 continue;
             }
             
-            if (!modConfig.BattleConfig.BaseTakingEnabled 
-                && faction == locationState.Holder && locationState.Base)
-                continue;
-            
             Faction factionData = dataConfig.Factions[faction];
 
             double defenseDecrease = (factionData.Defensiveness * locationState.Contestants[faction]) 
                                      / contestants;
             double finalDamage = Math.Clamp(damageTaken - defenseDecrease, 0.0, 1.0);
-
+            
             locationState.Contestants[faction] -= finalDamage;
+
+            if (modConfig.BattleConfig.BaseMode == BaseMode.Untakable && faction == locationState.BaseHolder)
+            {
+                locationState.Contestants[faction] = Math.Max(locationState.Contestants[faction],
+                    modConfig.BattleConfig.BaseMinStrength);
+            }
 
             if (modConfig.Debug)
             {
@@ -332,9 +350,6 @@ public class BattleService(
             
             locationState.Contestants.Remove(faction);
             
-            if (faction == locationState.Holder)
-                locationState.Base = false;
-            
             foreach (string neighbor in dataConfig.LocationNeighbors[locationName]!)
             {
                 RemoveIsolatedContestant(neighbor, faction);
@@ -346,7 +361,7 @@ public class BattleService(
 
     private void RecalculateContestants(string locationName)
     {
-        RecalculateContestants(stateServer.CurrentSave.Locations[locationName]!);
+        RecalculateContestants(stateServer.CurrentLocationSave.Locations[locationName]!);
     }
     
     private void RecalculateContestants(LocationState locationState)
@@ -396,12 +411,12 @@ public class BattleService(
     {
         List<string> results = [];
 
-        LocationState currentLoc = stateServer.CurrentSave.Locations[start]!;
+        LocationState currentLoc = stateServer.CurrentLocationSave.Locations[start]!;
         
         List<string> neighbors = dataConfig.LocationNeighbors[start]!;
         foreach (string neighborLocation in neighbors)
         {
-            LocationState otherLoc = stateServer.CurrentSave.Locations[neighborLocation]!;
+            LocationState otherLoc = stateServer.CurrentLocationSave.Locations[neighborLocation]!;
             if (otherLoc.Locked)
                 continue;
             
@@ -422,7 +437,7 @@ public class BattleService(
         if (dataConfig.Factions[faction].Persistant)
             return;
         
-        LocationState locState = stateServer.CurrentSave.Locations[location]!;
+        LocationState locState = stateServer.CurrentLocationSave.Locations[location]!;
 
         if (locState.Holder == faction || !locState.Contestants.ContainsKey(faction))
             return;
@@ -430,7 +445,7 @@ public class BattleService(
         bool isolated = false;
         foreach (string neighbor in dataConfig.LocationNeighbors[location]!)
         {
-            LocationState neighborState = stateServer.CurrentSave.Locations[neighbor]!;
+            LocationState neighborState = stateServer.CurrentLocationSave.Locations[neighbor]!;
 
             if (neighborState.Holder != faction) continue;
             

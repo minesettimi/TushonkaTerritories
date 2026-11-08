@@ -22,25 +22,37 @@ public class StateServer(JsonUtil jsonUtil,
     ISptLogger<StateServer> logger)
 {
     public static readonly string ModPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
-    private readonly string _savePath = Path.Join(ModPath, "save.json");
+    private readonly string _locSavePath = Path.Join(ModPath, "territory.json");
+    private readonly string _playerSavePath = Path.Join(ModPath, "players.json");
 
-    public SaveState CurrentSave = null!;
-    public bool NewSave = false;
+    public LocationSaveState CurrentLocationSave = null!;
+    public PlayerSaveState CurrentPlayerSave = null!;
+    public bool NewLocationSave = false;
 
     public async Task LoadSave()
     {
-        SaveState? tempSave = await jsonUtil.DeserializeFromFileAsync<SaveState>(_savePath);
+        LocationSaveState? tempSave = await jsonUtil.DeserializeFromFileAsync<LocationSaveState>(_locSavePath);
 
         if (tempSave == null)
         {
-            logger.Info("[TT] No save found. Creating new one.");
-            tempSave = new SaveState();
-            NewSave = true;
+            logger.Info("[TT] No location save found. Creating new one.");
+            tempSave = new LocationSaveState();
+            NewLocationSave = true;
         }
 
-        CurrentSave = tempSave;
+        CurrentLocationSave = tempSave;
         
-        if (!NewSave)
+        PlayerSaveState? playerTempSave = await jsonUtil.DeserializeFromFileAsync<PlayerSaveState>(_playerSavePath);
+
+        if (playerTempSave == null)
+        {
+            logger.Info("[TT] No player save found. Creating new one.");
+            playerTempSave = new PlayerSaveState();
+        }
+
+        CurrentPlayerSave = playerTempSave;
+        
+        if (!NewLocationSave)
             ValidateState();
         
         SaveToDisk();
@@ -48,8 +60,9 @@ public class StateServer(JsonUtil jsonUtil,
 
     public void SaveToDisk()
     {
-        CurrentSave.StateId = new MongoId();
-        File.WriteAllTextAsync(_savePath, jsonUtil.Serialize(CurrentSave, true));
+        CurrentLocationSave.StateId = new MongoId();
+        File.WriteAllTextAsync(_locSavePath, jsonUtil.Serialize(CurrentLocationSave, true));
+        File.WriteAllTextAsync(_playerSavePath, jsonUtil.Serialize(CurrentPlayerSave, true));
     }
 
     public void SendStateUpdate(MongoId? sessionId = null)
@@ -58,7 +71,8 @@ public class StateServer(JsonUtil jsonUtil,
         {
             EventIdentifier = new MongoId(),
             EventType = (NotificationEventType)100,
-            SaveState = CurrentSave
+            LocationSaveState = CurrentLocationSave,
+            PlayerSaveState = CurrentPlayerSave
         };
 
         if (sessionId == null)
@@ -75,14 +89,14 @@ public class StateServer(JsonUtil jsonUtil,
     {
         foreach (string locationName in LocationService.MapList)
         {
-            LocationState? locationState = CurrentSave.Locations[locationName];
+            LocationState? locationState = CurrentLocationSave.Locations[locationName];
             if (locationState == null)
             {
                 logger.Warning($"[TT] Location with id: {locationName} had no data! Generating.");
-                CurrentSave.Locations[locationName] = new LocationState
+                CurrentLocationSave.Locations[locationName] = new LocationState
                 {
                     Holder = "none",
-                    Base = false,
+                    BaseHolder = "none",
                     Contestants = []
                 };
                 continue;
@@ -114,7 +128,7 @@ public class StateServer(JsonUtil jsonUtil,
                                            ?? "none";
                 }
                 
-                locationState.Base = false;
+                locationState.BaseHolder = "none";
             }
 
             //if the holder doesn't have a contestant spot

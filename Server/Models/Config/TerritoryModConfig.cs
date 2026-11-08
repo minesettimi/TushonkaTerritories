@@ -29,7 +29,10 @@ public record FactionConfig
 public record BattleConfig
 {
     [JsonPropertyName("enableBattles")] public bool BattlesEnabled { get; set; } = true;
-    [JsonPropertyName("allowBaseTaking")] public bool BaseTakingEnabled { get; set; } = true;
+    [JsonPropertyName("baseMode")] public BaseMode BaseMode { get; set; } = BaseMode.Comeback;
+    [JsonPropertyName("baseUntakableMinStrength")] public double BaseMinStrength { get; set; } = 0.2;
+    [JsonPropertyName("baseComebackChance")] public int ComebackChance { get; set; } = 60;
+    [JsonPropertyName("baseComebackStrengthMult")] public double ComebackStrength { get; set; } = 0.8;
     [JsonPropertyName("strengthDecreaseOverride")] public double StrengthDecrease { get; set; } = -1f;
     [JsonPropertyName("simulateAfterRaid")] public bool RaidBattle { get; set; } = true;
     [JsonPropertyName("raidsChangeOutcome")] public bool RaidChangesBattle { get; set; } = true;
@@ -95,6 +98,14 @@ public enum NeutralMode
     Warn,
     Neutral,
     ChancedEnemies
+}
+
+[JsonConverter(typeof(JsonStringEnumConverter))]
+public enum BaseMode
+{
+    Disabled,
+    Untakable,
+    Comeback
 }
 
 public record SpawnSettings

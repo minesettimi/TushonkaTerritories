@@ -5,5 +5,6 @@ namespace TerritoryServer.Models.Ws;
 
 public record WsStateUpdateEvent : WsNotificationEvent
 {
-    [JsonPropertyName("stateData")] public SaveState SaveState { get; set; } = null!;
+    [JsonPropertyName("locStateData")] public LocationSaveState LocationSaveState { get; set; } = null!;
+    [JsonPropertyName("playerStateData")] public PlayerSaveState PlayerSaveState { get; set; } = null!;
 }

@@ -26,8 +26,8 @@ public class ProfileStateHelper(
         
         MongoId safeId = (MongoId)pmcData.Id;
         
-        Dictionary<MongoId, PlayerState> playerStates = stateServer.CurrentSave.PlayerState;
-        if (!stateServer.CurrentSave.PlayerState.ContainsKey(safeId))
+        Dictionary<MongoId, PlayerState> playerStates = stateServer.CurrentPlayerSave.PlayerState;
+        if (!stateServer.CurrentPlayerSave.PlayerState.ContainsKey(safeId))
         {
             PlayerState newState = new()
             {
@@ -66,7 +66,7 @@ public class ProfileStateHelper(
 
         playerStates[safeId].Reputation = currentRep;
         playerStates[safeId].Unlocked = currentUnlocked;
-        stateServer.CurrentSave.PlayerState = playerStates;
+        stateServer.CurrentPlayerSave.PlayerState = playerStates;
 
         UpdateTraderRep(pmcData);
     }
@@ -139,6 +139,6 @@ public class ProfileStateHelper(
         
         MongoId safeId = (MongoId)profile.Id;
 
-        return stateServer.CurrentSave.PlayerState.GetValueOrDefault(safeId);
+        return stateServer.CurrentPlayerSave.PlayerState.GetValueOrDefault(safeId);
     }
 }

@@ -49,7 +49,7 @@ public class ApplyRewardPatch : AbstractPatch
         if (pmcData == null)
             return;
 
-        bool removeSaved = _stateServer.CurrentSave.QuestsCompleted.Contains(rewardSourceId);
+        bool removeSaved = _stateServer.CurrentPlayerSave.QuestsCompleted.Contains(rewardSourceId);
         bool saved = false;
         List<Reward> tempRewards = [.. rewards];
         for (int i = 0; i < tempRewards.Count; i++)
@@ -88,7 +88,7 @@ public class ApplyRewardPatch : AbstractPatch
                     break;
                 
                 case (RewardType)152:
-                    LocationState? locationState = _stateServer.CurrentSave.Locations[reward.Target!];
+                    LocationState? locationState = _stateServer.CurrentLocationSave.Locations[reward.Target!];
                     
                     if (locationState == null)
                     {
@@ -111,7 +111,7 @@ public class ApplyRewardPatch : AbstractPatch
 
         if (!removeSaved && saved)
         {
-            _stateServer.CurrentSave.QuestsCompleted.Add(rewardSourceId);
+            _stateServer.CurrentPlayerSave.QuestsCompleted.Add(rewardSourceId);
         }
 
         rewards = tempRewards;
