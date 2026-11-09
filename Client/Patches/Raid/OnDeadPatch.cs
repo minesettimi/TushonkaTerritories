@@ -2,6 +2,7 @@ using System.Reflection;
 using EFT;
 using HarmonyLib;
 using SPT.Reflection.Patching;
+using TerritoryClient.Spawns;
 
 namespace TerritoryClient.Patches.Raid;
 
@@ -19,6 +20,12 @@ public class OnDeadPatch : ModulePatch
             return;
 
         string role = __instance.Profile.Info.Settings.Role.ToString();
+
+        TerritoryPlugin.StateManager.ServerData.BotFaction.TryGetValue(role, out string? faction);
+        if (faction != null)
+        {
+            SpawnManager.BotsPerFaction[role]--;
+        }
         
         if (___LastAggressor == null || ___AggressorFound || __instance == (Player)___LastAggressor)
         {

@@ -158,14 +158,14 @@ public record SpawnSettings
     public MinMax<int> GroupSizeMin { get; set; } = new()
     {
         Min = 2,
-        Max = 4
+        Max = 3
     };
 
     [JsonPropertyName("strengthGroupSizeMax")]
     public MinMax<int> GroupSizeMax { get; set; } = new()
     {
-        Min = 4,
-        Max = 6
+        Min = 3,
+        Max = 5
     };
 
     [JsonPropertyName("strengthGroupChance")]
@@ -176,7 +176,7 @@ public record SpawnSettings
     };
 
     [JsonPropertyName("nonGroupBotModifier")] public float NonGroupBotModifier { get; set; } = 0.75f;
-    [JsonPropertyName("groupSpawnExclusive")] public bool GroupSpawnExclusive { get; set; } = false;
+    [JsonPropertyName("groupSpawnExclusive")] public bool GroupSpawnExclusive { get; set; } = true;
     [JsonPropertyName("startTime")] public int StartTime { get; set; } = 1;
     [JsonPropertyName("stopTime")] public int EndTime { get; set; } = 200; //time before the end of the raid
     [JsonPropertyName("requiredCapSpace")] public int RequiredSpawnSpace { get; set; } = 4;
@@ -278,7 +278,7 @@ public record SpawnSettings
         }
     };
 
-    [JsonPropertyName("softCapSpace")] public int SoftCapSpace { get; set; } = 4;
+    [JsonPropertyName("softCapSpace")] public int SoftCapSpace { get; set; } = 8;
     [JsonPropertyName("spawnCheckInterval")] public float SpawnCheck { get; set; } = 20f;
     [JsonPropertyName("spawnDelayAdjustmentMax")] public float SpawnDelayAdjustmentMax { get; set; } = 2;
     [JsonPropertyName("maxBotSpawnsPerInterval")] public int MaxIntervalSpawns { get; set; } = 8;

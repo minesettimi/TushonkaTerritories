@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Diz.Utils;
 using EFT;
 using JsonType;
+using Newtonsoft.Json;
 using TerritoryClient.Extensions;
 using TerritoryClient.Models;
 using Unity.Mathematics;
@@ -34,7 +35,7 @@ public class TerritoriesSpawnScenario : MonoBehaviour
 
     private readonly Dictionary<double, WDictionary<BotDifficulty>> _difficultyWeights = [];
     private readonly Dictionary<string, ContestantSpawnInfo> _factionSpawnData = [];
-    private readonly List<string> _factionIndex = [];
+    private readonly SortedList<float, string> _factionIndex = []; //sort by strength
     
     private int _endTime;
     private float _totalStrength;
@@ -69,7 +70,7 @@ public class TerritoriesSpawnScenario : MonoBehaviour
     {
         if (_spawnSettings.DifficultyWeights == null)
         {
-            _difficultyWeights[1.0] = new WDictionary<BotDifficulty>
+            _difficultyWeights[0.0] = new WDictionary<BotDifficulty>
             {
                 { _location.BotEasy, BotDifficulty.easy },
                 { _location.BotNormal, BotDifficulty.normal },
@@ -82,12 +83,16 @@ public class TerritoriesSpawnScenario : MonoBehaviour
         foreach ((double diffThreshold, Dictionary<BotDifficulty, int> difficultyWeights) 
                  in _spawnSettings.DifficultyWeights)
         {
+            float totalWeight = 0f;
             WDictionary<BotDifficulty> weightDict = new();
             foreach ((BotDifficulty difficulty, int weight) in difficultyWeights)
             {
+                totalWeight += weight;
                 weightDict.Add(weight, difficulty);
             }
-            
+
+            //BSG only implemented this on initialization. bruh.
+            weightDict._total = totalWeight;
             _difficultyWeights[diffThreshold] = weightDict;
         }
     }
@@ -101,7 +106,7 @@ public class TerritoriesSpawnScenario : MonoBehaviour
             
             float flStrength =　(float)strength;
             _totalStrength += flStrength;
-            _factionIndex.Add(factionName);
+            _factionIndex.Add(1.0f - flStrength, factionName); //doesn't need truthful values, order by descending
 
             int minGroupSize = Mathf.RoundToInt(math.remap(0f, 1f, _spawnSettings.GroupSizeMin.Min,
                 _spawnSettings.GroupSizeMax.Max, flStrength));
@@ -113,7 +118,7 @@ public class TerritoriesSpawnScenario : MonoBehaviour
             ContestantSpawnInfo contestantInfo = new(minGroupSize, maxGroupSize, flStrength, groupChance);
             foreach ((double threshold, WDictionary<BotDifficulty> weightDict) in _difficultyWeights)
             {
-                if (flStrength > threshold)
+                if (flStrength < threshold)
                     continue;
                 
                 contestantInfo.DifficultyWeights = weightDict;
@@ -150,11 +155,13 @@ public class TerritoriesSpawnScenario : MonoBehaviour
         {
             FactionData factionData = _factions[factionName];
             allBots.AddRange(factionData.BotTypes);
-            
-            for (int i = 0; i < spawnInfo.MaxCap; i++)
+            foreach (WildSpawnType botType in factionData.BotTypes)
             {
-                botWaves.Add(new CountTypeBotWave(_spawnSettings.PerBotLoadout, factionData.BotTypes.PickRandom(),
-                    _factionSpawnData[factionName].DifficultyWeights.Random()));
+                for (int i = 0; i < spawnInfo.MaxCap; i++)
+                {
+                    botWaves.Add(new CountTypeBotWave(_spawnSettings.PerBotLoadout, botType,
+                        _factionSpawnData[factionName].DifficultyWeights.Random()));
+                }
             }
         }
 
@@ -175,6 +182,7 @@ public class TerritoriesSpawnScenario : MonoBehaviour
                 TerritoryPlugin.PluginLogger.LogInfo("Starting spawn scenario!");
             }
             
+            SpawnManager.BotsPerFaction.Clear();
             _currentContestant = 0;
             _started = true;
         }
@@ -186,7 +194,8 @@ public class TerritoriesSpawnScenario : MonoBehaviour
         {
             TerritoryPlugin.PluginLogger.LogInfo("Stopping spawn scenario!");
         }
-
+        
+        SpawnManager.BotsPerFaction.Clear();
         _started = false;
     }
     #endregion
@@ -241,7 +250,7 @@ public class TerritoriesSpawnScenario : MonoBehaviour
             return;
         }
 
-        string spawnFaction = _factionIndex[_currentContestant];
+        string spawnFaction = _factionIndex.Values[_currentContestant];
         _currentContestant = (_currentContestant + 1) % _factionIndex.Count;
 
         if (TerritoryPlugin.Debug.Value)
@@ -252,7 +261,7 @@ public class TerritoriesSpawnScenario : MonoBehaviour
         ContestantSpawnInfo spawnInfo = _factionSpawnData[spawnFaction];
         FactionData factionData = _factions[spawnFaction];
         
-        int currentFactionBots = _botsController!.Bots.GetBotCountByFaction(spawnFaction); //probably expensive, oh well!
+        int currentFactionBots = SpawnManager.BotsPerFaction.GetValueOrDefault(spawnFaction, 0);
 
         if (TerritoryPlugin.Debug.Value)
         {
@@ -271,17 +280,17 @@ public class TerritoriesSpawnScenario : MonoBehaviour
 
         if (factionBotsRemaining >= spawnInfo.MinGroupSize)
         {
-            if (SpawnBotGroups(ref factionBotsRemaining, spawnInfo, factionData) && _spawnSettings.GroupSpawnExclusive)
+            if (SpawnBotGroups(ref factionBotsRemaining, spawnInfo, factionData, spawnFaction) && _spawnSettings.GroupSpawnExclusive)
                 return;
         }
 
         int soloBots = Mathf.CeilToInt(factionBotsRemaining * _spawnSettings.NonGroupBotModifier);
         
         for (int i = 0; i < soloBots; i++)
-            SpawnByWave(1, factionData, spawnInfo);
+            SpawnByWave(1, spawnFaction, factionData, spawnInfo);
     }
 
-    private bool SpawnBotGroups(ref int availableBots, ContestantSpawnInfo spawnInfo, FactionData factionData)
+    private bool SpawnBotGroups(ref int availableBots, ContestantSpawnInfo spawnInfo, FactionData factionData, string factionName)
     {
         int groupChances = Mathf.Max(Mathf.FloorToInt(availableBots / (float)spawnInfo.MaxGroupSize), 1);
 
@@ -293,7 +302,7 @@ public class TerritoriesSpawnScenario : MonoBehaviour
                 Mathf.Min(spawnInfo.MaxGroupSize, availableBots));
             
             availableBots -= groupSize;
-            SpawnByWave(groupSize, factionData, spawnInfo);
+            SpawnByWave(groupSize, factionName, factionData, spawnInfo);
 
             if (TerritoryPlugin.Debug.Value)
             {
@@ -306,10 +315,16 @@ public class TerritoriesSpawnScenario : MonoBehaviour
         return false;
     }
 
-    private void SpawnByWave(int count, FactionData factionData, ContestantSpawnInfo spawnInfo)
+    private void SpawnByWave(int count, string factionName, FactionData factionData, ContestantSpawnInfo spawnInfo)
     {
         WildSpawnType botType = factionData.BotTypes.Random();
         BotDifficulty botDifficulty = spawnInfo.DifficultyWeights.Random();
+        
+        if (TerritoryPlugin.Debug.Value)
+        {
+            TerritoryPlugin.PluginLogger.LogInfo($"Spawning bots at difficulty: {botDifficulty}.");
+        }
+        
         EPlayerSide playerSide = botType switch
         {
             WildSpawnType.pmcUSEC => EPlayerSide.Usec,
@@ -338,6 +353,8 @@ public class TerritoriesSpawnScenario : MonoBehaviour
             IsPlayers = false,
             WithCheckMinMax = false
         });
+        
+        SpawnManager.BotsPerFaction.AddOrUpdate(factionName, count, (_, value) => value + count);
     }
 
     #endregion

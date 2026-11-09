@@ -109,12 +109,12 @@
     "strengthGroupSizeMin": //Min group size based on the faction's strength for the location.
     {
       "min": 2,
-      "max": 4
+      "max": 3
     },
     "strengthGroupSizeMax": //Max group size based on the faction's strength for the location.
     {
-      "min": 4,
-      "max": 6
+      "min": 3,
+      "max": 5
     },
     "strengthGroupChance": //Chance a group will spawn based on the faction's strength for the location.
     {
@@ -122,7 +122,7 @@
       "max": 80
     },
     "nonGroupBotModifier": 0.75, //Reduction modifier to bots waiting to spawn if it fails to form a group.
-    "groupSpawnExclusive": false, //Should spawning a group not spawn some individual bots around the map in the same wave.
+    "groupSpawnExclusive": true, //Should spawning a group not spawn some individual bots around the map in the same wave.
     "startTime": 1, //Time after the map starts to start spawning. Will still have a delay regardless.
     "stopTime": 200, //Time before the map ends to stop spawning.
     "requiredCapSpace": 4, //How many bots available beneath a faction's cap before spawning starts.

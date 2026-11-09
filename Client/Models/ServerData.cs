@@ -98,7 +98,7 @@ public record LocationState
 {
     [JsonProperty("holder")] public string Holder { get; set; } = null!;
     [JsonProperty("contestants")] public Dictionary<string, double> Contestants { get; set; } = null!;
-    [JsonProperty("base")] public bool Base { get; set; }
+    [JsonProperty("baseHolder")] public string BaseHolder { get; set; } = null!;
 }
 
 public record PlayerState
@@ -179,7 +179,7 @@ public class LocationData<T>
             "labyrinth" => Labyrinth,
             "icebreaker" => Icebreaker,
             "terminal" => Terminal,
-            _ => throw new ArgumentOutOfRangeException()
+            _ => default
         };
 }
 
