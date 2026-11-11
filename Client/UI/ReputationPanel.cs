@@ -76,7 +76,7 @@ public class ReputationPanel : UIElement
         hostilityLabel.text = $"<color={color}>{hostility.Localized()}</color>";
         baseFill.fillAmount = (float)Math.Clamp(repValue / serverData.AllyRep, 0, 1);
 
-        if (factionData.Sprite != null)
+        if (factionData.Sprite is not null)
         {
             factionImage.sprite = factionData.Sprite;
             return;
@@ -88,7 +88,7 @@ public class ReputationPanel : UIElement
     private async Task TryLoadIcon(FactionData factionData, string faction, IImageLoader session)
     {
         await factionData.LoadSprite(session, faction);
-        if (factionData.Sprite != null)
+        if (factionData.Sprite is not null)
         {
             factionImage.sprite = factionData.Sprite;
         }
