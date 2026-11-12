@@ -44,7 +44,7 @@ public class TerritoriesSpawnScenario : MonoBehaviour
     private void Init()
     {
         LocationState? tempState = TerritoryPlugin.StateManager.State.Locations[_location.Id];
-        if (tempState == null)
+        if (tempState == null || tempState.Contestants.Count == 0)
             return;
 
         if (TerritoryPlugin.Debug.Value)

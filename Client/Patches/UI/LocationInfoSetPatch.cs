@@ -30,10 +30,12 @@ public class LocationInfoSetPatch : ModulePatch
 
         TextMeshProUGUI controlledDesc = LocationSelectionAwakePatch.TerritoryControlled;
         TextMeshProUGUI contestedDesc = LocationSelectionAwakePatch.TerritoryContested;
-
-        controlledDesc.text = string.Format("TerritoryControlled".Localized(),
-            $"FactionName {locationState.Holder}".Localized() +
-            $" ({locationState.Contestants[locationState.Holder]:0.0#})");
+        string factionStr = $"FactionName {locationState.Holder}".Localized();
+        
+        if (locationState.Holder != "none")
+            factionStr += $" ({locationState.Contestants[locationState.Holder]:0.0#})";
+        
+        controlledDesc.text = string.Format("TerritoryControlled".Localized(), factionStr);
 
         if (locationState.Contestants.Count < 2)
         {
