@@ -59,7 +59,7 @@ public class FactionModData
 
 public class RepPresetTable
 {
-    [JsonPropertyName("bear")] public Dictionary<string, int> Bear { get; set; } = new();
-    [JsonPropertyName("usec")] public Dictionary<string, int> Usec { get; set; } = new();
-    [JsonPropertyName("scav")] public Dictionary<string, int> Scav { get; set; } = new();
+    [JsonPropertyName("bear")] public Dictionary<string, float> Bear { get; set; } = new();
+    [JsonPropertyName("usec")] public Dictionary<string, float> Usec { get; set; } = new();
+    [JsonPropertyName("scav")] public Dictionary<string, float> Scav { get; set; } = new();
 }

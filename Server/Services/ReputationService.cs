@@ -5,7 +5,6 @@ using SPTarkov.Server.Core.Models.Common;
 using SPTarkov.Server.Core.Models.Eft.Profile;
 using TerritoryServer.Helpers;
 using TerritoryServer.Servers;
-#pragma warning disable CS0612 // Type or member is obsolete
 
 namespace TerritoryServer.Loaders;
 

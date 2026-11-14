@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Linq;
 using EFT;
@@ -49,14 +50,8 @@ public class ReputationScreen : UIElement
         ShowGameObject();
         _pmcToggle.IsToggled = true;
 
-        StartCoroutine(FixScroll());
-    }
-
-    //I don't want to do this but Unity has forced my hand.
-    private IEnumerator FixScroll()
-    {
-        yield return new WaitForEndOfFrame();
-        UpdateReputation(ReputationList.ERepProfile.PMC, true);
+        //I don't want to do this but Unity has forced my hand.
+        this.WaitOneFrame(() => UpdateReputation(ReputationList.ERepProfile.PMC, true));
     }
 
     public void UpdateReputation(ReputationList.ERepProfile profileType, bool value)

@@ -435,6 +435,141 @@
       "shoreline"
     ]
   },
+  "repPresets":
+  {
+    "classic":
+    {
+      "bear":
+      {
+        "scav": 0.1,
+        "raider": 0.5,
+        "rogue": 0.0,
+        "ruaf": 2.0,
+        "untar": 2.0,
+        "cultist": 0.0,
+        "blackdiv": 0.0
+      },
+      "usec":
+      {
+        "scav": 0.1,
+        "raider": 0.0,
+        "rogue": 2.0,
+        "ruaf": 0.0,
+        "untar": 2.0,
+        "cultist": 0.0,
+        "blackdiv": 0.0
+      },
+      "scav":
+      {
+        "scav": 2.0,
+        "raider": 0.0,
+        "rogue": 0.0,
+        "ruaf": 0.0,
+        "untar": 2.0,
+        "cultist": 0.0,
+        "blackdiv": 0.0
+      }
+    },
+    "scav":
+    {
+      "bear":
+      {
+        "scav": 3.0,
+        "raider": 0.1,
+        "rogue": 0.0,
+        "ruaf": 2.0,
+        "untar": 2.0,
+        "cultist": 0.5,
+        "blackdiv": 0.0
+      },
+      "usec":
+      {
+        "scav": 3.0,
+        "raider": 0.0,
+        "rogue": 1.0,
+        "ruaf": 1.0,
+        "untar": 2.0,
+        "cultist": 0.5,
+        "blackdiv": 0.0
+      },
+      "scav":
+      {
+        "scav": 4.0,
+        "raider": 0.0,
+        "rogue": 0.0,
+        "ruaf": 1.0,
+        "untar": 2.0,
+        "cultist": 2.0,
+        "blackdiv": 0.0
+      }
+    },
+    "rogue":
+    {
+      "bear":
+      {
+        "scav": 0.0,
+        "raider": 0.0,
+        "rogue": 3.0,
+        "ruaf": 0.0,
+        "untar": 1.0,
+        "cultist": 1.0,
+        "blackdiv": 0.0
+      },
+      "usec":
+      {
+        "scav": 0.0,
+        "raider": 0.0,
+        "rogue": 3.0,
+        "ruaf": 0.0,
+        "untar": 1.0,
+        "cultist": 1.0,
+        "blackdiv": 0.0
+      },
+      "scav":
+      {
+        "scav": 2.0,
+        "raider": 1.0,
+        "rogue": 0.0,
+        "ruaf": 0.0,
+        "untar": 1.0,
+        "cultist": 1.0,
+        "blackdiv": 0.0
+      }
+    },
+    "raider":
+    {
+      "bear":
+      {
+        "scav": 0.1,
+        "raider": 3.0,
+        "rogue": 0.0,
+        "ruaf": 0.0,
+        "untar": 0.0,
+        "cultist": 0.0,
+        "blackdiv": 0.0
+      },
+      "usec":
+      {
+        "scav": 0.1,
+        "raider": 3.0,
+        "rogue": 0.0,
+        "ruaf": 0.0,
+        "untar": 0.0,
+        "cultist": 2.0,
+        "blackdiv": 0.0
+      },
+      "scav":
+      {
+        "scav": 0.0,
+        "raider": 2.0,
+        "rogue": 0.0,
+        "ruaf": 0.0,
+        "untar": 1.0,
+        "cultist": 1.0,
+        "blackdiv": 0.0
+      }
+    }
+  },
   "savedQuestRewards":
   [
     151,
