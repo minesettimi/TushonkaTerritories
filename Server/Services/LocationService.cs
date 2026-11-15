@@ -49,14 +49,6 @@ public class LocationService(TerritoryDataConfig dataConfig,
         "sandbox_high"
     ];
 
-    private static readonly List<string> Difficulties =
-    [
-        "impossible",
-        "hard",
-        "normal",
-        "easy"
-    ];
-
     enum BotRelationship
     {
         Friends,
@@ -68,7 +60,6 @@ public class LocationService(TerritoryDataConfig dataConfig,
     
     private Dictionary<string, List<BossLocationSpawn>> _bossBackup = [];
     private Dictionary<string, List<Wave>> _waveBackup = [];
-    private Dictionary<string, IEnumerable<AdditionalHostilitySettings>> _hostilityBackup = [];
     private IEnumerable<AdditionalHostilitySettings> _hostilityCache = [];
 
     private string BossDataPath = Path.Join(InjectConstruct.DataPath, "bosses.json");
@@ -116,8 +107,6 @@ public class LocationService(TerritoryDataConfig dataConfig,
             }
             
             _waveBackup.Add(locationName, cloner.Clone(locationInfo.Base.Waves)!);
-            _hostilityBackup.Add(locationName,
-                cloner.Clone(locationInfo.Base.BotLocationModifier.AdditionalHostilitySettings)!);
         }
     }
 
@@ -186,13 +175,13 @@ public class LocationService(TerritoryDataConfig dataConfig,
                     newSpawns.RemoveAt(i);
                     i--;
                 }
-                else if (isPmc && !raidConfig.OverridePmcs && raidConfig.EnforcePmcSpawns)
+                else if (isPmc && raidConfig is { OverridePmcs: false, EnforcePmcSpawns: true })
                 {
                     newSpawns[i].ForceSpawn = true;
                 }
             }
             
-            newSpawns.AddRange(BuildCustomSpawns(locationState, location.BotMax, (double)location.EscapeTimeLimit!));
+            newSpawns.AddRange(BuildCustomSpawns(locationState));
             
             location.BossLocationSpawn = randomUtil.Shuffle(newSpawns);
             
@@ -214,7 +203,7 @@ public class LocationService(TerritoryDataConfig dataConfig,
 
     //first, setup base spawns
     //second, setup wave
-    private List<BossLocationSpawn> BuildCustomSpawns(LocationState locationState, int maxBots, double timeLimit)
+    private List<BossLocationSpawn> BuildCustomSpawns(LocationState locationState)
     {
         List<BossLocationSpawn> newSpawns = [];
         RaidConfig raidConfig = modConfig.RaidConfig;

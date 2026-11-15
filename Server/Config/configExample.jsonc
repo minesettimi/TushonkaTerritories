@@ -8,14 +8,14 @@
     "killChangesRep": true, //If true, killing bots changes your rep
     "killRepDecrease": 0.005, //How much rep to lose from a faction for killing one of its members
     "killEnemyRep": 0.05, //How much rep to gain for killing a member of a rival faction
-    "nonFactionRepAllowed": true, //Allows bots from a faction not present at a location (i.e hermetic door raiders on reserve) to apply reputation changes.
+    "nonFactionRepAllowed": true, //Allows bots from a faction not present at a location (i.e. hermetic door raiders on reserve) to apply reputation changes.
     "nonContestantRepAllowed": true, //Allows reputation increases to be given to factions not present at a location.
     "overrideTraderRep": false //Should a faction's reputation change a player's standing with traders based on faction configuration
   },
   "battleConfig": 
   {
     "enableBattles": true, //Should the mod simulate battles? Turning this off will make the map static. 
-    "baseMode": "Comeback", //Determines how a faction's home base system works. "Disabled" will make them function like any location. "Untakable" will prevent the faction from being removed from their home base. "Comeback" will allow them to be taken but they have a chance to come back to their home base.
+    "baseMode": "Comeback", //Determines how a faction's home base system works. "Disabled" will make them function like any location. "Untakable" will prevent the faction from being removed from their home base. "Comeback" will allow them to be taken but, they have a chance to come back to their home base.
     "baseUntakableMinStrength": 0.2, //Lowest strength a factions strength go when at their home base. Only works if baseMode is "Untakable".
     "baseComebackChance": 60, //Chance out of 100 that a faction will come back to its home base after being removed. Only works if baseMode is "Comeback".
     "baseComebackStrengthMult": 0.8, //Multiplier to the base strength of a faction when it makes its comeback. Only works if baseMode is "Comeback".
@@ -25,7 +25,7 @@
     "strengthLossPerDeath": 0.05, //0.0 - 1.0 / The damage that will be dealt to a faction per death in raid.
     "strengthLossPerBossDeath": 0.2, //0.0 - 1.0 / The damage that will be dealt to a faction per boss death in raid.
     "offlineSimulationTime": -1, //The delay between simulations in minutes. -1 to disable timed simulations.
-    "actionsPerSimulation": 2, //How many actions can be taken per location i.e how many nearby locations can be taken.
+    "actionsPerSimulation": 2, //How many actions can be taken per location i.e. how many nearby locations can be taken.
     "locationsPerSimulation": 3, //How many locations to be simulated per activated simulation. The number wraps so 2 * the number of locations will simulate all locations twice.
     "attackNeutralChance": 25, //0 - 100 / The chance that a faction will try to engage in battle with another faction considered neutral
     "damageMultiplier": 0.6, //Multiplier for damage dealt in a battle
@@ -53,7 +53,7 @@
     "overridePmcs": false, //Remove pmc spawns from the map spawn pool
     "overrideCultists": true, //Remove all cultists from the spawn pool
     "overrideBosses": false, //Remove all other bosses (includes raiders and rogues) from the map spawn pool
-    "overrideTriggeredSpawns": false, //Remove all spawns that require a trigger to activate. i.e spawning raiders when opening the garage in labs
+    "overrideTriggeredSpawns": false, //Remove all spawns that require a trigger to activate. i.e. spawning raiders when opening the garage in labs
     "overrideBotsOther": //List of bot types that will also be removed, takes priority over all other options. Remove all entries to disable.
     [
       "pmcBot",
@@ -87,7 +87,7 @@
   },
   "spawnSettings": 
   {
-    "perBotLoadout": 12, //How many loadouts to generate per expected bot spawns.
+    "perBotLoadout": 4, //How many loadouts to generate per expected bot spawns.
     "extraLoadouts": 8, //How many extra loadouts per bot type.
     "difficultyWeights": //Chances for a bot to be at a specific difficulty for a set difficulty threshold
     {

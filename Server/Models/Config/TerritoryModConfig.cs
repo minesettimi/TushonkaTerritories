@@ -126,7 +126,7 @@ public enum BaseMode
 
 public record SpawnSettings
 {
-    [JsonPropertyName("perBotLoadout")] public int PerBotLoadout { get; set; } = 12;
+    [JsonPropertyName("perBotLoadout")] public int PerBotLoadout { get; set; } = 4;
     [JsonPropertyName("extraLoadouts")] public int ExtraLoadouts { get; set; } = 8;
     [JsonPropertyName("difficultyWeights")]
     public Dictionary<double, Dictionary<BotDifficulty, int>>?
