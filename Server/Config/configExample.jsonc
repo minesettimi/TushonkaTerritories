@@ -2,7 +2,7 @@
   "debug": false, //Debug printing
   "allowExpansionEdits": true, //Allow expansion mods to make config changes
   "oneTimeQuestRewards": true, //Don't give territories based quest rewards after the first completion. DOESN'T AFFECT REGULAR REWARDS, ONLY ONES FROM THIS MOD!
-  "initialSimulations": 2, //How many battle simulations to run on a new save
+  "initialSimulations": 4, //How many battle simulations to run on a new save
   "factionConfig": 
   {
     "killChangesRep": true, //If true, killing bots changes your rep
@@ -54,6 +54,20 @@
     "overrideCultists": true, //Remove all cultists from the spawn pool
     "overrideBosses": false, //Remove all other bosses (includes raiders and rogues) from the map spawn pool
     "overrideTriggeredSpawns": false, //Remove all spawns that require a trigger to activate. i.e spawning raiders when opening the garage in labs
+    "overrideBotsOther": //List of bot types that will also be removed, takes priority over all other options. Remove all entries to disable.
+    [
+      "pmcBot",
+      "followeruntar",
+      "followeruntarmarksman",
+      "bossuntarlead",
+      "bossuntarofficer",
+      "ruafRifleman",
+      "ruafRiflemanSenior",
+      "ruafGrenadier",
+      "ruafMarksman",
+      "ruafMachinegunner",
+      "remnantRifleman"
+    ],
     "removeDefaultScavs": true, //Disable default scav spawn system
     "addFactionBosses": true, //Factions can spawn bosses in locations they have presence
     "factionBossMinStrength": 0.6, //0.0 - 1.0 / Minimum strength for a faction's boss spawns to be added to a location
@@ -311,9 +325,9 @@
       }
     },
     "softCapSpace": 4, //Cap below the total max bot count to stop spawning bots.
-    "spawnCheckInterval": 25, //Interval between trying to spawn bots. Lower numbers means more bots and lag, be careful.
+    "spawnCheckInterval": 12, //Interval between trying to spawn bots. Lower numbers means more bots and lag, be careful.
     "spawnDelayAdjustmentMax": 2, //Max rng time to add to the bot to delay their spawn.
-    "maxBotSpawnsPerInterval": 8, //Cap of bots to spawn per spawn interval.
+    "maxBotSpawnsPerInterval": 7, //Cap of bots to spawn per spawn interval.
     "deadRaidThreshold": -1, //How many bots in the raid to be considered dead. -1 to disable.
     "deadRaidTimer": 15 //Overrides the spawn window off time to this time when the raid is considered dead.
   }

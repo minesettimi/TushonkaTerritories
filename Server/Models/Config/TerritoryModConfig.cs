@@ -8,7 +8,7 @@ public record TerritoryModConfig
     [JsonPropertyName("debug")] public bool Debug { get; set; } = false;
     [JsonPropertyName("allowExpansionEdits")] public bool AllowExpansionEdits { get; set; } = true;
     [JsonPropertyName("oneTimeQuestRewards")] public bool OneTimeQuestRewards { get; set; } = true;
-    [JsonPropertyName("initialSimulations")] public int InitialSimulations { get; set; } = 2;
+    [JsonPropertyName("initialSimulations")] public int InitialSimulations { get; set; } = 4;
     
     [JsonPropertyName("factionConfig")] public FactionConfig FactionConfig { get; set; } = new();
     [JsonPropertyName("battleConfig")] public BattleConfig BattleConfig { get; set; } = new();
@@ -73,6 +73,22 @@ public record RaidConfig
     [JsonPropertyName("overrideCultists")] public bool OverrideCultists { get; set; } = true;
     [JsonPropertyName("overrideBosses")] public bool OverrideBosses { get; set; } = false;
     [JsonPropertyName("overrideTriggeredSpawns")] public bool OverrideTriggeredSpawns { get; set; } = false;
+
+    [JsonPropertyName("overrideBotsOther")]
+    public HashSet<string> BotBlacklist { get; set; } =
+    [
+        "pmcBot",
+        "followeruntar",
+        "followeruntarmarksman",
+        "bossuntarlead",
+        "bossuntarofficer",
+        "ruafRifleman",
+        "ruafRiflemanSenior",
+        "ruafGrenadier",
+        "ruafMarksman",
+        "ruafMachinegunner",
+        "remnantRifleman"
+    ];
     [JsonPropertyName("removeDefaultScavs")] public bool OverrideWaves { get; set; } = true;
     [JsonPropertyName("addFactionBosses")] public bool FactionBosses { get; set; } = true;
     [JsonPropertyName("factionBossMinStrength")] public double MinBossStrength { get; set; } = 0.6;
@@ -278,10 +294,10 @@ public record SpawnSettings
         }
     };
 
-    [JsonPropertyName("softCapSpace")] public int SoftCapSpace { get; set; } = 8;
-    [JsonPropertyName("spawnCheckInterval")] public float SpawnCheck { get; set; } = 20f;
+    [JsonPropertyName("softCapSpace")] public int SoftCapSpace { get; set; } = 4;
+    [JsonPropertyName("spawnCheckInterval")] public float SpawnCheck { get; set; } = 12f;
     [JsonPropertyName("spawnDelayAdjustmentMax")] public float SpawnDelayAdjustmentMax { get; set; } = 2;
-    [JsonPropertyName("maxBotSpawnsPerInterval")] public int MaxIntervalSpawns { get; set; } = 8;
+    [JsonPropertyName("maxBotSpawnsPerInterval")] public int MaxIntervalSpawns { get; set; } = 7;
     [JsonPropertyName("deadRaidThreshold")] public int DeadRaidThreshold { get; set; } = 4;
     [JsonPropertyName("deadRaidTimer")] public float DeadRaidTimer { get; set; } = 15f;
 }
@@ -301,7 +317,7 @@ public record LocationSpawnSettings
     [JsonPropertyName("spawnOffWindow")]
     public MinMax<float> SpawnOffWindow { get; set; } = new()
     {
-        Min = 300,
-        Max = 380
+        Min = 200,
+        Max = 320
     };
 }
