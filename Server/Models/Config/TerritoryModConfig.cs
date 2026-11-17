@@ -21,6 +21,7 @@ public record FactionConfig
     [JsonPropertyName("killChangesRep")] public bool RepChange { get; set; } = true;
     [JsonPropertyName("killRepDecrease")] public double KillReputationDecrease { get; set; } = 0.005;
     [JsonPropertyName("killEnemyRep")] public double KillEnemyReputation { get; set; } = 0.05;
+    [JsonPropertyName("maxCharismaModifier")] public double MaxCharismaModifier { get; set; } = 0.25;
     [JsonPropertyName("nonFactionRepAllowed")] public bool StaticRepGain { get; set; } = true;
     [JsonPropertyName("nonContestantRepAllowed")] public bool NonContestantRepGain { get; set; } = true;
     [JsonPropertyName("overrideTraderRep")] public bool TraderReputation { get; set; } = false;
@@ -191,12 +192,11 @@ public record SpawnSettings
         Max = 80
     };
 
-    [JsonPropertyName("nonGroupBotModifier")] public float NonGroupBotModifier { get; set; } = 0.75f;
+    [JsonPropertyName("nonGroupBotModifier")] public float NonGroupBotModifier { get; set; } = 0.35f;
     [JsonPropertyName("groupSpawnExclusive")] public bool GroupSpawnExclusive { get; set; } = true;
     [JsonPropertyName("startTime")] public int StartTime { get; set; } = 1;
     [JsonPropertyName("stopTime")] public int EndTime { get; set; } = 200; //time before the end of the raid
     [JsonPropertyName("requiredCapSpace")] public int RequiredSpawnSpace { get; set; } = 4;
-
     [JsonPropertyName("mapSettings")]
     public LocationData<LocationSpawnSettings> MapSettings { get; set; } = new()
     {

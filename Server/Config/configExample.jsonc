@@ -135,7 +135,7 @@
       "min": 20,
       "max": 80
     },
-    "nonGroupBotModifier": 0.75, //Reduction modifier to bots waiting to spawn if it fails to form a group.
+    "nonGroupBotModifier": 0.35, //Reduction modifier to bots waiting to spawn if it fails to form a group.
     "groupSpawnExclusive": true, //Should spawning a group not spawn some individual bots around the map in the same wave.
     "startTime": 1, //Time after the map starts to start spawning. Will still have a delay regardless.
     "stopTime": 200, //Time before the map ends to stop spawning.
@@ -325,10 +325,10 @@
       }
     },
     "softCapSpace": 4, //Cap below the total max bot count to stop spawning bots.
-    "spawnCheckInterval": 12, //Interval between trying to spawn bots. Lower numbers means more bots and lag, be careful.
+    "spawnCheckInterval": 12, //Interval between trying to spawn bots. Lower numbers means more bots and lag, be careful. Minimum of 5.
     "spawnDelayAdjustmentMax": 2, //Max rng time to add to the bot to delay their spawn.
     "maxBotSpawnsPerInterval": 7, //Cap of bots to spawn per spawn interval.
     "deadRaidThreshold": -1, //How many bots in the raid to be considered dead. -1 to disable.
-    "deadRaidTimer": 15 //Overrides the spawn window off time to this time when the raid is considered dead.
+    "deadRaidTimer": 15, //Overrides the spawn window off time to this time when the raid is considered dead.
   }
 }

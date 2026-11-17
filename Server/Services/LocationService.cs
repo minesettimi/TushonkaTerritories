@@ -156,10 +156,10 @@ public class LocationService(TerritoryDataConfig dataConfig,
                 continue;
             
             List<BossLocationSpawn> newSpawns = cloner.Clone(_bossBackup[locationName])!;
-            for (int i = 0; i < newSpawns.Count; i++)
+            List<BossLocationSpawn> validSpawns = [];
+            
+            foreach (BossLocationSpawn bossSpawn in newSpawns)
             {
-                BossLocationSpawn bossSpawn = newSpawns[i];
-
                 if (!raidConfig.OverrideTriggeredSpawns &&
                     (bossSpawn.TriggerId?.Length > 2 || bossSpawn.TriggerName?.Length > 2))
                     continue;
@@ -167,23 +167,25 @@ public class LocationService(TerritoryDataConfig dataConfig,
                 bool isPmc = bossSpawn.BossName == "pmcBEAR" || bossSpawn.BossName == "pmcUSEC";
                 bool isCultist = bossSpawn.BossName?.StartsWith("sectant") ?? false;
                 
-                if (raidConfig.BotBlacklist.Contains(bossSpawn.BossName!) ||
+                if (raidConfig.BotBlacklist.Contains(bossSpawn.BossName!, StringComparer.OrdinalIgnoreCase) ||
                     (raidConfig.OverridePmcs && isPmc) ||
                     (raidConfig.OverrideCultists && isCultist) ||
                     (raidConfig.OverrideBosses && !isPmc && !isCultist))
                 {
-                    newSpawns.RemoveAt(i);
-                    i--;
+                    continue;
                 }
-                else if (isPmc && raidConfig is { OverridePmcs: false, EnforcePmcSpawns: true })
+
+                if (isPmc && raidConfig is { OverridePmcs: false, EnforcePmcSpawns: true })
                 {
-                    newSpawns[i].ForceSpawn = true;
+                    bossSpawn.ForceSpawn = true;
                 }
+
+                validSpawns.Add(bossSpawn);
             }
             
-            newSpawns.AddRange(BuildCustomSpawns(locationState));
+            validSpawns.AddRange(BuildCustomSpawns(locationState));
             
-            location.BossLocationSpawn = randomUtil.Shuffle(newSpawns);
+            location.BossLocationSpawn = randomUtil.Shuffle(validSpawns);
             
             if (raidConfig.AttitudeEffect)
             {

@@ -1,3 +1,4 @@
+using System;
 using System.Reflection;
 using EFT;
 using HarmonyLib;
@@ -21,10 +22,13 @@ public class OnDeadPatch : ModulePatch
 
         string role = __instance.Profile.Info.Settings.Role.ToString();
 
-        TerritoryPlugin.StateManager.ServerData.BotFaction.TryGetValue(role, out string? faction);
-        if (faction != null)
+        if (TerritoryPlugin.StateManager.ServerData.BotFaction.TryGetValue(role, out string faction))
         {
-            SpawnManager.BotsPerFaction[role]--;
+            SpawnManager.BotsPerFaction.AddOrUpdate(faction,
+                0,
+                (_,
+                    value) => Math.Max(value - 1,
+                    0));
         }
         
         if (___LastAggressor == null || ___AggressorFound || __instance == (Player)___LastAggressor)

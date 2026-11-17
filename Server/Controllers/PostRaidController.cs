@@ -1,8 +1,11 @@
 using SPTarkov.Common.Models.Logging;
 using SPTarkov.DI.Annotations;
+using SPTarkov.Server.Core.Extensions;
 using SPTarkov.Server.Core.Helpers.Profile;
 using SPTarkov.Server.Core.Models.Common;
 using SPTarkov.Server.Core.Models.Eft.Common;
+using SPTarkov.Server.Core.Models.Enums;
+using SPTarkov.Server.Core.Utils;
 using TerritoryServer.Helpers;
 using TerritoryServer.Models;
 using TerritoryServer.Servers;
@@ -18,6 +21,7 @@ public class PostRaidController(ProfileHelper profileHelper,
     BattleService battleService,
     ProfileStateHelper profileStateHelper,
     CacheService cacheService,
+    MathUtil mathUtil,
     ISptLogger<PostRaidController> logger)
 {
     public void PostRaidSimulate(string location, Dictionary<string, int> kills)
@@ -73,6 +77,15 @@ public class PostRaidController(ProfileHelper profileHelper,
                 return;
             }
 
+            double charismaValue = characterData.GetSkillFromProfile(SkillTypes.Charisma)?.Progress ?? 0;
+            charismaValue = mathUtil.MapToRange(Math.Truncate(charismaValue / 100),
+                0,
+                51,
+                0,
+                Math.Min(modConfig.FactionConfig.MaxCharismaModifier,
+                    1.0));
+            double invertedCharisma = 1.0 - charismaValue;
+            
             foreach ((string botName, int amount) in playerKills)
             {
                 string botFaction = cacheService.BotFactions.GetValueOrDefault(botName, "none");
@@ -84,10 +97,10 @@ public class PostRaidController(ProfileHelper profileHelper,
                     || (factionConfig.StaticRepGain && !presentFactions.ContainsKey(botFaction)))
                     continue;
 
-                double repDecrease = factionConfig.KillReputationDecrease * amount;
+                double repDecrease = factionConfig.KillReputationDecrease * amount * invertedCharisma;
                 playerData.Reputation[botFaction] = Math.Max(playerData.Reputation[botFaction] - repDecrease, 0);
 
-                double repIncrease = factionConfig.KillEnemyReputation * amount;
+                double repIncrease = factionConfig.KillEnemyReputation * amount * (charismaValue + 1);
                 foreach ((string otherFaction, int attitude) in faction.Attitudes)
                 {
                     if (attitude != -1)

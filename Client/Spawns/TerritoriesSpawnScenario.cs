@@ -30,7 +30,7 @@ public class TerritoriesSpawnScenario : MonoBehaviour
     private float _nextWindow = -1;
     private float _nextCheck = -1;
     private int _currentContestant = 0;
-
+    
     public CountTypeBotWave[] BotData { get; set; } = [];
 
     private readonly Dictionary<double, WDictionary<BotDifficulty>> _difficultyWeights = [];
@@ -213,6 +213,11 @@ public class TerritoriesSpawnScenario : MonoBehaviour
         if (_nextWindow <= _game.PastTime)
         {
             _spawnActive = !_spawnActive;
+            if (TerritoryPlugin.Debug.Value)
+            {
+                TerritoryPlugin.PluginLogger.LogInfo($"Spawning state: {_spawnActive}");
+            }
+            
             _nextWindow = _game.PastTime + (_spawnActive ? 
                 MyExtensions.Random(_locationSettings.SpawnOnWindow.Min, _locationSettings.SpawnOnWindow.Max) : 
                 MyExtensions.Random(_locationSettings.SpawnOffWindow.Min, _locationSettings.SpawnOffWindow.Max));
@@ -232,9 +237,11 @@ public class TerritoriesSpawnScenario : MonoBehaviour
         if (_nextCheck > _game.PastTime)
             return;
 
-        _nextCheck = _game.PastTime + Math.Max(_spawnSettings.SpawnCheck, 15f); //specific number
+        _nextCheck = _game.PastTime + Math.Max(_spawnSettings.SpawnCheck, 5f); //spawn no faster
 
-        int botCountRemaining = _locationSettings.MaxBots - _botsController!.AliveLoadingDelayedBotsCount - 
+        int totalBots = GetTotalTerritoryBots();
+        
+        int botCountRemaining = _locationSettings.MaxBots - totalBots - 
                                 _spawnSettings.SoftCapSpace;
         if (_atMaxCap)
         {
@@ -245,7 +252,7 @@ public class TerritoriesSpawnScenario : MonoBehaviour
         }
         else if (botCountRemaining <= 0)
         {
-            _atMaxCap = _locationSettings.MaxBots - _botsController.AliveAndLoadingBotsCount -
+            _atMaxCap = _locationSettings.MaxBots - totalBots -
                 _spawnSettings.SoftCapSpace <= 0;
             return;
         }
@@ -338,7 +345,16 @@ public class TerritoriesSpawnScenario : MonoBehaviour
         //no sniping zones, don't spawn
         if (spawnZone is null)
         {
-            return; //don't want to swap to a different bot, otherwise it will hardcode a bot
+            //marksman is the only bot, skip
+            if (factionData.BotTypes.Length < 2)
+                return;
+
+            while (botType == WildSpawnType.marksman)
+            {
+                botType = factionData.BotTypes.Random();
+            }
+            
+            spawnZone = _botsController!._botSpawner.GetRandomBotZoneExclusive(false);
         }
         
         _botsController!.ActivateBotsByWave(new SpawnWave
@@ -349,7 +365,7 @@ public class TerritoriesSpawnScenario : MonoBehaviour
             Side = playerSide,
             WildSpawnType = botType,
             ChanceGroup = 0,
-            SpawnAreaName = spawnZone.name,
+            SpawnAreaName = spawnZone?.name ?? "",
             IsPlayers = false,
             WithCheckMinMax = false
         });
@@ -358,6 +374,17 @@ public class TerritoriesSpawnScenario : MonoBehaviour
     }
 
     #endregion
+
+    public static int GetTotalTerritoryBots()
+    {
+        int total = 0;
+        foreach (int factionBots in SpawnManager.BotsPerFaction.Values)
+        {
+            total += factionBots;
+        }
+
+        return total;
+    }
     
     public static TerritoriesSpawnScenario Create(AbstractGame game, LocationSettings.Location location,
         BotsController botsController)
