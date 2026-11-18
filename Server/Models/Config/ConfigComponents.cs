@@ -11,7 +11,7 @@ public record MinMax<T> where T : IComparable<T>
 
 public class LocationData<T> : Dictionary<string, T>
 {
-    public T this[string key]
+    public T? this[string key]
     {
         get
         {
@@ -21,7 +21,7 @@ public class LocationData<T> : Dictionary<string, T>
                 adjustedKey = newKey;
             }
 
-            return base[adjustedKey];
+            return this.GetValueOrDefault(adjustedKey);
         }
         set
         {
@@ -31,7 +31,7 @@ public class LocationData<T> : Dictionary<string, T>
                 adjustedKey = newKey;
             }
             
-            base[adjustedKey] = value;
+            base[adjustedKey] = value!;
         }
     }
 }
