@@ -1,6 +1,5 @@
 using System.Text.Json.Serialization;
 using SPTarkov.Server.Core.Models.Common;
-using SPTarkov.Server.Core.Models.Eft.Common;
 using SPTarkov.Server.Core.Models.Enums;
 
 namespace TerritoryServer.Models;
@@ -10,6 +9,8 @@ public class TerritoryDataConfig
     [JsonPropertyName("factions")] public Dictionary<string, Faction> Factions { get; set; } = [];
     [JsonPropertyName("defaultTerritory")] public LocationData<LocationInitialState> LocationTerritories { get; set; } = new();
     [JsonPropertyName("locationNeighbors")] public LocationData<List<string>> LocationNeighbors { get; set; } = new();
+    [JsonPropertyName("locationNames")] public List<string> LocationNames { get; set; } = [];
+    [JsonPropertyName("duplicateLocations")] public Dictionary<string, string> DuplicateLocations { get; set; } = new();
     [JsonPropertyName("repPresets")] public Dictionary<string, RepPresetTable> RepPresets { get; set; } = new();
     
     //can't do strings because its a list and I don't feel like making my own converter

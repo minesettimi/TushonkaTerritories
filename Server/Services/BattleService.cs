@@ -91,8 +91,8 @@ public class BattleService(
             else
             {
                 stateServer.CurrentLocationSave.LastLoc = TerritoryMath.Wrap(stateServer.CurrentLocationSave.LastLoc + 1, 0,
-                    LocationService.MapList.Count);
-                currentLocation = LocationService.MapList[stateServer.CurrentLocationSave.LastLoc];
+                    dataConfig.LocationNames.Count);
+                currentLocation = dataConfig.LocationNames[stateServer.CurrentLocationSave.LastLoc];
                 
                 if (currentState == RaidBattleState.Blocking && currentLocation == raidLocation)
                 {
@@ -103,7 +103,7 @@ public class BattleService(
             }
 
             //don't simulate twice for these locations
-            if (LocationService.DuplicateMapList.Contains(currentLocation))
+            if (dataConfig.DuplicateLocations.ContainsKey(currentLocation))
             {
                 i--;
                 continue;

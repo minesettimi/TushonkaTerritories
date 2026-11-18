@@ -435,6 +435,29 @@
       "shoreline"
     ]
   },
+  "locationNames":
+  [
+    "bigmap",
+    "factory4_day",
+    "factory4_night",
+    "interchange",
+    "laboratory",
+    "lighthouse",
+    "rezervbase",
+    "sandbox",
+    "sandbox_high",
+    "shoreline",
+    "tarkovstreets",
+    "woods",
+    "labyrinth",
+    "icebreaker",
+    "terminal"
+  ],
+  "duplicateLocations":
+  {
+    "factory4_night": "factory4_day",
+    "sandbox_high": "sandbox"
+  },
   "repPresets":
   {
     "classic":

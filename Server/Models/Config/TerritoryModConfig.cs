@@ -200,97 +200,123 @@ public record SpawnSettings
     [JsonPropertyName("mapSettings")]
     public LocationData<LocationSpawnSettings> MapSettings { get; set; } = new()
     {
-        Factory = new LocationSpawnSettings
         {
-            MaxBots = 12
-        },
-        GroundZero = new LocationSpawnSettings
-        {
-            MaxBots = 14
-        },
-        Reserve = new LocationSpawnSettings
-        {
-            MaxBots = 20
-        },
-        Customs = new LocationSpawnSettings
-        {
-            MaxBots = 21,
-            SpawnOnWindow = new MinMax<float>
+            "factory4_day", new LocationSpawnSettings
             {
-                Min = 80f,
-                Max = 120f
+                MaxBots = 12
             }
         },
-        Woods = new LocationSpawnSettings
         {
-            MaxBots  = 20,
-            SpawnOnWindow = new MinMax<float>
+            "sandbox", new LocationSpawnSettings
             {
-                Min = 40f,
-                Max = 80f
+                MaxBots = 14
             }
         },
-        Interchange = new LocationSpawnSettings
         {
-            MaxBots = 20,
-            SpawnOnWindow = new MinMax<float>
+            "reservbase", new LocationSpawnSettings
             {
-                Min = 60f,
-                Max = 80f
-            },
-            SpawnOffWindow = new MinMax<float>
-            {
-                Min = 280f,
-                Max = 360f
+                MaxBots = 20
             }
         },
-        Streets = new LocationSpawnSettings
         {
-            MaxBots = 23,
-            SpawnOnWindow = new MinMax<float>
+            "bigmap", new LocationSpawnSettings
             {
-                Min = 60f,
-                Max = 120f
-            },
-            SpawnOffWindow = new MinMax<float>
-            {
-                Min = 280f,
-                Max = 360f
+                MaxBots = 21,
+                SpawnOnWindow = new MinMax<float>
+                {
+                    Min = 80f,
+                    Max = 120f
+                }
             }
         },
-        Lighthouse = new LocationSpawnSettings
         {
-            MaxBots = 20,
-            SpawnOnWindow = new MinMax<float>
+            "woods", new LocationSpawnSettings
             {
-                Min = 80f,
-                Max = 120f
+                MaxBots = 20,
+                SpawnOnWindow = new MinMax<float>
+                {
+                    Min = 40f,
+                    Max = 80f
+                }
             }
         },
-        Shoreline = new LocationSpawnSettings
         {
-            MaxBots = 21,
-            SpawnOnWindow = new MinMax<float>
+            "interchange", new LocationSpawnSettings
             {
-                Min = 80f,
-                Max = 120f
+                MaxBots = 20,
+                SpawnOnWindow = new MinMax<float>
+                {
+                    Min = 60f,
+                    Max = 80f
+                },
+                SpawnOffWindow = new MinMax<float>
+                {
+                    Min = 280f,
+                    Max = 360f
+                }
             }
         },
-        Laboratory = new LocationSpawnSettings
         {
-            MaxBots = 15
+            "tarkovstreets", new LocationSpawnSettings
+            {
+                MaxBots = 23,
+                SpawnOnWindow = new MinMax<float>
+                {
+                    Min = 60f,
+                    Max = 120f
+                },
+                SpawnOffWindow = new MinMax<float>
+                {
+                    Min = 280f,
+                    Max = 360f
+                }
+            }
         },
-        Terminal = new LocationSpawnSettings
         {
-            MaxBots = 18
+            "lighthouse", new LocationSpawnSettings
+            {
+                MaxBots = 20,
+                SpawnOnWindow = new MinMax<float>
+                {
+                    Min = 80f,
+                    Max = 120f
+                }
+            }
         },
-        Icebreaker = new LocationSpawnSettings
         {
-            MaxBots = 18
+            "shoreline", new LocationSpawnSettings
+            {
+                MaxBots = 21,
+                SpawnOnWindow = new MinMax<float>
+                {
+                    Min = 80f,
+                    Max = 120f
+                }
+            }
         },
-        Labyrinth = new LocationSpawnSettings
         {
-            MaxBots = 10
+            "laboratory", new LocationSpawnSettings
+            {
+                MaxBots = 15
+            }
+        },
+        {
+            "terminal", new LocationSpawnSettings
+            {
+                MaxBots = 18
+            }
+        },
+        {
+            "icebreaker", new LocationSpawnSettings
+            {
+                MaxBots = 18
+            }
+        },
+        {
+            "labyrinth", new LocationSpawnSettings
+            {
+                MaxBots = 10
+            }
         }
     };
 

@@ -24,30 +24,6 @@ public class LocationService(TerritoryDataConfig dataConfig,
     ISptLogger<LocationService> logger,
     ICloner cloner)
 {
-    public static readonly List<string> MapList = 
-    [
-        "bigmap",
-        "factory4_day",
-        "factory4_night",
-        "interchange",
-        "laboratory",
-        "lighthouse",
-        "rezervbase",
-        "sandbox",
-        "sandbox_high",
-        "shoreline",
-        "tarkovstreets",
-        "woods",
-        "labyrinth",
-        "icebreaker",
-        "terminal"
-    ];
-
-    public static readonly List<string> DuplicateMapList =
-    [
-        "factory4_night",
-        "sandbox_high"
-    ];
 
     enum BotRelationship
     {
@@ -56,8 +32,9 @@ public class LocationService(TerritoryDataConfig dataConfig,
         Enemies
     }
 
+    public static Dictionary<string, string> DuplicateMapIndex = [];
+
     private Dictionary<string, BossLocationSpawn> _mobileBossData = [];
-    
     private Dictionary<string, List<BossLocationSpawn>> _bossBackup = [];
     private Dictionary<string, List<Wave>> _waveBackup = [];
     private IEnumerable<AdditionalHostilitySettings> _hostilityCache = [];
@@ -86,7 +63,7 @@ public class LocationService(TerritoryDataConfig dataConfig,
             bossesToRemove.AddRange(faction.MobileBossNames);
         }
 
-        foreach (string locationName in MapList)
+        foreach (string locationName in dataConfig.LocationNames)
         {
             Location? locationInfo = locationTable.GetLocation(locationName);
             
@@ -113,7 +90,7 @@ public class LocationService(TerritoryDataConfig dataConfig,
     //credit to acidphantasm for originally finding the data that needed to be changed
     private void AdjustLocationSettings()
     {
-        foreach (string locationName in MapList)
+        foreach (string locationName in dataConfig.LocationNames)
         {
             LocationBase? location = locationTable.GetLocation(locationName)?.Base;
             
@@ -142,7 +119,7 @@ public class LocationService(TerritoryDataConfig dataConfig,
     public void UpdateLocations(List<string>? maps = null)
     {
         RaidConfig raidConfig = modConfig.RaidConfig;
-        foreach (string locationName in maps ?? MapList)
+        foreach (string locationName in maps ?? dataConfig.LocationNames)
         {
             LocationBase? location = locationTable.GetLocation(locationName)?.Base;
             

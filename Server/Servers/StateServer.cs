@@ -87,7 +87,7 @@ public class StateServer(JsonUtil jsonUtil,
 
     private void ValidateState()
     {
-        foreach (string locationName in LocationService.MapList)
+        foreach (string locationName in dataConfig.LocationNames)
         {
             LocationState? locationState = CurrentLocationSave.Locations[locationName];
             if (locationState == null)

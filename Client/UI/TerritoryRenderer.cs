@@ -5,7 +5,6 @@ using TerritoryClient.Models;
 using UnityEngine;
 using UnityEngine.UI;
 using VoronatorSharp;
-using LocationInfo = TerritoryClient.Models.LocationInfo;
 using Vector2 = UnityEngine.Vector2;
 
 namespace TerritoryClient.UI;
@@ -40,7 +39,7 @@ public class TerritoryRenderer : MonoBehaviour
         Texture2D newMap = new((int)Math.Ceiling(MapTransform.rect.width),
             (int)Math.Ceiling(MapTransform.rect.height), TextureFormat.RGBA32, true);
         
-        foreach (string location in LocationInfo.ValidMaps)
+        foreach (string location in TerritoryPlugin.StateManager.ServerData.MapList)
         {
             if (location == "factory4_night" || location == "sandbox_high")
                 continue;

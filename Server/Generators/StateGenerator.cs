@@ -34,7 +34,7 @@ public class StateGenerator(TerritoryDataConfig dataConfig,
             baseLocations[faction.Base] = factionName;
         }
         
-        foreach (string location in LocationService.MapList)
+        foreach (string location in dataConfig.LocationNames)
         {
             if (newState.Locations[location] != null)
                 continue;

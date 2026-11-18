@@ -6,6 +6,7 @@ using SPTarkov.Server.Core.Models.Enums;
 using SPTarkov.Server.Core.Models.Spt.Config;
 using SPTarkov.Server.Core.Models.Spt.Tables;
 using TerritoryServer.Generators;
+using TerritoryServer.Models;
 using TerritoryServer.Servers;
 using TerritoryServer.Services;
 
@@ -16,6 +17,7 @@ public class Preload(StateServer stateServer,
     StateGenerator stateGenerator,
     LocationConfig locationConfig,
     BotConfig botConfig,
+    TerritoryDataConfig dataConfig,
     CacheService cacheService,
     IEnumerable<IRuntimePatch> patches) : IOnLoad
 {
@@ -27,6 +29,8 @@ public class Preload(StateServer stateServer,
         }
         
         cacheService.Initialize();
+        LocationService.DuplicateMapIndex = dataConfig.DuplicateLocations;
+        
         await stateServer.LoadSave();
 
         if (stateServer.NewLocationSave)

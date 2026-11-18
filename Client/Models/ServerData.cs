@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using EFT;
 using Newtonsoft.Json;
+using TerritoryClient.Services;
 using UnityEngine;
 
 namespace TerritoryClient.Models;
@@ -12,6 +13,8 @@ public class ServerData
     [JsonProperty("factions")] public Dictionary<string, FactionData> Factions { get; set; } = null!;
     [JsonProperty("botFactionTable")] public Dictionary<string, string> BotFaction { get; set; } = [];
     [JsonProperty("spawnSettings")] public SpawnSettings SpawnSettings { get; set; } = null!;
+    [JsonProperty("mapList")] public List<string> MapList { get; set; } = [];
+    [JsonProperty("duplicateMapList")] public Dictionary<string, string> DuplicateMapList { get; set; } = [];
     [JsonProperty("attitudeEffect")] public bool AttitudeEffect { get; set; }
     [JsonProperty("allyRep")] public double AllyRep { get; set; }
     [JsonProperty("neutralRep")] public double NeutralRep { get; set; }
@@ -81,7 +84,7 @@ public class ServerState
     [JsonProperty("stateId")] public MongoID StateId { get; set; }
     [JsonProperty("locations")] public LocationData<LocationState> Locations { get; set; } = null!;
     [JsonProperty("playerState")] public Dictionary<MongoID, PlayerState> PlayerState { get; set; } = null!;
-
+    
     public double GetPlayerRep(MongoID player, string faction)
     {
         if (PlayerState.TryGetValue(player, out PlayerState playerState) &&
@@ -144,64 +147,29 @@ public record MinMax<T> where T : IComparable
 }
 
 //convert this back to generic at some point if needed
-public class LocationData<T>
+public class LocationData<T> : Dictionary<string, T>
 {
-    [JsonProperty("bigmap")] public T Customs { get; set; }
-    [JsonProperty("factory4_day")] public T Factory { get; set; }
-    [JsonProperty("interchange")] public T Interchange { get; set; }
-    [JsonProperty("laboratory")] public T Laboratory { get; set; }
-    [JsonProperty("lighthouse")] public T Lighthouse { get; set; }
-    [JsonProperty("rezervbase")] public T Reserve { get; set; }
-    [JsonProperty("sandbox")] public T GroundZero { get; set; }
-    [JsonProperty("shoreline")] public T Shoreline { get; set; }
-    [JsonProperty("tarkovstreets")] public T Streets { get; set; }
-    [JsonProperty("woods")] public T Woods { get; set; }
-    [JsonProperty("labyrinth")] public T Labyrinth { get; set; }
-    [JsonProperty("icebreaker")] public T Icebreaker { get; set; }
-    [JsonProperty("terminal")] public T Terminal { get; set; }
-
-    [JsonIgnore]
-    public T? this[string key] =>
-        key.ToLowerInvariant() switch
+    public T this[string key]
+    {
+        get
         {
-            "bigmap" => Customs,
-            "factory4_day" => Factory,
-            "factory4_night" => Factory,
-            "interchange" => Interchange,
-            "laboratory" => Laboratory,
-            "lighthouse" => Lighthouse,
-            "rezervbase" => Reserve,
-            "sandbox" => GroundZero,
-            "sandbox_high" => GroundZero,
-            "shoreline" => Shoreline,
-            "tarkovstreets" => Streets,
-            "woods" => Woods,
-            "labyrinth" => Labyrinth,
-            "icebreaker" => Icebreaker,
-            "terminal" => Terminal,
-            _ => default
-        };
-}
+            string adjustedKey = key.ToLowerInvariant();
+            if (StateManager.DuplicateMapIndex.TryGetValue(adjustedKey, out string? newKey))
+            {
+                adjustedKey = newKey;
+            }
 
-public static class LocationInfo
-{
-    //I hate to make more hardcoded map strings but its still a quick fix and way better than a more serious system
-    public static readonly string[] ValidMaps = 
-    [
-        "bigmap", 
-        "factory4_day", 
-        "factory4_night", 
-        "interchange", 
-        "laboratory", 
-        "lighthouse",
-        "rezervbase",
-        "sandbox",
-        "sandbox_high",
-        "shoreline",
-        "tarkovstreets",
-        "woods",
-        "labyrinth",
-        "icebreaker",
-        "terminal"
-    ];
+            return base[adjustedKey];
+        }
+        set
+        {
+            string adjustedKey = key.ToLowerInvariant();
+            if (StateManager.DuplicateMapIndex.TryGetValue(adjustedKey, out string? newKey))
+            {
+                adjustedKey = newKey;
+            }
+            
+            base[adjustedKey] = value;
+        }
+    }
 }

@@ -86,6 +86,8 @@ public class TerritoryCallbacks(HttpResponseUtil httpResponseUtil,
             BotFaction = cacheService.BotFactions,
             SpawnSettings = modConfig.SpawnSettings,
             AttitudeEffect = modConfig.RaidConfig.AttitudeEffectPlayer,
+            MapList = dataConfig.LocationNames,
+            DuplicateMapList = dataConfig.DuplicateLocations,
             AllyRep = modConfig.RaidConfig.AllyRep,
             NeutralRep = modConfig.RaidConfig.NeutralRep,
             Factions = []

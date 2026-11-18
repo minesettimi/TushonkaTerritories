@@ -9,6 +9,8 @@ public class ServerDataResponse
     [JsonPropertyName("factions")] public required Dictionary<string, FactionDataResponse> Factions { get; set; }
     [JsonPropertyName("botFactionTable")] public required Dictionary<string, string> BotFaction { get; set; }
     [JsonPropertyName("spawnSettings")] public required SpawnSettings SpawnSettings { get; set; }
+    [JsonPropertyName("mapList")] public List<string> MapList { get; set; } = [];
+    [JsonPropertyName("duplicateMapList")] public Dictionary<string, string> DuplicateMapList { get; set; } = [];
     [JsonPropertyName("attitudeEffect")] public bool AttitudeEffect { get; set; }
     [JsonPropertyName("allyRep")] public double AllyRep { get; set; }
     [JsonPropertyName("neutralRep")] public double NeutralRep { get; set; }
@@ -26,4 +28,5 @@ public class ServerStateResponse
     [JsonPropertyName("stateId")] public MongoId StateId { get; set; }
     [JsonPropertyName("locations")] public LocationData<LocationState?> Locations { get; set; } = null!;
     [JsonPropertyName("playerState")] public Dictionary<MongoId, PlayerState> PlayerState { get; set; } = null!;
+    
 }

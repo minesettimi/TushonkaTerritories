@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Comfort.Common;
 using EFT.Communications;
@@ -12,7 +13,9 @@ public class StateManager
 {
     public ServerData ServerData { get; private set; }
     public ServerState State { get; private set; }
-
+    
+    public static Dictionary<string, string> DuplicateMapIndex = [];
+    
     public Action StateUpdated;
 
     public void Init()
@@ -26,6 +29,7 @@ public class StateManager
                 if (notification is NotificationTerritoryState territoryNotification)
                 {
                     State = territoryNotification.ServerState;
+                    StateUpdated?.Invoke();
                 }
             };
         }
@@ -41,6 +45,7 @@ public class StateManager
             if (data != null)
             {
                 ServerData = JsonConvert.DeserializeObject<ServerData>(data)!;
+                DuplicateMapIndex = ServerData.DuplicateMapList;
 
                 return true;
             }
