@@ -21,7 +21,7 @@ public class LocationButtonPatch : ModulePatch
     {
         LocationState? locationState = TerritoryPlugin.StateManager.State.Locations[location.Id];
         
-        if (locationState == null)
+        if (locationState is null)
             return;
 
         if (!TerritoryPlugin.StateManager.ServerData.Factions.TryGetValue(locationState.Holder, out FactionData? faction))
@@ -40,7 +40,7 @@ public class LocationButtonPatch : ModulePatch
     {
         RectTransform rectTransform = (RectTransform)__instance.transform;
 
-        TerritoryRenderer.LocationPositions[location.Id.ToLower()] =
+        TerritoryRenderer.LocationPositions[location.Id.ToLowerInvariant()] =
             RectTransformUtility.WorldToScreenPoint(null, rectTransform.position);
     }
 }

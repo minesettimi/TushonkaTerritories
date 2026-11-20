@@ -149,7 +149,7 @@ public record MinMax<T> where T : IComparable
 //convert this back to generic at some point if needed
 public class LocationData<T> : Dictionary<string, T>
 {
-    public T this[string key]
+    public T? this[string key]
     {
         get
         {
@@ -169,7 +169,7 @@ public class LocationData<T> : Dictionary<string, T>
                 adjustedKey = newKey;
             }
             
-            base[adjustedKey] = value;
+            base[adjustedKey] = value!;
         }
     }
 }

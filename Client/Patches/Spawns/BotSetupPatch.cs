@@ -19,8 +19,10 @@ public class BotSetupPatch : ModulePatch
     {
         if (TerritoryPlugin.IsFika)
             return;
-        
-        SpawnManager.LocalGameSpawnScenarios.TryGetValue(__instance, out TerritoriesSpawnScenario territoriesSpawnScenario);
+
+        if (!SpawnManager.LocalGameSpawnScenarios.TryGetValue(__instance,
+                out TerritoriesSpawnScenario territoriesSpawnScenario))
+            return;
 
         ____nonWavesSpawnScenario.NonWaves =
             ____nonWavesSpawnScenario.NonWaves.AddRangeToArray(territoriesSpawnScenario.BotData);
@@ -34,7 +36,9 @@ public class BotSetupPatch : ModulePatch
         
         await __result;
         
-        SpawnManager.LocalGameSpawnScenarios.TryGetValue(__instance, out TerritoriesSpawnScenario territoriesSpawnScenario);
+        if (!SpawnManager.LocalGameSpawnScenarios.TryGetValue(__instance,
+                out TerritoriesSpawnScenario territoriesSpawnScenario))
+            return;
         
         territoriesSpawnScenario.Run();
     }

@@ -45,7 +45,6 @@ public class PostRaidController(ProfileHelper profileHelper,
         LocationState? locationData = stateServer.CurrentLocationSave.Locations[location];
         if (locationData == null)
         {
-            logger.Error("Failed to get location data for reputation changes at location id: " + location);
             return;
         }
         
