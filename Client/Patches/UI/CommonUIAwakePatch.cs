@@ -47,6 +47,7 @@ public class CommonUIAwakePatch : ModulePatch
             return;
         }
 
+        
         GameObject repScreenObj = Object.Instantiate(reputationScreen, inventoryTransform);
         RepScreen = repScreenObj.GetComponent<ReputationScreen>();
         repScreenObj.name = "Reputation Panel";
@@ -67,6 +68,7 @@ public class CommonUIAwakePatch : ModulePatch
         TemplateToggle = toggleSpawner._object;
         
         InventoryScreen inventoryScreen = __instance.InventoryScreen;
+        
         
         
         //get enum and add to tab dictionary

@@ -1,6 +1,8 @@
 {
   "UI/Quests/Conditions/Reputation": "Reach reputation with {0}",
   "TerritoryUpdated": "Territory data has been updated.",
+  "FactionSelect": "FACTION SELECTION",
+  "FactionSelectDescription": "Welcome to Tushonka Territories.\nSelect a faction below to determine your starting reputation with the various factions for your PMC and scav.\nReputation determines if factions shoot on sight, warn the player, or are friendly.",
   
   "TerritoryControlled": "Controlled By {0}",
   "TerritoryContested": "Contested By {0}",
@@ -15,5 +17,10 @@
   "FactionName cultist": "The Cult",
   "FactionName blackdiv": "Black Division",
   "FactionName ruaf": "RUAF",
-  "FactionName untar": "UNTAR"
+  "FactionName untar": "UNTAR",
+  
+  "PresetName classic": "Classic",
+  "PresetName scav": "Scavenger",
+  "PresetName rogue": "Rogue",
+  "PresetName raider": "Raider"
 }
