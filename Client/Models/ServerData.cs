@@ -128,7 +128,7 @@ public class LocationData<T> : Dictionary<string, T>
                 adjustedKey = newKey;
             }
 
-            return base[adjustedKey];
+            return TryGetValue(adjustedKey, out T? value) ? value : default;
         }
         set
         {

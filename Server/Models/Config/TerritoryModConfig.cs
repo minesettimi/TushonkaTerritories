@@ -213,7 +213,7 @@ public record SpawnSettings
             }
         },
         {
-            "reservbase", new LocationSpawnSettings
+            "rezervbase", new LocationSpawnSettings
             {
                 MaxBots = 20
             }

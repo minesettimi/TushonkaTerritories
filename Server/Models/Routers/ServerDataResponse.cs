@@ -1,6 +1,5 @@
 using System.Text.Json.Serialization;
 using SPTarkov.Server.Core.Models.Common;
-using SPTarkov.Server.Core.Models.Eft.Common;
 
 namespace TerritoryServer.Models;
 
@@ -27,7 +26,7 @@ public class FactionDataResponse
 public class ServerStateResponse
 {
     [JsonPropertyName("stateId")] public MongoId StateId { get; set; }
-    [JsonPropertyName("locations")] public LocationData<LocationState?> Locations { get; set; } = null!;
+    [JsonPropertyName("locations")] public LocationData<LocationState?> Locations { get; set; } = [];
     [JsonPropertyName("playerState")] public Dictionary<MongoId, PlayerState> PlayerState { get; set; } = null!;
     
 }

@@ -56,7 +56,7 @@ public class TerritoriesSpawnScenario : MonoBehaviour
         _locationState = tempState;
         _spawnSettings = TerritoryPlugin.StateManager.ServerData.SpawnSettings;
         _factions = TerritoryPlugin.StateManager.ServerData.Factions;
-        _locationSettings = _spawnSettings.MapSettings[_location.Id.ToLower()]!;
+        _locationSettings = _spawnSettings.MapSettings[_location.Id.ToLowerInvariant()]!;
 
         _endTime = (_location.EscapeTimeLimit * 60) - _spawnSettings.EndTime;
         
