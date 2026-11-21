@@ -15,6 +15,7 @@ public class ServerData
     [JsonProperty("spawnSettings")] public SpawnSettings SpawnSettings { get; set; } = null!;
     [JsonProperty("mapList")] public List<string> MapList { get; set; } = [];
     [JsonProperty("duplicateMapList")] public Dictionary<string, string> DuplicateMapList { get; set; } = [];
+    [JsonProperty("presetList")] public List<string> PresetList { get; set; } = [];
     [JsonProperty("attitudeEffect")] public bool AttitudeEffect { get; set; }
     [JsonProperty("allyRep")] public double AllyRep { get; set; }
     [JsonProperty("neutralRep")] public double NeutralRep { get; set; }
@@ -77,38 +78,6 @@ public class FactionData
             return field;
         }
     }
-}
-
-public class ServerState
-{
-    [JsonProperty("stateId")] public MongoID StateId { get; set; }
-    [JsonProperty("locations")] public LocationData<LocationState> Locations { get; set; } = null!;
-    [JsonProperty("playerState")] public Dictionary<MongoID, PlayerState> PlayerState { get; set; } = null!;
-    
-    public double GetPlayerRep(MongoID player, string faction)
-    {
-        if (PlayerState.TryGetValue(player, out PlayerState playerState) &&
-            playerState.Reputation.TryGetValue(faction, out double repValue))
-        {
-            return repValue;
-        }
-
-        return -1.0;
-    }
-}
-
-public record LocationState
-{
-    [JsonProperty("holder")] public string Holder { get; set; } = null!;
-    [JsonProperty("contestants")] public Dictionary<string, double> Contestants { get; set; } = null!;
-    [JsonProperty("baseHolder")] public string BaseHolder { get; set; } = null!;
-}
-
-public record PlayerState
-{
-    [JsonProperty("reputation")] public Dictionary<string, double> Reputation = [];
-    [JsonProperty("unlocked")] public Dictionary<string, bool> Unlocked = [];
-    [JsonProperty("selectedFaction")] public string? SelectedFaction { get; set; }
 }
 
 public record SpawnSettings

@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 using EFT;
 using EFT.UI;
+using Newtonsoft.Json;
+using SPT.Common.Http;
+using TerritoryClient.Models;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -23,20 +26,29 @@ public class FactionSelectWindow : Window<DialogWindowContext>
         {
             if (selectedIndex == -1)
                 return;
+
+            //change this temporarily just in case there's a network issue
+            TerritoryPlugin.StateManager.State.SelectedFaction = "invalid";
             
+            RequestHandler.PutJsonAsync("/tt/client/faction", 
+                JsonConvert.SerializeObject(new FactionSelectRequest
+                {
+                    FactionName = TerritoryPlugin.StateManager.ServerData.PresetList[selectedIndex]
+                }
+            ));
             Close();
         });
     }
 
-    public DialogWindowContext Show(List<string> selections)
+    public new DialogWindowContext Show()
     {
         DialogWindowContext context = base.Show();
         
         Caption.text = "FactionSelect".Localized();
         text.text = "FactionSelectDescription".Localized();
-
+        
         List<string> selectionsList = [];
-        foreach (string selection in selections)
+        foreach (string selection in TerritoryPlugin.StateManager.ServerData.PresetList)
         {
             selectionsList.Add($"PresetName {selection}".Localized());
         }

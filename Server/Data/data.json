@@ -460,7 +460,7 @@
   },
   "repPresets":
   {
-    "classic":
+    "none":
     {
       "bear":
       {
@@ -551,8 +551,8 @@
       "scav":
       {
         "scav": 2.0,
-        "raider": 1.0,
-        "rogue": 0.0,
+        "raider": 0.0,
+        "rogue": 2.0,
         "ruaf": 0.0,
         "untar": 1.0,
         "cultist": 1.0,
@@ -575,15 +575,15 @@
       {
         "scav": 0.1,
         "raider": 3.0,
-        "rogue": 0.0,
+        "rogue": 1.0,
         "ruaf": 0.0,
         "untar": 0.0,
-        "cultist": 2.0,
+        "cultist": 0.0,
         "blackdiv": 0.0
       },
       "scav":
       {
-        "scav": 0.0,
+        "scav": 0.5,
         "raider": 2.0,
         "rogue": 0.0,
         "ruaf": 0.0,

@@ -64,6 +64,7 @@ public class TerritoryCallbacks(HttpResponseUtil httpResponseUtil,
     TerritoryModConfig modConfig,
     TerritoryDataConfig dataConfig,
     CacheService cacheService,
+    ProfileController profileController,
     ISptLogger<TerritoryCallbacks> logger)
 {
     public ValueTask<string> HandleMatchEnd(RaidStatRequest statRequest)
@@ -88,6 +89,7 @@ public class TerritoryCallbacks(HttpResponseUtil httpResponseUtil,
             AttitudeEffect = modConfig.RaidConfig.AttitudeEffectPlayer,
             MapList = dataConfig.LocationNames,
             DuplicateMapList = dataConfig.DuplicateLocations,
+            PresetList = [.. dataConfig.RepPresets.Keys],
             AllyRep = modConfig.RaidConfig.AllyRep,
             NeutralRep = modConfig.RaidConfig.NeutralRep,
             Factions = []
@@ -111,19 +113,12 @@ public class TerritoryCallbacks(HttpResponseUtil httpResponseUtil,
     
     public ValueTask<string> HandleStateRetrieval()
     {
-        ServerStateResponse serverStateResponse = new()
-        {
-            StateId = stateServer.CurrentLocationSave.StateId,
-            Locations = stateServer.CurrentLocationSave.Locations,
-            PlayerState = stateServer.CurrentPlayerSave.PlayerState
-        };
-        
-        return new ValueTask<string>(httpResponseUtil.NoBody(serverStateResponse));
+        return new ValueTask<string>(httpResponseUtil.NoBody(stateServer.BuildServerStateResponse()));
     }
 
     public ValueTask<string> HandleFactionSelection(FactionSelectRequest request, MongoId sessionId)
     {
-        
+        profileController.ApplyRepPreset(request.FactionName, sessionId);
         
         return new ValueTask<string>(httpResponseUtil.NullResponse());   
     }

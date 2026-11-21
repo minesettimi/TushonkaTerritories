@@ -6,6 +6,7 @@ using SPTarkov.Server.Core.Models.Common;
 using SPTarkov.Server.Core.Models.Eft.Ws;
 using SPTarkov.Server.Core.Servers.Ws;
 using SPTarkov.Server.Core.Utils;
+using TerritoryServer.Controllers;
 using TerritoryServer.Models;
 using TerritoryServer.Models.Ws;
 using TerritoryServer.Services;
@@ -15,7 +16,6 @@ namespace TerritoryServer.Servers;
 [Injectable(InjectionType.Singleton)]
 public class StateServer(JsonUtil jsonUtil,
     SptWebSocketConnectionHandler webSocketConnectionHandler,
-    NotificationSendHelper notificationSendHelper,
     CacheService cacheService,
     TerritoryModConfig modConfig,
     TerritoryDataConfig dataConfig,
@@ -67,21 +67,23 @@ public class StateServer(JsonUtil jsonUtil,
 
     public void SendStateUpdate(MongoId? sessionId = null)
     {
-        WsStateUpdateEvent message = new()
-        {
-            EventIdentifier = new MongoId(),
-            EventType = (NotificationEventType)100,
-            LocationSaveState = CurrentLocationSave,
-            PlayerSaveState = CurrentPlayerSave
-        };
-
         if (sessionId == null)
         {
-            webSocketConnectionHandler.SendMessageToAll(message);
+            webSocketConnectionHandler.SendMessageToAll(new WsStateUpdateEvent
+            {
+                EventIdentifier = new MongoId(),
+                EventType = (NotificationEventType)100,
+                ServerState = BuildServerStateResponse()
+            });
         }
         else
         {
-            notificationSendHelper.SendMessageAsync(sessionId.Value, message);
+            webSocketConnectionHandler.SendMessageAsync(sessionId.Value, new WsStateUpdateEvent
+            {
+                EventIdentifier = new MongoId(),
+                EventType = (NotificationEventType)100,
+                ServerState = BuildServerStateResponse()
+            });
         }
     }
 
@@ -140,5 +142,17 @@ public class StateServer(JsonUtil jsonUtil,
         {
             logger.Info("[TT] Finished sanitizing state file");
         }
+    }
+
+    public ServerStateResponse BuildServerStateResponse()
+    {
+        ServerStateResponse serverStateResponse = new()
+        {
+            StateId = CurrentLocationSave.StateId,
+            Locations = CurrentLocationSave.Locations,
+            PlayerState = CurrentPlayerSave.PlayerState
+        };
+
+        return serverStateResponse;
     }
 }

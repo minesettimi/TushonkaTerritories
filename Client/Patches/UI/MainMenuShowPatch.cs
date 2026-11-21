@@ -1,9 +1,7 @@
 using System.Reflection;
-using System.Threading.Tasks;
 using EFT.UI;
 using HarmonyLib;
 using SPT.Reflection.Patching;
-using TerritoryClient.UI;
 
 namespace TerritoryClient.Patches.UI;
 
@@ -17,10 +15,13 @@ public class MainMenuShowPatch : ModulePatch
     [PatchPostfix]
     public static void Postfix(MenuScreen __instance)
     {
+        if (TerritoryPlugin.StateManager.State.SelectedFaction != null)
+            return;
+        
         __instance.WaitForEndOfFrame(() =>
         {
             ItemUiContext.Instance.RegisterWindow(PreloaderUIAwakePatch.FactionSelectWindow,
-                PreloaderUIAwakePatch.FactionSelectWindow.Show(["classic", "rogue"]));
+                PreloaderUIAwakePatch.FactionSelectWindow.Show());
         });
     }
 }
