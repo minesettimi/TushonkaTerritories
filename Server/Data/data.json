@@ -65,7 +65,7 @@
       "aggressiveness": 0.8,
       "maxStrengthBuild": 0.4,
       "distanceReduction": 0.0,
-      "persistent": true,
+      "persistant": true,
       "uprising": 5,
       "defaultRepUsec": 0.1,
       "defaultRepBear": 0.1,
