@@ -17,7 +17,7 @@ namespace TerritoryFika;
 [BepInPlugin("com.minesettimi.territoriesfika", "Tushonka Territories Fika", "1.2.0")]
 [BepInDependency("com.minesettimi.territories", "3.0.0")]
 [BepInDependency("com.fika.core", "2.4.2")]
-public class FikaPlugin : BaseUnityPlugin
+public class TerritoryFikaPlugin : BaseUnityPlugin
 {
     private static PatchManager _patchManager = null!;
 
