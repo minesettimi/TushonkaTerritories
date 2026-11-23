@@ -434,7 +434,7 @@ public class BattleService(
 
     private void RemoveIsolatedContestant(string location, string faction)
     {
-        if (dataConfig.Factions[faction].Persistant)
+        if (dataConfig.Factions[faction].Persistent)
             return;
         
         LocationState locState = stateServer.CurrentLocationSave.Locations[location]!;

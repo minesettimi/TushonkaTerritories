@@ -12,22 +12,21 @@ public class ServerState
     [JsonProperty("playerState")] public Dictionary<MongoID, PlayerState> PlayerState { get; set; } = null!;
 
     [JsonIgnore] private static MongoID? _playerId;
-    
     [JsonIgnore]
-    public string? SelectedFaction
+    public static MongoID PlayerId
     {
         get
         {
             _playerId ??= ClientAppUtils.GetClientApp().GetClientBackEndSession().Profile.ProfileId;
 
-            return PlayerState[(MongoID)_playerId!].SelectedFaction;
+            return (MongoID)_playerId!;
         }
-        set
-        {
-            _playerId ??= ClientAppUtils.GetClientApp().GetClientBackEndSession().Profile.ProfileId;
+    }
 
-            PlayerState[(MongoID)_playerId!].SelectedFaction = value;
-        }
+    public string? SelectedFaction
+    {
+        get => PlayerState[PlayerId].SelectedFaction;
+        set => PlayerState[PlayerId].SelectedFaction = value;
     }
     
     public double GetPlayerRep(MongoID player, string faction)

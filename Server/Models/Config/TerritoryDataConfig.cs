@@ -33,7 +33,7 @@ public class Faction
     [JsonPropertyName("aggressiveness")] public double Aggressiveness { get; set; }
     [JsonPropertyName("distanceReduction")] public double DistanceReduction { get; set; }
     [JsonPropertyName("maxStrengthBuild")] public double MaxStrengthBuild { get; set; }
-    [JsonPropertyName("persistant")] public bool Persistant { get; set; } = false;
+    [JsonPropertyName("persistent")] public bool Persistent { get; set; } = false;
     [JsonPropertyName("phantom")] public bool Phantom { get; set; } = false;
     [JsonPropertyName("uprising")] public double UprisingChance { get; set; }
     [JsonPropertyName("defaultRepUsec")] public double DefaultRepUsec { get; set; }
