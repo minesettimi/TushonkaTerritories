@@ -12,86 +12,89 @@ using TerritoryClient;
 using TerritoryClient.Services;
 using TerritoryClient.Spawns;
 
-namespace Fika
+namespace TerritoryFika;
+
+[BepInPlugin("com.minesettimi.territoriesfika", "Tushonka Territories Fika", "1.2.0")]
+[BepInDependency("com.minesettimi.territories", "3.0.0")]
+[BepInDependency("com.fika.core", "2.4.2")]
+public class FikaPlugin : BaseUnityPlugin
 {
-    [BepInPlugin("com.minesettimi.territoriesfika", "Tushonka Territories Fika", "1.1.0")]
-    [BepInDependency("com.minesettimi.territories", "2.0.0")]
-    [BepInDependency("com.fika.core", "2.4.2")]
-    public class FikaPlugin : BaseUnityPlugin
+    private static PatchManager _patchManager = null!;
+
+    private void Awake()
     {
-        private static PatchManager _patchManager = null!;
+        _patchManager = new PatchManager(this, true);
+        _patchManager.EnablePatches();
 
-        private void Awake()
-        {
-            _patchManager = new PatchManager(this, true);
-            _patchManager.EnablePatches();
+        FikaEventDispatcher.SubscribeEvent<FikaGameEndedEvent>(GameEnded);
+    }
 
-            FikaEventDispatcher.SubscribeEvent<FikaGameEndedEvent>(GameEnded);
-        }
-
-        private void GameEnded(FikaGameEndedEvent gameEndedEvent)
-        {
-            if (!gameEndedEvent.IsServer)
-                return;
+    private void GameEnded(FikaGameEndedEvent gameEndedEvent)
+    {
+        if (!gameEndedEvent.IsServer)
+            return;
             
-            _ = TerritoryPlugin.KillCounter.EndRaid();
-        }
+        _ = TerritoryPlugin.KillCounter.EndRaid();
     }
+}
     
-    public class KillCounterPatch : ModulePatch
+public class KillCounterPatch : ModulePatch
+{
+    protected override MethodBase GetTargetMethod()
     {
-        protected override MethodBase GetTargetMethod()
-        {
-            return AccessTools.Method(typeof(KillCounter), nameof(KillCounter.StartRaid));
-        }
-
-        [PatchPrefix]
-        public static bool Prefix()
-        {
-            return FikaBackendUtils.IsServer;
-        }
+        return AccessTools.Method(typeof(KillCounter), nameof(KillCounter.StartRaid));
     }
-    
-    public class FikaInitializeBotsPatch : ModulePatch
+
+    [PatchPrefix]
+    public static bool Prefix()
     {
-        protected override MethodBase GetTargetMethod()
-        {
-            return AccessTools.Method(typeof(HostGameController), nameof(HostGameController.InitializeBotsSystem));
-        }
+        return FikaBackendUtils.IsServer;
+    }
+}
+    
+public class FikaInitializeBotsPatch : ModulePatch
+{
+    protected override MethodBase GetTargetMethod()
+    {
+        return AccessTools.Method(typeof(HostGameController), nameof(HostGameController.InitializeBotsSystem));
+    }
 
-        [PatchPrefix]
-        public static void Prefix(AbstractGame ____abstractGame, NonWavesSpawnScenario ____nonWavesSpawnScenario)
-        {
-            SpawnManager.LocalGameSpawnScenarios.TryGetValue(____abstractGame, out TerritoriesSpawnScenario territoriesSpawnScenario);
+    [PatchPrefix]
+    public static void Prefix(AbstractGame ____abstractGame, NonWavesSpawnScenario ____nonWavesSpawnScenario)
+    {
+        if (!SpawnManager.LocalGameSpawnScenarios.TryGetValue(____abstractGame, out TerritoriesSpawnScenario territoriesSpawnScenario))
+            return;
 
-            ____nonWavesSpawnScenario.NonWaves =
-                ____nonWavesSpawnScenario.NonWaves.AddRangeToArray(territoriesSpawnScenario.BotData);
-        }
+        ____nonWavesSpawnScenario.NonWaves =
+            ____nonWavesSpawnScenario.NonWaves.AddRangeToArray(territoriesSpawnScenario.BotData);
+    }
 
-        [PatchPostfix]
-        public static async void Postfix(AbstractGame ____abstractGame, Task __result)
-        {
-            await __result;
-            
-            SpawnManager.LocalGameSpawnScenarios.TryGetValue(____abstractGame, out TerritoriesSpawnScenario territoriesSpawnScenario);
+    [PatchPostfix]
+    public static async void Postfix(AbstractGame ____abstractGame, Task __result)
+    {
+        await __result;
+
+        if (!SpawnManager.LocalGameSpawnScenarios.TryGetValue(____abstractGame,
+                out TerritoriesSpawnScenario territoriesSpawnScenario))
+            return;
         
-            territoriesSpawnScenario.Run();
-        }
+        territoriesSpawnScenario.Run();
     }
+}
     
-    public class FikaStopBotsPatch : ModulePatch
+public class FikaStopBotsPatch : ModulePatch
+{
+    protected override MethodBase GetTargetMethod()
     {
-        protected override MethodBase GetTargetMethod()
-        {
-            return AccessTools.Method(typeof(HostGameController), nameof(HostGameController.StopBotsSystem));
-        }
+        return AccessTools.Method(typeof(HostGameController), nameof(HostGameController.StopBotsSystem));
+    }
 
-        [PatchPostfix]
-        public static void Postfix(AbstractGame ____abstractGame)
-        {
-            SpawnManager.LocalGameSpawnScenarios.TryGetValue(____abstractGame, out TerritoriesSpawnScenario territoriesSpawnScenario);
+    [PatchPostfix]
+    public static void Postfix(AbstractGame ____abstractGame)
+    {
+        if (!SpawnManager.LocalGameSpawnScenarios.TryGetValue(____abstractGame, out TerritoriesSpawnScenario territoriesSpawnScenario))
+            return;
         
-            territoriesSpawnScenario.Stop();
-        }
+        territoriesSpawnScenario.Stop();
     }
 }
